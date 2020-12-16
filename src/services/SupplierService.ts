@@ -1,13 +1,22 @@
 import * as url from '../constant/Url'
-import { commonAuthorizedHeader } from './../middlewares/Common';
+import { commonAuthorizedHeader } from '../middlewares/Common';
 import { commonAjaxPostCalls } from './Promises';
+import WebRequest from './../models/WebRequest';
 export default class SupplierService {
-    static instance = SupplierService.instance || new SupplierService()
+    private static instance?:SupplierService;
+    
+    static getInstance() :SupplierService
+    {
+        if (this.instance == null) {
+            this.instance = new SupplierService();
+        }
+        return this.instance;
+    }
 
     getSupplierList = (raw) => {
         const fieldsFilter = {}
         fieldsFilter[raw.key] = raw.value;
-        const request = {
+        const request:WebRequest = {
             entity: "supplier",
             filter: {
                 limit: raw.limit ? raw.limit : 10,
@@ -22,7 +31,7 @@ export default class SupplierService {
         return commonAjaxPostCalls(endpoint, request);
     }
 
-    getProductSupplied = (supplierId) => {
+    getProductSupplied = (supplierId:number) => {
         const request = { supplier: { id: supplierId } };
         const endpoint = url.contextPath().concat("api/public/productssupplied");
 

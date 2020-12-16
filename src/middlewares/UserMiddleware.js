@@ -26,7 +26,7 @@ export const performLoginMiddleware = store => next => action => {
             payload: {
                 loginStatus: loginSuccess,
                 loginKey: loginKey,
-                loggedUser: responseJson.entity
+                loggedUser: responseJson.user
             }
         });
         delete newAction.meta;

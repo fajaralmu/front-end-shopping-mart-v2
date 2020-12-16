@@ -1,3 +1,6 @@
+
+import Menu from './../models/Menu';
+
 export const HOME = "home";
 export const CATALOG = "catalog";
 export const ABOUT = "about";
@@ -11,6 +14,15 @@ export const SUPPLIERLIST = "supplierlist";
 export const MANAGEMENT = "management";
 export const CHATROOM = "chatroom";
 export const CART = "cart";
+
+export const getMenus = () => {
+    let menuSet:Menu[] = [];
+    for (let i = 0; i < menus.length; i++) {
+        const element:Menu = menus[i];
+        menuSet.push(element);
+    }
+    return menuSet;
+}
 
 export const menus = [
     {
@@ -55,14 +67,6 @@ export const menus = [
         authenticated: false
     },
     {
-        code: LOGIN,
-        name: "Login",
-        url: "/login",
-        menuClass: "fas fa-sign-in-alt",
-        active: false,
-        authenticated: false
-    },
-    {
         code: DASHBOARD,
         name: "Dashboard",
         url: "/dashboard",
@@ -102,12 +106,4 @@ export const menus = [
         active: false,
         authenticated: false
     },
-    {
-        code: LOGOUT,
-        name: "Logout",
-        url: "#",
-        menuClass: "fas fa-sign-out-alt",
-        active: false,
-        authenticated: true
-    }
 ];

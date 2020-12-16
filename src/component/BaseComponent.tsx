@@ -1,5 +1,7 @@
 import { Component } from 'react';
 import { byId } from '../utils/ComponentUtil';
+import WebResponse from './../models/WebResponse';
+import ApplicationProfile from './../models/ApplicationProfile';
 
 export default class BaseComponent extends Component<any, any> {
     parentApp: any;
@@ -13,6 +15,11 @@ export default class BaseComponent extends Component<any, any> {
             ...this.state
         }
 
+    }
+
+    getApplicationProfile():ApplicationProfile
+    {
+        return this.props.applicationProfile == null ? {} : this.props.applicationProfile;
     }
 
     handleInputChange(event: any) {
@@ -41,10 +48,18 @@ export default class BaseComponent extends Component<any, any> {
     endLoading() {
         this.parentApp.endLoading();
     }
-    doAjax(method: Function, params: any, withProgress: boolean, successCallback: Function, errorCallback?: Function) {
+    /**
+     * api response must be instance of WebResponse
+     * @param method 
+     * @param withProgress 
+     * @param successCallback 
+     * @param errorCallback 
+     * @param params 
+     */
+    doAjax(method: Function, withProgress: boolean, successCallback: Function, errorCallback?: Function, ...params: any ) {
         this.startLoading(withProgress);
 
-        method(params).then(function (response) {
+        method(...params).then(function (response:WebResponse) {
             if (successCallback) {
                 successCallback(response);
             }
@@ -57,16 +72,16 @@ export default class BaseComponent extends Component<any, any> {
                 }
                 alert("resource not found");
             }
-        }).finally((e) => {
+        }).finally((e:any) => {
             this.endLoading();
         })
     }
 
-    commonAjax(method: Function, params: any, successCallback: Function, errorCallback?: Function) {
-        this.doAjax(method, params, false, successCallback, errorCallback);
+    commonAjax(method: Function, successCallback: Function, errorCallback: Function, ...params:any) {
+        this.doAjax(method, false, successCallback, errorCallback, ...params);
     }
-    commonAjaxWithProgress(method: Function, params: any, successCallback: Function, errorCallback?: Function) {
-        this.doAjax(method, params, true, successCallback, errorCallback);
+    commonAjaxWithProgress(method: Function, successCallback: Function, errorCallback: Function, ...params:any) {
+        this.doAjax(method, true, successCallback, errorCallback, ...params);
     }
     getLoggedUser() {
         return this.props.loggedUser;
@@ -74,8 +89,10 @@ export default class BaseComponent extends Component<any, any> {
     isLoggedUserNull(): boolean {
         return false == this.props.loginStatus || null == this.props.loggedUser;
     }
-
-    showConfirmation(body:any): Promise<any> {
+    isUserLoggedIn(): boolean {
+        return true == this.props.loginStatus && null != this.props.loggedUser;
+    }
+    showConfirmation(body:any): Promise<boolean> {
         const app = this;
         return new Promise(function(resolve, reject){
             const onYes = function (e) {

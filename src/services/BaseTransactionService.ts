@@ -1,7 +1,10 @@
 import * as url from '../constant/Url'
 import { commonAuthorizedHeader } from '../middlewares/Common';
 import { emptyPromise, commonAjaxPostCalls } from './Promises'; 
-const axios =require('axios');
+import Transaction from './../models/Transaction';
+import WebRequest from './../models/WebRequest';
+import WebResponse from './../models/WebResponse';
+const axios = require('axios');
 export default class BaseTransactionService {
 
     getProductList = (raw) => {
@@ -23,17 +26,17 @@ export default class BaseTransactionService {
         return commonAjaxPostCalls(endpoint, request);
     }
 
-    submitTransactionSelling = (request) => this.submitTransaction({...request, type:'SELLING' })
-    submitTransactionPurchasing = (request) => this.submitTransaction({...request, type:'PURCHASING' })
+    submitTransactionSelling = (request:any) => this.submitTransaction({...request, type:'SELLING' })
+    submitTransactionPurchasing = (request:any) => this.submitTransaction({...request, type:'PURCHASING' })
 
-    submitTransaction = (raw) => {
+    submitTransaction = (raw:Transaction) => {
         console.debug("submitTransaction ", raw.type);
         const type = raw.type;
-        const request = {
+        const request:WebRequest = {
             productFlows: raw.productFlows
         }
-        return new Promise(function (resolve, reject) {
-            let endpoint;
+        return new Promise<WebResponse>(function (resolve, reject) {
+            let endpoint:string = "";
             switch (type) {
                 case "SELLING":
                     if(null == raw.customer){
@@ -56,13 +59,13 @@ export default class BaseTransactionService {
             axios.post(endpoint, request,{
                 headers: commonAuthorizedHeader(),
             })
-                .then(response => response.data).then(function (response) {
+                .then(response => response.data).then(function (response:WebResponse) {
                     if (response.code == "00") 
                     { resolve(response) } 
                     else 
                     { reject(response) }
                 }).
-                catch((e) =>{ console.error(e); reject(e)});
+                catch((e:any) =>{ console.error(e); reject(e)});
         })
     }
 }

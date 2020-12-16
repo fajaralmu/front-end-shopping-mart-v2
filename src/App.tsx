@@ -1,5 +1,5 @@
 
-import React, { Component, RefObject } from 'react';
+import React, { Component, Fragment, RefObject } from 'react';
 import './App.css';
 import { Route, Switch, withRouter, Redirect } from 'react-router-dom'
 import * as actions from './redux/actionCreators'
@@ -10,14 +10,15 @@ import * as url from './constant/Url';
 import { mapCommonUserStateToProps } from './constant/stores';
 import Loader from './component/loader/Loader';
 import Alert from './component/alert/Alert';
+import MainLayout from './component/layout/MainLayout';
 
 interface IState {
   loading: boolean;
-      loadingPercentage: number;
-      requestId?: undefined;
-      mainAppUpdated: Date;
-      showAlert: boolean;
-      realtime: boolean;
+  loadingPercentage: number;
+  requestId?: undefined;
+  mainAppUpdated: Date;
+  showAlert: boolean;
+  realtime: boolean;
 }
 class App extends Component<any, IState> {
 
@@ -28,7 +29,7 @@ class App extends Component<any, IState> {
   alertIsError: boolean = false;
   alertOnYesCallback: Function = function (e) { };
   alertOnCancelCallback: Function = function (e) { };
-  clientRef:RefObject<SockJsClient> = React.createRef();
+  clientRef: RefObject<SockJsClient> = React.createRef();
   alertCallback = {
     title: "Info",
     message: "Info",
@@ -36,8 +37,8 @@ class App extends Component<any, IState> {
     onOk: () => { },
     onNo: () => { }
   }
- 
-  constructor(props:any) {
+
+  constructor(props: any) {
     super(props);
     this.state = {
       ...this.state,
@@ -123,6 +124,7 @@ class App extends Component<any, IState> {
     if (this.props.applicationProfile) {
       updateFavicon(this.props.applicationProfile);
     }
+    
   }
 
   componentDidMount() {
@@ -140,7 +142,7 @@ class App extends Component<any, IState> {
     const applicationProfile = this.props.applicationProfile;
 
     return (
-      <div className="App">
+      <Fragment>
         <Loading realtime={this.state.realtime} loading={this.state.loading} loadingPercentage={this.state.loadingPercentage} />
         {this.state.showAlert ?
           <Alert
@@ -150,11 +152,12 @@ class App extends Component<any, IState> {
             onYes={this.alertOnYesCallback} onNo={this.alertOnCancelCallback}
           >{this.alertBody}</Alert> :
           null}
+          <MainLayout app={this} />
         <SockJsClient url={usedHost + 'realtime-app'} topics={['/wsResp/progress/' + localStorage.getItem("requestId")]}
           onMessage={(msg) => { this.handleMessage(msg) }}
           ref={(client) => { this.clientRef = client }} />
 
-      </div>
+      </Fragment>
     )
   }
 

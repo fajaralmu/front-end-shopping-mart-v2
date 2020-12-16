@@ -48,7 +48,7 @@ export const reducer = (state = initState, action) => {
                 loginStatus: action.payload.loginStatus,
                 loginKey: action.payload.loginKey,
                 loginFailed: action.payload.loginStatus == false,
-                loggedUser: action.payload.user
+                loggedUser: action.payload.loggedUser
             };
 
             if (result.loginStatus == true) {

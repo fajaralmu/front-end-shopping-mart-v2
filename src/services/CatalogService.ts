@@ -1,14 +1,21 @@
 import * as url from '../constant/Url'
-import { commonAuthorizedHeader } from './../middlewares/Common';
 import { commonAjaxPostCalls } from './Promises';
+import WebRequest from './../models/WebRequest';
 export default class CatalogService {
-    static instance = CatalogService.instance || new CatalogService()
+    private static instance?:CatalogService;
+
+    static getInstance(): CatalogService {
+        if (this.instance == null) {
+            this.instance = new CatalogService();
+        }
+        return this.instance;
+    }
 
     /**
      * 
      * @param {JSON} raw 
      */
-    getProductList = (raw) => {
+    getProductList = (raw:any) => {
          
         const fieldsFilter = {
             withStock: raw.withStock == true,
@@ -21,7 +28,7 @@ export default class CatalogService {
         } else {
             fieldsFilter['name'] = raw.name;
         } 
-        const request = {
+        const request:WebRequest = {
             entity: "product",
             filter: {
                 exacts: raw.exacts == true,
@@ -41,7 +48,7 @@ export default class CatalogService {
      * 
      * @param {String} code 
      */
-    getProductDetail = (code) => this.getProductList({
+    getProductDetail = (code:string) => this.getProductList({
         key: 'code',
         value: code,
         limit: 1,
@@ -50,13 +57,13 @@ export default class CatalogService {
         withSupplier: true
     })
 
-    /**
-     * 
-     * @param {JSON} req 
-     */
-    getMoreSupplier = (req) => { 
+  /**
+   * 
+   * @param req 
+   */
+    getMoreSupplier = (req:any) => { 
 
-        const request = {
+        const request:WebRequest = {
             filter: {
                 page: req.page,
                 fieldsFilter: { productId: req.productId }

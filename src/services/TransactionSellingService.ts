@@ -1,15 +1,22 @@
 import * as url from '../constant/Url'
-import { commonAuthorizedHeader } from './../middlewares/Common';
 import BaseTransactionService from './BaseTransactionService';
 import { commonAjaxPostCalls } from './Promises';
+import WebRequest from './../models/WebRequest';
 export default class TransactionSellingService extends BaseTransactionService{
-    static instance = TransactionSellingService.instance || new TransactionSellingService();
+    private static instance?:TransactionSellingService;
 
-    getCustomerList = (raw) => {
+    static getInstance(): TransactionSellingService {
+        if (this.instance == null) {
+            this.instance = new TransactionSellingService();
+        }
+        return this.instance;
+    }
+
+    getCustomerList = (raw:any) => {
         
         const fieldsFilter = {};
         fieldsFilter[raw.key] = raw.value;
-        const request = {
+        const request:WebRequest = {
             entity: "customer",
             filter: {
                 page: (raw.page > 0 ? raw.page : 0),
@@ -23,8 +30,8 @@ export default class TransactionSellingService extends BaseTransactionService{
         return commonAjaxPostCalls(endpoint, request);
     }
 
-    getStockInfo = (productCode) => {
-        const request = {
+    getStockInfo = (productCode:string) => {
+        const request:WebRequest = {
             entity: "product",
             filter: {
                 limit: 1,
