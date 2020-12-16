@@ -59,9 +59,10 @@ export const reducer = (state = initState, action) => {
         case types.DO_LOGOUT:
             result = {
                 ...state,
-                loginStatus: action.payload.loginStatus,
+                loginStatus: false,
                 loggedUser: null
             };
+            setCookie("loginKey", null);
             return result;
         case types.REFRESH_LOGIN:
             result = {

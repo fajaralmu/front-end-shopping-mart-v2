@@ -9,9 +9,9 @@ export const LOGIN = "login";
 export const LOGOUT = "logout";
 export const DASHBOARD = "dashboard";
 export const TRANSACTION_SELLING = "selling";
-export const TRANSACTION_PURCHASING = "purchasing";
+export const MENU_TRANSACTION = "purchasing";
 export const SUPPLIERLIST = "supplierlist";
-export const MANAGEMENT = "management";
+export const MENU_MASTER_DATA = "management";
 export const CHATROOM = "chatroom";
 export const CART = "cart";
 
@@ -41,23 +41,6 @@ export const menus = [
         active: false,
         authenticated: false
     },
-    
-    {
-        code: SUPPLIERLIST,
-        name: "Our Supplier",
-        url: "/suppliers",
-        menuClass: "fas fa-warehouse",
-        active: false,
-        authenticated: false
-    },
-    {
-        code: CHATROOM,
-        name: "Chat Room",
-        url: "/chatroom",
-        menuClass: "fas fa-comments",
-        active: false,
-        authenticated: false
-    },
     {
         code: CART,
         name: "My Cart",
@@ -75,35 +58,19 @@ export const menus = [
         authenticated: true
     },
     {
-        code: TRANSACTION_SELLING,
-        name: "Selling",
-        url: "/transaction/selling",
-        menuClass: "fas fa-cash-register",
-        active: false,
-        authenticated: true
-    },
-    {
-        code: TRANSACTION_PURCHASING,
-        name: "Purchasing",
-        url: "/transaction/purchasing",
+        code: MENU_TRANSACTION,
+        name: "Transaction",
+        url: "/transaction",
         menuClass: "fas fa-truck-loading",
         active: false,
         authenticated: true
     },
     {
-        code: MANAGEMENT,
-        name: "Management",
+        code: MENU_MASTER_DATA,
+        name: "Master Data",
         url: "/management",
         menuClass: "fa fa-database",
         active: false,
         authenticated: true
-    },
-    {
-        code: ABOUT,
-        name: "About",
-        url: "/about",
-        menuClass: "fa fa-address-book",
-        active: false,
-        authenticated: false
     },
 ];

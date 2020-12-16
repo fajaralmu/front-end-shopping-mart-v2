@@ -30,6 +30,7 @@ class App extends Component<any, IState> {
   alertOnYesCallback: Function = function (e) { };
   alertOnCancelCallback: Function = function (e) { };
   clientRef: RefObject<SockJsClient> = React.createRef();
+  // alertRef: RefObject<Alert> = React.createRef();
   alertCallback = {
     title: "Info",
     message: "Info",
@@ -108,7 +109,7 @@ class App extends Component<any, IState> {
         }
       };
     }
-    this.setState({ showAlert: true })
+    this.setState({ showAlert: true });
   }
 
   dismissAlert() {
@@ -124,7 +125,7 @@ class App extends Component<any, IState> {
     if (this.props.applicationProfile) {
       updateFavicon(this.props.applicationProfile);
     }
-    
+
   }
 
   componentDidMount() {
@@ -147,12 +148,13 @@ class App extends Component<any, IState> {
         {this.state.showAlert ?
           <Alert
             isError={this.alertIsError}
+            onClose={(e)=>this.setState({showAlert:false})}
             yesOnly={this.alertIsYesOnly}
             title={this.alertTitle}
             onYes={this.alertOnYesCallback} onNo={this.alertOnCancelCallback}
           >{this.alertBody}</Alert> :
           null}
-          <MainLayout app={this} />
+        <MainLayout app={this} />
         <SockJsClient url={usedHost + 'realtime-app'} topics={['/wsResp/progress/' + localStorage.getItem("requestId")]}
           onMessage={(msg) => { this.handleMessage(msg) }}
           ref={(client) => { this.clientRef = client }} />

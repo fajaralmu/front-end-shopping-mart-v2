@@ -4,6 +4,7 @@ class Alert extends Component {
 
     constructor(props) {
         super(props);
+        this.yesButtonRef = React.createRef();
 
         this.onYes = (e) => {
              
@@ -24,6 +25,12 @@ class Alert extends Component {
         }
     }
 
+    componentDidMount () {
+        if (this.yesButtonRef.current) {
+            this.yesButtonRef.current.focus();
+        }
+    }
+
     render() {
         const title = this.props.title ? this.props.title : "Info";
         const yesOnly = this.props.yesOnly == true;
@@ -35,7 +42,7 @@ class Alert extends Component {
                         <div className="modal-content">
                             <Header title={title} onClose={this.onClose} />
                             <div className="modal-body"> {this.props.children}</div>
-                            <Footer yesOnly={yesOnly} onYes={this.onYes} onNo={this.onNo} />
+                            <Footer yesButtonRef={this.yesButtonRef} yesOnly={yesOnly} onYes={this.onYes} onNo={this.onNo} />
                         </div>
                     </div>
                 </div>
@@ -53,7 +60,7 @@ function Backdrop(props) {
 function Footer(props) {
     return (
         <div className="modal-footer">
-            <button type="button"
+            <button ref={props.yesButtonRef} type="button"
                 onClick={props.onYes} className="btn btn-primary">Ok</button>
             {props.yesOnly ? null : <button type="button"
                 onClick={props.onNo} className="btn btn-secondary">No</button>}
