@@ -1,12 +1,12 @@
 import BaseEntity from './BaseEntity';
 
 export default class User extends BaseEntity{
-	username?:String;
-	displayName?:String;
-	password?:String;
-	profileImage?:String;
+	username?:string;
+	displayName?:string;
+	password?:string;
+	profileImage?:string;
 	authorities?:[];
-	requestId?:String;
+	requestId?:string;
 	processingDate?:Date;
 
 }

@@ -16,6 +16,12 @@ export default class BaseComponent extends Component<any, any> {
         }
 
     }
+    validateLoginStatus = () => {
+        if (this.authenticated == false) return;
+        if (this.isLoggedUserNull()) {
+            this.backToLogin();
+        }
+    }
 
     getApplicationProfile():ApplicationProfile
     {
@@ -136,7 +142,8 @@ export default class BaseComponent extends Component<any, any> {
     }
 
     componentDidUpdate() {
-        if (this.authenticated && null == this.props.loggedUser) {
+        if (this.authenticated == true && this.isLoggedUserNull()) {
+            console.debug(typeof this , "BACK TO LOGIN");
             this.backToLogin();
         }
     }

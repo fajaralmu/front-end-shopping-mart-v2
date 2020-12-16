@@ -8,6 +8,6 @@ export default class ProductSales extends BaseEntity{
 	year?:number;
 	percentage?:number;
 	maxValue?:number;
-	monthName?:String;
+	monthName?:string;
 
 }

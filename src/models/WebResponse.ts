@@ -9,8 +9,8 @@ import ApplicationProfile from './ApplicationProfile';
 export default class WebResponse{
 	date?:Date;
 	user?:User;
-	code?:String;
-	message?:String;
+	code?:string;
+	message?:string;
 	entities?:[];
 	generalList?:[];
 	entity?:BaseEntity;
@@ -25,8 +25,8 @@ export default class WebResponse{
 	applicationProfile?:ApplicationProfile;
 	percentage?:number;
 	transactionYears?:[];
-	requestId?:String;
-	token?:String;
+	requestId?:string;
+	token?:string;
 	monthlyDetailIncome?:{};
 	monthlyDetailCost?:{};
 	dailyCashflow?:{};

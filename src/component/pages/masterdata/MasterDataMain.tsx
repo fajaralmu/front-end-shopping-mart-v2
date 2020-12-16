@@ -13,6 +13,9 @@ class MasterDataMain extends BaseComponent
     }
     
     componentDidMount() {
+        
+        this.validateLoginStatus();
+        
         document.title = "Master Data";
     }
     render(){

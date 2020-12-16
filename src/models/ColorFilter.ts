@@ -5,6 +5,6 @@ export default class ColorFilter{
 	green?:ColorFilterItem;
 	blue?:ColorFilterItem;
 	useTemplateCharacter?:boolean;
-	character?:String;
+	character?:string;
 
 }

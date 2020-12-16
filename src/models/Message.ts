@@ -2,12 +2,12 @@ import BaseEntity from './BaseEntity';
 
 export default class Message extends BaseEntity{
 	admin?:number;
-	sender?:String;
-	userAgent?:String;
-	ipAddress?:String;
-	text?:String;
+	sender?:string;
+	userAgent?:string;
+	ipAddress?:string;
+	text?:string;
 	date?:Date;
-	alias?:String;
-	requestId?:String;
+	alias?:string;
+	requestId?:string;
 
 }

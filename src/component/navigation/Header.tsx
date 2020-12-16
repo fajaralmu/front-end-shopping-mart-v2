@@ -38,7 +38,7 @@ class Header extends BaseComponent {
                         {menus.map(menu => {
                             if (menu.authenticated && this.isLoggedUserNull()) return null;
                             return (
-                                <li className="nav-item "><Link style={{ marginLeft: '10px' }}
+                                <li key={"menu"+ new String(menu.code)} className="nav-item "><Link style={{ marginLeft: '10px' }}
                                     className="nav-link"
                                     to={menu.url}><span>
                                         {/* <i className={menu.menuClass}></i>&nbsp; */}

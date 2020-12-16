@@ -3,7 +3,7 @@ import Cost from './Cost';
 
 export default class CostFlow extends BaseEntity{
 	date?:Date;
-	description?:String;
+	description?:string;
 	nominal?:number;
 	costType?:Cost;
 

@@ -23,11 +23,13 @@ class Login extends BaseComponent {
         this.props.performLogin(formData.get('username'), formData.get('password'), this.parentApp);
     }
     componentDidMount(){
+        document.title = "Login";
         if (this.isUserLoggedIn()) {
             this.props.history.push("/dashboard");
         }
     }
     componentDidUpdate(){
+    
         console.debug("Login update");
         console.debug("logged in : ", this.props.loginStatus);
         console.debug("logged user : ", this.getLoggedUser());

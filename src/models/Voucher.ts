@@ -3,8 +3,8 @@ import BaseEntity from './BaseEntity';
 export default class Voucher extends BaseEntity{
 	month?:number;
 	year?:number;
-	type?:String;
+	type?:string;
 	amount?:number;
-	name?:String;
+	name?:string;
 
 }

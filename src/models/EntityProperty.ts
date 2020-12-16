@@ -1,16 +1,16 @@
 import EntityElement from "./EntityElement";
 
 export default class EntityProperty{
-	groupNames?:String;
-	entityName?:String;
-	alias?:String;
-	fieldNames?:String;
-	idField?:String;
-	detailFieldName?:String;
-	imageElementsJson?:String;
-	dateElementsJson?:String;
-	multipleSelectElementsJson?:String;
-	currencyElementsJson?:String;
+	groupNames?:string;
+	entityName?:string;
+	alias?:string;
+	fieldNames?:string;
+	idField?:string;
+	detailFieldName?:string;
+	imageElementsJson?:string;
+	dateElementsJson?:string;
+	multipleSelectElementsJson?:string;
+	currencyElementsJson?:string;
 	formInputColumn?:number;
 	editable?:boolean;
 	withDetail?:boolean;

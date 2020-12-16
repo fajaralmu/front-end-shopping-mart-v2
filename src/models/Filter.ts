@@ -2,15 +2,15 @@
 export default class Filter{
 	limit?:number;
 	page?:number;
-	orderType?:String;
-	orderBy?:String;
+	orderType?:string;
+	orderBy?:string;
 	contains?:boolean;
 	beginsWith?:boolean;
 	exacts?:boolean;
 	day?:number;
 	year?:number;
 	month?:number;
-	module?:String;
+	module?:string;
 	fieldsFilter?:{};
 	monthTo?:number;
 	yearTo?:number;

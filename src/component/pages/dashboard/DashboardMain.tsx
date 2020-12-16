@@ -13,6 +13,8 @@ class DashboardMain extends BaseComponent
     }
     
     componentDidMount() {
+        this.validateLoginStatus();
+        
         document.title = "Dashboard";
     }
     render(){

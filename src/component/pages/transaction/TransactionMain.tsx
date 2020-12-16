@@ -13,6 +13,9 @@ class TransactionMain extends BaseComponent
     }
     
     componentDidMount() {
+        
+        this.validateLoginStatus();
+        
         document.title = "Transaction";
     }
     render(){

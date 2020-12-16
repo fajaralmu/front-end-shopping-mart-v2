@@ -1,8 +1,8 @@
 
 export default class NavigationMenu{
-	url?:String;
+	url?:string;
 	authenticated?:boolean;
-	iconClassName?:String;
-	label?:String;
+	iconClassName?:string;
+	label?:string;
 
 }

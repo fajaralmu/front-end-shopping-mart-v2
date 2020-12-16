@@ -1,12 +1,12 @@
 import BaseEntity from './BaseEntity';
 
 export default class RegisteredRequest extends BaseEntity{
-	requestId?:String;
-	value?:String;
+	requestId?:string;
+	value?:string;
 	created?:Date;
-	referrer?:String;
-	userAgent?:String;
-	ipAddress?:String;
+	referrer?:string;
+	userAgent?:string;
+	ipAddress?:string;
 	messages?:[];
 	active?:boolean;
 

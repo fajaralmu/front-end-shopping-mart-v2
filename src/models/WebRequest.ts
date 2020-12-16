@@ -20,7 +20,7 @@ import Transaction from './Transaction';
 import BaseEntity from './BaseEntity';
 
 export default class WebRequest{
-	entity?:String;
+	entity?:string;
 	user?:User;
 	supplier?:Supplier;
 	customer?:Customer;
@@ -41,14 +41,14 @@ export default class WebRequest{
 	productFlow?:ProductFlow;
 	transaction?:Transaction;
 	entityObject?:BaseEntity;
-	destination?:String;
-	username?:String;
-	value?:String;
+	destination?:string;
+	username?:string;
+	value?:string;
 	orderedEntities?:[];
 	productFlows?:Set<ProductFlow>;
 	regularTransaction?:boolean;
-	imageData?:String;
-	partnerId?:String;
-	originId?:String;
+	imageData?:string;
+	partnerId?:string;
+	originId?:string;
 
 }

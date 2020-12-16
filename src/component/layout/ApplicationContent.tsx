@@ -19,7 +19,7 @@ class ApplicationContent extends BaseComponent {
     }
     render() {
         return (
-            <Fragment>
+            <div style={{paddingTop:'10px'}}>
                 <Switch>
                     <Route path="/login" render={
                         (props: any) =>
@@ -57,11 +57,11 @@ class ApplicationContent extends BaseComponent {
                     } />
                 </Switch>
 
-            </Fragment>
+            </div>
         )
     }
     componentDidMount() {
-        document.title = "Login";
+        // document.title = "Login";
     }
 
 }

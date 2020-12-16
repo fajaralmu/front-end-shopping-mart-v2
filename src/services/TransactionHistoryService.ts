@@ -10,7 +10,7 @@ export default class TransactionHistoryService {
         }
         return this.instance;
     }
-    getTransactionData = function (transactionCode:String) {
+    getTransactionData = function (transactionCode:string) {
         const endpoint = url.contextPath().concat("api/app/transaction/transactiondata/" + transactionCode)
         return commonAjaxPostCalls(endpoint, {});
 

@@ -5,9 +5,9 @@ export default class CashBalance extends BaseEntity{
 	creditAmt?:number;
 	debitAmt?:number;
 	actualBalance?:number;
-	type?:String;
+	type?:string;
 	date?:Date;
-	referenceId?:String;
-	referenceInfo?:String;
+	referenceId?:string;
+	referenceInfo?:string;
 
 }

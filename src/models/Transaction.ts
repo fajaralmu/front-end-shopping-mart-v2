@@ -7,9 +7,9 @@ import User from './User';
 export default class Transaction extends BaseEntity{
 	customer?:Customer;
 	supplier?:Supplier;
-	code?:String;
-	type?:String;
-	mode?:String;
+	code?:string;
+	type?:string;
+	mode?:string;
 	transactionDate?:Date;
 	user?:User;
 	productFlows?:Set<ProductFlow>;

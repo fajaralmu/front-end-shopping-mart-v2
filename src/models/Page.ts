@@ -1,14 +1,14 @@
 import BaseEntity from './BaseEntity';
 
 export default class Page extends BaseEntity{
-	code?:String;
-	name?:String;
+	code?:string;
+	name?:string;
 	authorized?:number;
 	nonMenuPage?:number;
-	link?:String;
-	description?:String;
-	imageUrl?:String;
-	menuHtmlIconClass?:String;
+	link?:string;
+	description?:string;
+	imageUrl?:string;
+	menuHtmlIconClass?:string;
 	sequence?:number;
 	menus?:[];
 

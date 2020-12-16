@@ -3,12 +3,12 @@ import Unit from './Unit';
 import Category from './Category';
 
 export default class Product extends BaseEntity{
-	code?:String;
-	name?:String;
-	description?:String;
+	code?:string;
+	name?:string;
+	description?:string;
 	price?:number;
-	type?:String;
-	imageUrl?:String;
+	type?:string;
+	imageUrl?:string;
 	unit?:Unit;
 	category?:Category;
 	newProduct?:boolean;

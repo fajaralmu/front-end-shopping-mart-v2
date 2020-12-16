@@ -1,5 +1,5 @@
 
 export default class FieldType{
-	value?:String;
+	value?:string;
 
 }

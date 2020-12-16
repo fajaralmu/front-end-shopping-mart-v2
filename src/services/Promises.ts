@@ -14,7 +14,7 @@ export const emptyPromise =  (defaultResponse:any) => new Promise(function(res, 
     res(defaultResponse);
 });
 
-export const commonAjaxPostCalls = (endpoint:String, payload?:any) => {
+export const commonAjaxPostCalls = (endpoint:string, payload?:any) => {
     const request = payload == null ? {} : payload;
     return new Promise<WebResponse>(function (resolve, reject) {
         axios.post(endpoint, request, {

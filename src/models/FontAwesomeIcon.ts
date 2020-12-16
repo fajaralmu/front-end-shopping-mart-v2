@@ -1,5 +1,5 @@
 
 export default class FontAwesomeIcon{
-	value?:String;
+	value?:string;
 
 }
