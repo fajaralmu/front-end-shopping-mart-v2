@@ -44,7 +44,7 @@ class MainLayout extends BaseComponent {
         this.setState({ menu: menu, sidebarMenus: null, showSidebar: menu.showSidebar, activeMenuCode: menu.code });
     }
     setSidebarMenus = (menus: Menu[]) => {
-        console.debug("Set sidebar menus: ", menus);
+        // console.debug("Set sidebar menus: ", menus);
         this.setState({ sidebarMenus: menus });
     }
     componentDidMount() {

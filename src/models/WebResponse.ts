@@ -5,6 +5,7 @@ import Transaction from './Transaction';
 import ProductFlowStock from './ProductFlowStock';
 import SessionData from './SessionData';
 import ApplicationProfile from './ApplicationProfile';
+import EntityProperty from './EntityProperty';
 
 export default class WebResponse{
 	date?:Date;
@@ -37,5 +38,6 @@ export default class WebResponse{
 	purchases?:[];
 	purchasings?:[];
 	sellings?:[];
+	entityProperty?:EntityProperty;
 
 }

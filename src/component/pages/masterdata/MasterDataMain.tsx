@@ -9,13 +9,16 @@ import MasterDataService from './../../../services/MasterDataService';
 import WebResponse from './../../../models/WebResponse';
 import Menu from './../../../models/Menu';
 import ManagementProperty from '../../../models/ManagementProperty';
+import MasterDataList from './MasterDataList';
 
 interface IState {
+    code?:string
     // managementProperties:ManagementProperty[]
 }
 class MasterDataMain extends BaseMainMenus {
     masterDataService: MasterDataService = MasterDataService.getInstance();
     state: IState = {
+        code : undefined
     };
     constructor(props: any) {
         super(props, "Master Data", true);
@@ -27,7 +30,7 @@ class MasterDataMain extends BaseMainMenus {
     }
     setSidebarMenus = () => {
         const sidebarMenus: Menu[] = [];
-        const managementProperties: ManagementProperty[] = this.masterDataService.getManagementProperties();
+        const managementProperties: ManagementProperty[] = this.masterDataService.managementProperties;
         for (let i = 0; i < managementProperties.length; i++) {
             const element = managementProperties[i];
             sidebarMenus.push({
@@ -52,16 +55,24 @@ class MasterDataMain extends BaseMainMenus {
             this.showCommonErrorAlert
         );
     }
+    getCode = () => {
+        return this.props.match.params.code;
+    }
     componentDidMount() {
         super.componentDidMount();
         this.loadManagamenetPages();
     }
     componentDidUpdate() {
-        console.debug("MASTER DATA UPDATED");
         this.setSidebarMenus();
+        if (this.state.code!=this.getCode()) {
+            this.setState({code:this.getCode()});
+        }
     }
 
     render() {
+        if (this.getCode() != null && this.getCode() != "") {
+            return <MasterDataList app={this.parentApp} code={this.getCode()} />
+        }
         return (
             <div id="MasterDataMain">
                 <h2>MasterDataMain</h2>

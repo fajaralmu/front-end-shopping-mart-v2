@@ -18,10 +18,20 @@ export default class MasterDataService
         }
         return this.instance;
     }
+    
     loadManagementProperties(req?:any){
         const endpoint:string = contextPath().concat("api/app/entity/managementpages");
         return commonAjaxPostCalls(endpoint, {});
       
+    }
+    loadEntityProperty(code:string){
+        console.debug("Load entity prop: ", code);
+        const request:WebRequest = {
+            entity:code
+        }
+        const endpoint:string = contextPath().concat("api/app/entity/configv2");
+        return commonAjaxPostCalls(endpoint, request);
+        
     }
     getEntities(request:WebRequest){
         const endpoint:string = contextPath().concat("api/app/entity/get");
