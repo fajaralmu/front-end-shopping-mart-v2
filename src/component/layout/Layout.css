@@ -1,0 +1,29 @@
+#sidebar {
+    position: relative;
+    background-color: black;
+    height: 80vh;
+    width: 250px;
+}
+#app-content {
+    position: absolute;
+}
+
+@media screen and (max-width: 991px) {
+	 
+	#sidebar {
+		display: none;
+	}
+	#app-conten {
+		padding-left: 20px;
+	}
+}
+
+@media screen and (min-width: 992px) {
+	 
+	#sidebar {
+		display: block;
+	}
+	#app-content {
+		padding-left: 270px;
+	}
+}

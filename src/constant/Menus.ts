@@ -24,14 +24,34 @@ export const getMenus = () => {
     return menuSet;
 }
 
-export const menus = [
+export const getMenuByPathName = (pathName:string) => {
+    try {
+        const pathRaw = pathName.split('/');
+        let firstPath = pathRaw[0];
+        if (firstPath.trim() == "") {
+            firstPath = pathRaw[1];
+        }
+        for (let i = 0; i < menus.length; i++) {
+            const menu:Menu = menus[i];
+            if (menu.url == "/"+firstPath) {
+                return menu;
+            }
+        }
+        return null;
+    } catch (error) {
+        return null;
+    }
+}
+
+export const menus:Menu[] = [
     {
         code: HOME,
         name: "Home",
         url: "/home",
         menuClass: "fa fa-home",
         active: false,
-        authenticated: false
+        authenticated: false,
+        showSidebar:false
     },
     {
         code: CATALOG,
@@ -39,7 +59,8 @@ export const menus = [
         url: "/catalog",
         menuClass: "fa fa-store-alt",
         active: false,
-        authenticated: false
+        authenticated: false,
+        showSidebar:true
     },
     {
         code: CART,
@@ -47,7 +68,8 @@ export const menus = [
         url: "/cart",
         menuClass: "fa fa-shopping-cart",
         active: false,
-        authenticated: false
+        authenticated: false,
+        showSidebar:true
     },
     {
         code: DASHBOARD,
@@ -55,7 +77,8 @@ export const menus = [
         url: "/dashboard",
         menuClass: "fas fa-tachometer-alt",
         active: false,
-        authenticated: true
+        authenticated: true,
+        showSidebar:true
     },
     {
         code: MENU_TRANSACTION,
@@ -63,7 +86,8 @@ export const menus = [
         url: "/transaction",
         menuClass: "fas fa-truck-loading",
         active: false,
-        authenticated: true
+        authenticated: true,
+        showSidebar: true
     },
     {
         code: MENU_MASTER_DATA,
@@ -71,6 +95,7 @@ export const menus = [
         url: "/management",
         menuClass: "fa fa-database",
         active: false,
-        authenticated: true
+        authenticated: true,
+        showSidebar: true
     },
 ];

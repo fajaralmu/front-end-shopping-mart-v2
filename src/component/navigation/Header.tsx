@@ -37,8 +37,10 @@ class Header extends BaseComponent {
                     <ul id="navbar-top" className="navbar-nav mr-auto mt-2 mt-lg-0">
                         {menus.map(menu => {
                             if (menu.authenticated && this.isLoggedUserNull()) return null;
+                            const isActive = this.props.activeMenuCode == menu.code;
                             return (
-                                <li key={"menu"+ new String(menu.code)} className="nav-item "><Link style={{ marginLeft: '10px' }}
+                                <li key={"menu"+ new String(menu.code)} className={"nav-item "+(isActive?"active":"")}>
+                                <Link onClick={()=>this.props.setMenu(menu)} style={{ marginLeft: '10px' }}
                                     className="nav-link"
                                     to={menu.url}><span>
                                         {/* <i className={menu.menuClass}></i>&nbsp; */}

@@ -14,6 +14,8 @@ export default class Menu extends BaseEntity{
 	fontColor?:string;
 
 	//
+	active:boolean = false;
 	menuClass:string = "fas fa-folder";
 	authenticated:boolean = false;
+	showSidebar:boolean  = false;
 }
