@@ -4,8 +4,11 @@ import WebRequest from './../models/WebRequest';
 import { contextPath } from './../constant/Url';
 import { commonAjaxPostCalls } from './Promises';
 import BaseEntity from './../models/BaseEntity';
+import ManagementProperty from '../models/ManagementProperty';
+
 export default class MasterDataService
 {
+    managementProperties:ManagementProperty[] = [];
     private static instance?:MasterDataService;
     
     static getInstance() :MasterDataService
@@ -15,7 +18,7 @@ export default class MasterDataService
         }
         return this.instance;
     }
-    getManagementPropertis(req:any){
+    loadManagementProperties(req?:any){
         const endpoint:string = contextPath().concat("api/app/entity/managementpages");
         return commonAjaxPostCalls(endpoint, {});
       

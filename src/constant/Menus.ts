@@ -16,24 +16,26 @@ export const CHATROOM = "chatroom";
 export const CART = "cart";
 
 export const getMenus = () => {
-    let menuSet:Menu[] = [];
+    let menuSet: Menu[] = [];
     for (let i = 0; i < menus.length; i++) {
-        const element:Menu = menus[i];
+        const element: Menu = menus[i];
         menuSet.push(element);
     }
     return menuSet;
 }
-
-export const getMenuByPathName = (pathName:string) => {
+export const extractMenuPath = (pathName:string) => {
+    const pathRaw = pathName.split('/');
+    let firstPath = pathRaw[0];
+    if (firstPath.trim() == "") {
+        firstPath = pathRaw[1];
+    }
+    return firstPath;
+}
+export const getMenuByMenuPath = (pathName: string): Menu | null => {
     try {
-        const pathRaw = pathName.split('/');
-        let firstPath = pathRaw[0];
-        if (firstPath.trim() == "") {
-            firstPath = pathRaw[1];
-        }
         for (let i = 0; i < menus.length; i++) {
-            const menu:Menu = menus[i];
-            if (menu.url == "/"+firstPath) {
+            const menu: Menu = menus[i];
+            if (menu.url == "/" + pathName) {
                 return menu;
             }
         }
@@ -43,7 +45,7 @@ export const getMenuByPathName = (pathName:string) => {
     }
 }
 
-export const menus:Menu[] = [
+export const menus: Menu[] = [
     {
         code: HOME,
         name: "Home",
@@ -51,7 +53,7 @@ export const menus:Menu[] = [
         menuClass: "fa fa-home",
         active: false,
         authenticated: false,
-        showSidebar:false
+        showSidebar: false
     },
     {
         code: CATALOG,
@@ -60,7 +62,17 @@ export const menus:Menu[] = [
         menuClass: "fa fa-store-alt",
         active: false,
         authenticated: false,
-        showSidebar:true
+        showSidebar: true,
+        subMenus: [{
+            code: 'catalog_product',
+            name: 'Product',
+            url: 'product',
+        },
+        {
+            code: 'catalog_supplier',
+            name: 'Supplier',
+            url: 'supplier',
+        }]
     },
     {
         code: CART,
@@ -69,7 +81,7 @@ export const menus:Menu[] = [
         menuClass: "fa fa-shopping-cart",
         active: false,
         authenticated: false,
-        showSidebar:true
+        showSidebar: true
     },
     {
         code: DASHBOARD,
@@ -78,7 +90,24 @@ export const menus:Menu[] = [
         menuClass: "fas fa-tachometer-alt",
         active: false,
         authenticated: true,
-        showSidebar:true
+        showSidebar: true,
+        subMenus:[
+            {
+                code:'dashboard_stat',
+                name:'Statistic',
+                url:'statistic'
+            },
+            {
+                code:'dashboard_cashflow',
+                name:'Cashflow',
+                url:'cashflow'
+            },
+            {
+                code:'dashboard_productsales',
+                name:'Product Sales',
+                url:'productsales'
+            }
+        ]
     },
     {
         code: MENU_TRANSACTION,
@@ -87,7 +116,20 @@ export const menus:Menu[] = [
         menuClass: "fas fa-truck-loading",
         active: false,
         authenticated: true,
-        showSidebar: true
+        showSidebar: true,
+        subMenus: [
+            {
+                code: 'trx_selling',
+                name: 'Selling',
+                menuClass: 'fas fa-folder',
+                url: 'selling',
+            },
+            {
+                code: 'trx_purchasing',
+                name: 'Purchasing',
+                url: 'purchasing',
+            }
+        ]
     },
     {
         code: MENU_MASTER_DATA,

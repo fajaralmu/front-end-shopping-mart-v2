@@ -7,7 +7,7 @@ import BaseComponent from './../../BaseComponent';
 import { mapCommonUserStateToProps } from './../../../constant/stores';
 import './Login.css';
 import { performLogin } from '../../../redux/actionCreators';
-class Login extends BaseComponent {
+class Login extends BaseComponent{
     formRef: RefObject<HTMLFormElement> = React.createRef();
     constructor(props: any) {
         super(props, false);

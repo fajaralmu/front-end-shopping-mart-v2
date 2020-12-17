@@ -5,17 +5,12 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import BaseComponent from '../../BaseComponent';
 import { mapCommonUserStateToProps } from '../../../constant/stores';
+import BaseMainMenus from './../../layout/BaseMainMenus';
 
-class DashboardMain extends BaseComponent
+class DashboardMain extends BaseMainMenus
 {
     constructor(props:any){
-        super(props, true);
-    }
-    
-    componentDidMount() {
-        this.validateLoginStatus();
-        
-        document.title = "Dashboard";
+        super(props, "Dashboard", true);
     }
     render(){
         return (

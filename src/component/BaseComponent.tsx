@@ -141,6 +141,11 @@ export default class BaseComponent extends Component<any, any> {
         this.setState({ updated: new Date() });
     }
 
+    showCommonErrorAlert = (e:any) => {
+        console.error(e);
+        this.showError("Operation Failed: "+e);
+    }
+
     componentDidUpdate() {
         if (this.authenticated == true && this.isLoggedUserNull()) {
             console.debug(typeof this , "BACK TO LOGIN");

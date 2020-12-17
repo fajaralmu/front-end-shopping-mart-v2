@@ -5,16 +5,15 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import BaseComponent from './../../BaseComponent';
 import { mapCommonUserStateToProps } from './../../../constant/stores';
+import Menu from './../../../models/Menu';
+import BaseMainMenus from './../../layout/BaseMainMenus';
 
-class CatalogMain extends BaseComponent
-{
+class CatalogMain extends BaseMainMenus
+{   
     constructor(props:any){
-        super(props, false);
+        super(props, "Catalog");
     }
     
-    componentDidMount() {
-        document.title = "Catalog";
-    }
     render(){
         return (
             <div id="CatalogMain">

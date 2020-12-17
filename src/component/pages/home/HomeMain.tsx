@@ -8,7 +8,7 @@ import { mapCommonUserStateToProps } from '../../../constant/stores';
 import ApplicationProfile from '../../../models/ApplicationProfile';
 import { baseImageUrl } from '../../../constant/Url';
 
-class HomeMain extends BaseComponent {
+class HomeMain extends BaseComponent{
     constructor(props: any) {
         super(props, false);
     }
