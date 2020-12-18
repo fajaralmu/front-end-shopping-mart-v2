@@ -17,7 +17,7 @@ import { toBase64FromFile } from './../../../utils/ComponentUtil';
 
 class MasterDataForm extends BaseComponent {
     masterDataService: MasterDataService = MasterDataService.getInstance();
-    
+
     constructor(props: any) {
         super(props, true);
     }
@@ -41,8 +41,11 @@ class MasterDataForm extends BaseComponent {
     submit = (form: HTMLFormElement) => {
         const formData: FormData = new FormData(form);
         const object = {}, app = this;
-        const promises:Promise<any>[] = new Array();
+        const promises: Promise<any>[] = new Array();
         formData.forEach((value, key) => {
+            if (!object[key]) {
+                object[key] = new Array();
+            }
             const element = EntityProperty.getEntityElement(this.getEntityProperty(), key);
             if (!element) return false;
             switch (element.fieldType) {
@@ -50,27 +53,41 @@ class MasterDataForm extends BaseComponent {
                 case FieldType.FIELD_TYPE_FIXED_LIST:
                     const valueAttr = element.optionValueName;
                     if (valueAttr) {
-                        object[key] = { [valueAttr]: value }
+                        object[key].push({ [valueAttr]: value })
                     }
                     break;
                 case FieldType.FIELD_TYPE_IMAGE:
+                    console.debug("img = ", key);
                     let promise = toBase64FromFile(value).then(data => {
-                        object[key] = data;
+                        object[key].push(data);
                     }).catch(console.error)
-                    .finally(function(){console.debug("finish")});
+                        .finally(function () { console.debug("finish") });
                     promises.push(promise);
                     break;
                 default:
-                    object[key] = value;
+                    object[key].push(value);
                     break;
             }
             return true;
         });
 
-        Promise.all(promises).then(function(val){
-            console.debug("OBJ: ", object);
-            app.ajaxSubmit(object);
+        Promise.all(promises).then(function (val) {
+            const objectPayload = app.generateRequestPayload(object);
+            console.debug("OBJ: ", objectPayload);
+            app.ajaxSubmit(objectPayload);
         });
+    }
+    generateRequestPayload = (rawObject: {}): {} => {
+        const result = {};
+        for (const key in rawObject) {
+            const element:any[] = rawObject[key];
+            if (element.length == 1) {
+                result[key] = element[0];    
+            } else if (element.length > 1) {
+                result[key] = element.join("~");
+            }
+        }
+        return result;
     }
     ajaxSubmit = (object: any) => {
         this.commonAjax(

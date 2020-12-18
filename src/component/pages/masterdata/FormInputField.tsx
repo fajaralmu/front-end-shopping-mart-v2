@@ -9,19 +9,21 @@ import EntityElement from './../../../models/EntityElement';
 import MasterDataService from './../../../services/MasterDataService';
 import { FieldType } from '../../../models/FieldType';
 import WebResponse from './../../../models/WebResponse';
-import { toBase64v2 } from './../../../utils/ComponentUtil';
-import AnchorButton from '../../navigation/AnchorButton';
+import FormInputImage from './FormInputImage';
+import FormInputImageMultiple from './FormInputImageMultiple';
 interface IState {
     inputList: any[],
-    singlePreviewData?:string
+    singlePreviewData?: string,
+    inputElements: number[]
 }
 class FormInputField extends BaseComponent {
     masterDataService: MasterDataService = MasterDataService.getInstance();
     state: IState = {
         inputList: [],
-        singlePreviewData:undefined
+        singlePreviewData: undefined,
+        inputElements: [1]
     }
-    ref:React.RefObject<any> = React.createRef();
+    ref: React.RefObject<any> = React.createRef();
     constructor(props: any) {
         super(props, false);
     }
@@ -30,9 +32,9 @@ class FormInputField extends BaseComponent {
     }
     getRequiredAttr = () => {
         const requiredAttr = { required: this.getEntityElement().required == true }
-        return  ( 
+        return (
             null
-        //  requiredAttr
+            // requiredAttr
         )
     }
     inputListLoaded = (response: WebResponse) => {
@@ -71,18 +73,7 @@ class FormInputField extends BaseComponent {
     componentDidMount() {
         this.validateInputType();
     }
-    changeSingleImageData = (e) => {
-        const app = this;
-        toBase64v2(e.target).then(function(data){
-            app.setState({singlePreviewData:data});
-        })
-    }
-    removeSingleImageData = (e) => {
-        if (this.ref.current) {
-            this.ref.current.value = null;
-        }
-        this.setState({singlePreviewData:undefined});
-    }
+
     render() {
         const element = this.getEntityElement();
         const requiredAttr = this.getRequiredAttr();
@@ -93,7 +84,7 @@ class FormInputField extends BaseComponent {
             return (
                 <div className="form-group">
                     <label>{element.lableName}</label>
-                    <input {...requiredAttr} value="Generated" ref={this.ref} className="form-control"  name={element.id} disabled />
+                    <input {...requiredAttr} value="Generated" ref={this.ref} className="form-control" name={element.id} disabled />
                 </div>
             )
         }
@@ -102,7 +93,7 @@ class FormInputField extends BaseComponent {
             case FieldType.FIELD_TYPE_DYNAMIC_LIST:
             case FieldType.FIELD_TYPE_FIXED_LIST:
                 const options = this.state.inputList;
-                input = <select ref={this.ref} className="form-control"  name={element.id} >
+                input = <select ref={this.ref} className="form-control" name={element.id} >
                     {options.map(option => {
                         const optionItemValue = element.optionValueName;
                         const optionItemName = element.optionItemName;
@@ -114,18 +105,13 @@ class FormInputField extends BaseComponent {
                 </select>
                 break;
             case FieldType.FIELD_TYPE_IMAGE:
-                input = <Fragment>
-                    <input ref={this.ref} 
-                        onChange={this.changeSingleImageData} type="file" accept="image/*" name={element.id} className='form-control' />
-                    <ImagePreview imageData={this.state.singlePreviewData} />
-                    <AnchorButton show={this.state.singlePreviewData!=undefined} onClick={this.removeSingleImageData} iconClassName="fas fa-times" className="btn btn-danger btn-sm">remove</AnchorButton>
-                </Fragment>
+                input = element.multiple ? <FormInputImageMultiple element={element} /> : <FormInputImage element={element} />
                 break;
             case FieldType.FIELD_TYPE_TEXTAREA:
-                input = <textarea {...requiredAttr} ref={this.ref} className="form-control"  name={element.id} />
+                input = <textarea {...requiredAttr} ref={this.ref} className="form-control" name={element.id} />
                 break;
             default:
-                input = <input type={element.type} {...requiredAttr} ref={this.ref} className="form-control"  name={element.id} />
+                input = <input type={element.type} {...requiredAttr} ref={this.ref} className="form-control" name={element.id} />
 
         }
         return (
@@ -140,7 +126,7 @@ class FormInputField extends BaseComponent {
 
 const ImagePreview = (props) => {
     if (props.show == false || !props.imageData) return null;
-    return <img className="image" style={{margin:'3px'}} src={props.imageData} width="50" height="50" />
+    return <img className="image" style={{ margin: '3px' }} src={props.imageData} width="50" height="50" />
 }
 
 export default withRouter(connect(

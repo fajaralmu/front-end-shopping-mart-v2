@@ -28,6 +28,9 @@ export default class EntityValues {
 					const imgLink = new String(value).split("~")[0];
 					value = <img src ={baseImageUrl+imgLink} width="50" height="50"/>
 					break;
+				case FieldType.FIELD_TYPE_COLOR:
+					value = <strong style={{color:value}} >{value}</strong>
+					break;
 				default:
 					value = object[elementid];
 			}
