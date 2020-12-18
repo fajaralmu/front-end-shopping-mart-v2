@@ -1,9 +1,4 @@
-#sidebar {
-    position: relative;
-    /* background-color: black; */
-    height: 80vh;
-    width: 250px;
-}
+
 #app-content {
     position: absolute;
 }

@@ -9,7 +9,7 @@ import MasterDataService from './../../../services/MasterDataService';
 import WebResponse from './../../../models/WebResponse';
 import Menu from './../../../models/Menu';
 import ManagementProperty from '../../../models/ManagementProperty';
-import MasterDataList from './MasterDataList';
+import MasterDataManagement from './MasterDataManagement';
 
 interface IState {
     code?:string
@@ -55,7 +55,7 @@ class MasterDataMain extends BaseMainMenus {
             this.showCommonErrorAlert
         );
     }
-    getCode = () => {
+    getCode = ():string => {
         return this.props.match.params.code;
     }
     componentDidMount() {
@@ -64,14 +64,15 @@ class MasterDataMain extends BaseMainMenus {
     }
     componentDidUpdate() {
         this.setSidebarMenus();
+        console.debug("this.getCode(): ", this.getCode());
         if (this.state.code!=this.getCode()) {
             this.setState({code:this.getCode()});
         }
     }
 
     render() {
-        if (this.getCode() != null && this.getCode() != "") {
-            return <MasterDataList app={this.parentApp} code={this.getCode()} />
+        if (this.getCode()!=undefined && this.getCode() != null && this.getCode() != "") {
+            return <MasterDataManagement app={this.parentApp} code={this.getCode()} />
         }
         return (
             <div id="MasterDataMain">

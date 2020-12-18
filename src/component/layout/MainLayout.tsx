@@ -87,7 +87,7 @@ class MainLayout extends BaseComponent {
                             <SideBar sidebarMenus={this.getSubMenus()} parentMenu={this.state.menu} app={this.props.app} />
                         </div>
                     </div> : null}
-                    <div id={showSidebar ? "app-content" : "content"}>
+                    <div className="container-fluid" style={{zIndex:  1 }} id={showSidebar ? "app-content" : "content"}>
                         <ApplicationContent setSidebarMenus={this.setSidebarMenus} app={this.props.app} />
                     </div>
                     {/* </div> */}

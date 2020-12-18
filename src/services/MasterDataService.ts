@@ -27,8 +27,11 @@ export default class MasterDataService
         }
         this.entityPropertyMap.set(code, data);
     }
-    getEntityProperty(code:string) :EntityProperty|undefined
+    getEntityProperty(code?:string) :EntityProperty|undefined
     {
+        if (code == undefined) {
+            return undefined;
+        }
         return this.entityPropertyMap.get(code);
     }
     
