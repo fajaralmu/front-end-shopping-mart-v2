@@ -22,6 +22,7 @@ class MasterDataList extends BaseComponent {
 
     }
     entityPropertyLoaded=(response: WebResponse)=> {
+        this.masterDataService.setEntityProperty(this.props.code, response.entityProperty);
         this.setState({entityProperty: response.entityProperty });
     }
     componentDidUpdate() {
@@ -35,6 +36,10 @@ class MasterDataList extends BaseComponent {
         this.loadEntityProperty();
     }
     loadEntityProperty() {
+        if (this.masterDataService.getEntityProperty(this.props.code)) {
+            this.setState({entityProperty:this.masterDataService.getEntityProperty(this.props.code)});
+            return;
+        }
         this.setState({entityProperty:undefined});
         this.commonAjax(
             this.masterDataService.loadEntityProperty,
