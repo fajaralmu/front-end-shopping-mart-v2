@@ -40,7 +40,7 @@ class MasterDataForm extends BaseComponent {
 
     submit = (form: HTMLFormElement) => {
         const formData: FormData = new FormData(form);
-        const object = {}, app = this;
+        const object: {} = {}, app = this;
         const promises: Promise<any>[] = new Array();
         formData.forEach((value, key) => {
             if (!object[key]) {
@@ -80,9 +80,9 @@ class MasterDataForm extends BaseComponent {
     generateRequestPayload = (rawObject: {}): {} => {
         const result = {};
         for (const key in rawObject) {
-            const element:any[] = rawObject[key];
+            const element: any[] = rawObject[key];
             if (element.length == 1) {
-                result[key] = element[0];    
+                result[key] = element[0];
             } else if (element.length > 1) {
                 result[key] = element.join("~");
             }
@@ -123,12 +123,32 @@ const SubmitReset = (props) => {
 }
 
 const InputFields = (props: { app: any, entityProperty: EntityProperty }) => {
-    const element: EntityElement[] = props.entityProperty.elements;
+    const elements: EntityElement[] = props.entityProperty.elements;
+    const groupedElements: Array<Array<EntityElement>> = new Array();
+    let counter: number = 0;
+    groupedElements.push(new Array());
+    for (let i = 0; i < elements.length; i++) {
+        const element = elements[i];
+        if (i > 0 && i % 5 == 0) {
+            counter++;
+            groupedElements.push(new Array());
+        }
+        groupedElements[counter].push(element);
+    }
     return (
-        <div>
-            {element.map(element => {
-                return <FormInputField app={props.app} entityElement={element} />
+        <div className="row">
+            {groupedElements.map(elements => {
+                return (
+                    <div className="col-lg-6">
+                        {elements.map(element => {
+                            return <FormInputField app={props.app} entityElement={element} />
+                        })}
+                    </div>
+                )
             })}
+            {/* {elements.map(element => {
+                return <FormInputField app={props.app} entityElement={element} />
+            })} */}
         </div>
     )
 }

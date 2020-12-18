@@ -77,7 +77,7 @@ class MasterDataManagement extends BaseComponent {
         }
         return (
             <div id="MasterDataManagement">
-                <h2>{this.state.entityProperty.alias}  - {this.state.entityProperty.entityName}</h2>
+                <h2>{this.state.entityProperty.alias}</h2>
                 <MasterDataList app={this.parentApp} entityProperty={this.state.entityProperty} />
             </div>
         )
