@@ -52,7 +52,7 @@ class EditDeleteAction extends BaseComponent {
             throw new Error("Record not found");
         }
         if(this.props.showEditForm) {
-            this.props.showEditForm(response.entities[0]);
+            this.props.showEditForm(response);
         }
     }
     recordDeleted = (response:WebResponse) => {

@@ -17,9 +17,31 @@ import { toBase64FromFile } from './../../../utils/ComponentUtil';
 
 class MasterDataForm extends BaseComponent {
     masterDataService: MasterDataService = MasterDataService.getInstance();
-
+    editMode:boolean = false;
+    recordToEdit?:{} = undefined;
     constructor(props: any) {
         super(props, true);
+        if (props.recordToEdit) {
+            this.editMode = true;
+            this.recordToEdit = props.recordToEdit;
+        }
+    }
+    populateForm = () => {
+        if (this.editMode == false && !this.recordToEdit) {return;}
+        for (const key in this.recordToEdit) {
+            const val = this.recordToEdit[key];
+            const inputs = document.getElementsByName(key);
+            if (inputs[0].tagName == 'textarea') {
+                inputs[0].innerHTML =  val;
+            } else {
+                inputs[0].setAttribute("value", val);
+            }
+        }
+    }
+    componentDidMount() {
+        if (this.editMode) {
+            this.populateForm();
+        }
     }
     getEntityProperty(): EntityProperty {
         return this.props.entityProperty;
@@ -37,7 +59,9 @@ class MasterDataForm extends BaseComponent {
                 if (ok) { app.submit(form) }
             });
     }
-
+    getEntityElement(key:string) :EntityElement |undefined {
+        return EntityProperty.getEntityElement(this.getEntityProperty(), key);
+    }
     submit = (form: HTMLFormElement) => {
         const formData: FormData = new FormData(form);
         const object: {} = {}, app = this;
@@ -46,7 +70,7 @@ class MasterDataForm extends BaseComponent {
             if (!object[key]) {
                 object[key] = new Array();
             }
-            const element = EntityProperty.getEntityElement(this.getEntityProperty(), key);
+            const element = this.getEntityElement(key);
             if (!element) return false;
             switch (element.fieldType) {
                 case FieldType.FIELD_TYPE_DYNAMIC_LIST:
@@ -100,11 +124,13 @@ class MasterDataForm extends BaseComponent {
     }
     render() {
         const entityProperty: EntityProperty = this.getEntityProperty();
+
+        const editModeStr = this.editMode ? " EDIT MODE":""
         return (
             <div id="MasterDataForm" className="container-fluid">
                 <AnchorButton style={{ marginBottom: '5px' }} onClick={this.props.onClose} iconClassName="fas fa-angle-left">Back</AnchorButton>
                 <form onSubmit={this.onSubmit} id="record-form">
-                    <Modal title={entityProperty.alias + " Record Form"} footerContent={<SubmitReset />}>
+                    <Modal title={entityProperty.alias + " Record Form"+editModeStr} footerContent={<SubmitReset />}>
                         <InputFields app={this.parentApp} entityProperty={entityProperty} />
                     </Modal>
                 </form>

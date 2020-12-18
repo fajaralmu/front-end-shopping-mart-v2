@@ -30,6 +30,7 @@ class MasterDataList extends BaseComponent {
     state: IState = {
         showForm: false
     }
+    recordToEdit?:{} =undefined;
     entityProperty: EntityProperty;
     constructor(props: any) {
         super(props, true);
@@ -113,6 +114,14 @@ class MasterDataList extends BaseComponent {
         this.filter.orderType = dataset['ordertype'];
         this.loadEntities(0);
     }
+    showEditForm = (response:WebResponse) => {
+        if (!response.entities)
+        {
+            return;
+        }
+        this.recordToEdit = response.entities[0];
+        this.setState({showForm:true});
+    }
     render() {
         if (undefined == this.state.recordData) {
             return <h2>Please Wait..</h2>
@@ -124,7 +133,7 @@ class MasterDataList extends BaseComponent {
         }
 
         if (this.state.showForm == true) {
-            return <MasterDataForm entityProperty={this.entityProperty} onClose={(e) => { this.setState({ showForm: false }) }} app={this.parentApp} />
+            return <MasterDataForm recordToEdit={this.recordToEdit} entityProperty={this.entityProperty} onClose={(e) => { this.setState({ showForm: false }) }} app={this.parentApp} />
         }
 
         return (
@@ -164,7 +173,7 @@ class MasterDataList extends BaseComponent {
                                                     return null
                                                 }
                                             })}
-                                            <td><EditDeleteAction record={result} entityProperty={this.entityProperty} reload={() => this.loadEntities(undefined)} app={this.parentApp} /></td>
+                                            <td><EditDeleteAction showEditForm={this.showEditForm} record={result} entityProperty={this.entityProperty} reload={() => this.loadEntities(undefined)} app={this.parentApp} /></td>
                                         </tr>)
 
                                     })}
