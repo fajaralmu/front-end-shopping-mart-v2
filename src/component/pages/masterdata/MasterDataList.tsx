@@ -16,6 +16,7 @@ import HeaderProps from './../../../models/HeaderProps';
 import BaseEntity from './../../../models/BaseEntity';
 import './DataTable.css'
 import EntityValues from './../../../utils/EntityValues';
+import NavigationButtons from './../../navigation/NavigationButtons';
 interface IState {
     recordData?: WebResponse
 }
@@ -101,6 +102,11 @@ class MasterDataList extends BaseComponent {
                     <Modal title="Data List">
                         <div style={{ overflow: 'scroll' }}>
                             <div>
+                                <NavigationButtons 
+                                limit={this.filter.limit??5}
+                                totalData={this.state.recordData.totalData??0}
+                                activePage={this.filter.page??0}
+                                onClick={this.loadEntities} />
                                 <button className="btn btn-light">
                                     Reload
                                 </button>
@@ -109,9 +115,7 @@ class MasterDataList extends BaseComponent {
                                 </button>
                             </div>
                             <table className="table">
-
                                 <DataTableHeader filterOnChange={this.filterOnChange} headerProps={headerProps} />
-
                                 <tbody>
                                     {resultList.map((result, i) => {
                                         const number = this.getRecordNumber(i);
