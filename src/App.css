@@ -51,3 +51,6 @@ a {
     transform: rotate(360deg);
   }
 }
+.icon{
+  margin-right: 5px; 
+}

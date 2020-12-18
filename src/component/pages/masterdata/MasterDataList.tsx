@@ -73,7 +73,7 @@ class MasterDataList extends BaseComponent {
         return res;
     }
     filterFormSubmit = (e) => {
-        e.preventDefault();
+        
         let page = this.filter.useExistingFilterPage ? this.filter.page : 0;
         this.loadEntities(page);
         this.filter.useExistingFilterPage = false;
@@ -90,6 +90,12 @@ class MasterDataList extends BaseComponent {
         this.filter.fieldsFilter = {};
         this.filter.limit = 5;
     }
+    orderButtonOnClick = (e) => {
+        const dataset:DOMStringMap = e.target.dataset;
+        this.filter.orderBy = dataset['orderby'];
+        this.filter.orderType = dataset['ordertype']; 
+        this.loadEntities(0);
+    }
     render() {
         if (undefined == this.state.recordData) {
             return <h2>Please Wait..</h2>
@@ -101,7 +107,7 @@ class MasterDataList extends BaseComponent {
         }
         return (
             <div id="MasterDataList" className="container-fluid">
-                <form id="filter-form" onSubmit={(e) => { this.filterFormSubmit(e) }}>
+                <form id="filter-form" onSubmit={(e) => {e.preventDefault() }}>
                     <Modal title="Filter">
                         <div>
                             <NavigationButtons limit={this.filter.limit ?? 5} totalData={this.state.recordData.totalData ?? 0}
@@ -113,7 +119,7 @@ class MasterDataList extends BaseComponent {
                                 <div className="col-6"><input onChange={(e) => this.filter.limit = parseInt(e.target.value)} min="1" className="form-control" type="number" placeholder="record per page" />
                                 </div>
                             </div>
-                            <SubmitResetButton onReset={this.filterReset} />
+                            <SubmitResetButton onSubmit={this.filterFormSubmit} onReset={this.filterReset} />
                         </div>
                     </Modal>
                     <Modal title="Data List">
@@ -121,7 +127,7 @@ class MasterDataList extends BaseComponent {
 
                         <div style={{ overflow: 'scroll' }}>
                             <table className="table">
-                                <DataTableHeader filterOnChange={this.filterOnChange} headerProps={headerProps} />
+                                <DataTableHeader orderButtonOnClick={this.orderButtonOnClick} filterOnChange={this.filterOnChange} headerProps={headerProps} />
                                 <tbody>
                                     {resultList.map((result, i) => {
                                         const number = this.getRecordNumber(i);
@@ -145,9 +151,9 @@ class MasterDataList extends BaseComponent {
 
 }
 const SubmitResetButton = (props: any) => {
-    return (<div style={{ marginTop: '10px' }} className="btn-group">
-        <button className="btn btn-secondary">Apply Filter</button>
-        <button onClick={props.onReset} type="reset" className="btn btn-warning">Reset</button>
+    return (<div className="btn-group">
+        <button onClick={props.onSubmit} className="btn btn-secondary btn-sm"><span className="icon"><i className="fas fa-play"/></span>Apply Filter</button>
+        <button onClick={props.onReset} type="reset" className="btn btn-warning btn-sm"><span className="icon"><i className="fas fa-sync"/></span>Reset</button>
     </div>)
 }
 const DataTableHeader = (props: any) => {
@@ -159,7 +165,13 @@ const DataTableHeader = (props: any) => {
                 return (
                     <th >
                         <p>{headerProp.label}</p>
-                        <input onChange={(e) => props.filterOnChange(e)} placeholder={headerProp.label} className="input-filter" name={headerProp.value} />
+                        <div><input onChange={(e) => props.filterOnChange(e)} placeholder={headerProp.label} className="input-filter" name={headerProp.value} /></div>
+                        <div className="btn-group">
+                            <button data-orderType="asc" onClick={props.orderButtonOnClick} data-orderBy={headerProp.value} className="btn btn-outline-secondary btn-sm">
+                                <i data-orderType="asc" onClick={props.orderButtonOnClick} data-orderBy={headerProp.value} className="fas fa-angle-up"/></button>
+                            <button data-orderType="desc" onClick={props.orderButtonOnClick} data-orderBy={headerProp.value} className="btn btn-outline-secondary btn-sm">
+                                <i data-orderType="desc" onClick={props.orderButtonOnClick} data-orderBy={headerProp.value}  className="fas fa-angle-down"/></button>
+                        </div>
                     </th>
                 )
             })}
