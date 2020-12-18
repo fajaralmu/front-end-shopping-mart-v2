@@ -37,7 +37,7 @@ export default class EntityProperty{
 			const header:HeaderProps=  {
 				label:element.lableName,
 				value:element.id,
-				date:element.type == 'date'
+				isDate:element.type == 'date'
 			};
 			result.push(header);
 		}

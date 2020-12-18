@@ -33,11 +33,26 @@ class MasterDataList extends BaseComponent {
         super(props, true);
         this.entityProperty = this.props.entityProperty;
     }
+    /**
+     * remove fieldsfilter empty values";
+     */
+    adjustFilter = () => {
+        const fieldsFilter = this.filter.fieldsFilter;
+        for (const key in fieldsFilter) {
+            const element = fieldsFilter[key];
+            if (element == undefined || element == null || new String(element).length == 0) {
+                if (this.filter.fieldsFilter!=undefined) {
+                    delete this.filter.fieldsFilter[key];
+                }
+            }
+
+        }
+    }
     loadEntities = (page: number = 0) => {
 
         const entityName = this.entityProperty.entityName;
         this.filter.page = page;
-
+        this.adjustFilter();
         const request: WebRequest = {
             entity: entityName,
             filter: this.filter
@@ -73,7 +88,7 @@ class MasterDataList extends BaseComponent {
         return res;
     }
     filterFormSubmit = (e) => {
-        
+
         let page = this.filter.useExistingFilterPage ? this.filter.page : 0;
         this.loadEntities(page);
         this.filter.useExistingFilterPage = false;
@@ -91,9 +106,9 @@ class MasterDataList extends BaseComponent {
         this.filter.limit = 5;
     }
     orderButtonOnClick = (e) => {
-        const dataset:DOMStringMap = e.target.dataset;
+        const dataset: DOMStringMap = e.target.dataset;
         this.filter.orderBy = dataset['orderby'];
-        this.filter.orderType = dataset['ordertype']; 
+        this.filter.orderType = dataset['ordertype'];
         this.loadEntities(0);
     }
     render() {
@@ -107,7 +122,7 @@ class MasterDataList extends BaseComponent {
         }
         return (
             <div id="MasterDataList" className="container-fluid">
-                <form id="filter-form" onSubmit={(e) => {e.preventDefault() }}>
+                <form id="filter-form" onSubmit={(e) => { e.preventDefault() }}>
                     <Modal title="Filter">
                         <div>
                             <NavigationButtons limit={this.filter.limit ?? 5} totalData={this.state.recordData.totalData ?? 0}
@@ -116,7 +131,8 @@ class MasterDataList extends BaseComponent {
                                 <div className="col-6">
                                     <input onChange={(e) => { this.filter.useExistingFilterPage = true; this.filter.page = parseInt(e.target.value) - 1 }} min="1" className="form-control" type="number" placeholder="go to page" />
                                 </div>
-                                <div className="col-6"><input onChange={(e) => this.filter.limit = parseInt(e.target.value)} min="1" className="form-control" type="number" placeholder="record per page" />
+                                <div className="col-6">
+                                    <input onChange={(e) => this.filter.limit = parseInt(e.target.value)} min="1" className="form-control" type="number" placeholder="record per page" />
                                 </div>
                             </div>
                             <SubmitResetButton onSubmit={this.filterFormSubmit} onReset={this.filterReset} />
@@ -152,8 +168,8 @@ class MasterDataList extends BaseComponent {
 }
 const SubmitResetButton = (props: any) => {
     return (<div className="btn-group">
-        <button onClick={props.onSubmit} className="btn btn-secondary btn-sm"><span className="icon"><i className="fas fa-play"/></span>Apply Filter</button>
-        <button onClick={props.onReset} type="reset" className="btn btn-warning btn-sm"><span className="icon"><i className="fas fa-sync"/></span>Reset</button>
+        <button onClick={props.onSubmit} className="btn btn-secondary btn-sm"><span className="icon"><i className="fas fa-play" /></span>Apply Filter</button>
+        <button onClick={props.onReset} type="reset" className="btn btn-warning btn-sm"><span className="icon"><i className="fas fa-sync" /></span>Reset</button>
     </div>)
 }
 const DataTableHeader = (props: any) => {
@@ -162,15 +178,29 @@ const DataTableHeader = (props: any) => {
         <tr>
             <th>No</th>
             {headerProps.map(headerProp => {
+                const isDate = headerProp.isDate;
                 return (
                     <th >
                         <p>{headerProp.label}</p>
-                        <div><input onChange={(e) => props.filterOnChange(e)} placeholder={headerProp.label} className="input-filter" name={headerProp.value} /></div>
+                        <div>
+                            {isDate ?
+                                <Fragment>
+                                    <input onChange={props.filterOnChange} name={headerProp.value + "-day"}
+                                        className="input-filter" placeholder={"day"} />
+                                    <input onChange={props.filterOnChange} name={headerProp.value + "-month"}
+                                        className="input-filter" placeholder={"month"} />
+                                    <input onChange={props.filterOnChange} name={headerProp.value + "-year"}
+                                        className="input-filter" placeholder={"year"} />
+                                </Fragment>
+                                :
+                                <input onChange={props.filterOnChange} placeholder={headerProp.label}
+                                    className="input-filter" name={headerProp.value} />
+                            }</div>
                         <div className="btn-group">
                             <button data-orderType="asc" onClick={props.orderButtonOnClick} data-orderBy={headerProp.value} className="btn btn-outline-secondary btn-sm">
-                                <i data-orderType="asc" onClick={props.orderButtonOnClick} data-orderBy={headerProp.value} className="fas fa-angle-up"/></button>
+                                <i data-orderType="asc" onClick={props.orderButtonOnClick} data-orderBy={headerProp.value} className="fas fa-angle-up" /></button>
                             <button data-orderType="desc" onClick={props.orderButtonOnClick} data-orderBy={headerProp.value} className="btn btn-outline-secondary btn-sm">
-                                <i data-orderType="desc" onClick={props.orderButtonOnClick} data-orderBy={headerProp.value}  className="fas fa-angle-down"/></button>
+                                <i data-orderType="desc" onClick={props.orderButtonOnClick} data-orderBy={headerProp.value} className="fas fa-angle-down" /></button>
                         </div>
                     </th>
                 )
