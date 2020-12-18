@@ -8,7 +8,7 @@ export default class Modal extends Component<any, any> {
     render() {
         const title = this.props.title?? "Title";
         return (
-            <div className="modal-content " style={{marginBottom:'10px'}}>
+            <div {...this.props} className="modal-content " style={{marginBottom:'10px'}}>
                 <div className="modal-header">
                     <h5 className="modal-title">{title}</h5>
                     <button type="button" className="close" data-dismiss="modal" aria-label="Close">
@@ -18,7 +18,7 @@ export default class Modal extends Component<any, any> {
                 <div className="modal-body">
                     {this.props.children}
                 </div>
-                {this.props.showFooter == true?
+                {this.props.footerContent || this.props.showFooter == true?
                 <div className="modal-footer">
                     {this.props.footerContent}
                 </div>

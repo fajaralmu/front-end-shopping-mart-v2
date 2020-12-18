@@ -44,4 +44,15 @@ export default class EntityProperty{
 		return result;
 	}
 
+	static getRecordId(record:any, prop:EntityProperty) {
+		const elements = prop.elements;
+		for (let i = 0; i < elements.length; i++) {
+			const element = elements[i];
+			if (element.idField) {
+				return record[element.id];
+			}
+		}
+		return null;
+	}
+
 }
