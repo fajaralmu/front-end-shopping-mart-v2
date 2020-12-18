@@ -31,6 +31,41 @@ export function toBase64(file, referer, callback) {
     }
 }
 
+
+
+export function toBase64v2(fileInput) {
+    return new Promise(function (resolve, reject) {
+        try {
+            const reader = new FileReader();
+            reader.readAsDataURL(fileInput.files[0]);
+            reader.onload = function () { resolve(reader.result); }
+            reader.onerror = function (error) {
+                reject(error);
+            }
+        } catch (e) {
+            reject(e);
+        }
+    });
+
+}
+
+export function toBase64FromFile(file) {
+    return new Promise(function (resolve, reject) {
+        try {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function () { resolve(reader.result); }
+            reader.onerror = function (error) {
+                reject(error);
+            }
+        } catch (e) {
+            reject(e);
+        }
+    });
+
+}
+
+
 export const checkExistance = function (...ids) {
     for (let i = 0; i < ids.length; i++) {
         if (byId(ids[i]) == null) {

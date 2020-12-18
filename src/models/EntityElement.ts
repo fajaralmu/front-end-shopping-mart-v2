@@ -16,9 +16,9 @@ export default class EntityElement{
 	detailFields?:string;
 	inputGroupname?:string;
 	previewLink?:string;
-	defaultValues?:[];
-	plainListValues?:[];
-	options?:[];
+	defaultValues?:any[];
+	plainListValues?:any[];
+	options?:any[];
 	identity?:boolean;
 	required?:boolean;
 	idField?:boolean;
@@ -31,6 +31,10 @@ export default class EntityElement{
 	hasPreview?:boolean;
 	entityProperty?:EntityProperty;
 	additionalMap?:{};
-	fieldType?:FieldType =FieldType.FIELD_TYPE_TEXT;
+	fieldType:FieldType =FieldType.FIELD_TYPE_TEXT;
+
+	static isList = (el:EntityElement)  :boolean => {
+		return el.fieldType == FieldType.FIELD_TYPE_FIXED_LIST || el.fieldType == FieldType.FIELD_TYPE_DYNAMIC_LIST;
+	}
 
 }

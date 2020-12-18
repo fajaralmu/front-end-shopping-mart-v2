@@ -25,6 +25,16 @@ export default class EntityProperty{
 	ignoreBaseField?:boolean;
 	isQuestionare?:boolean;
 
+	static getEntityElement = (prop: EntityProperty, id:string) :EntityElement|undefined => {
+		for (let i = 0; i < prop.elements.length; i++) {
+			const element = prop.elements[i];
+			if (element.id == id) {
+				return element;
+			}
+		}
+		return undefined;
+	}
+
 	static getHeaderLabels = (prop:EntityProperty) : HeaderProps[] => {
 		const result:HeaderProps[] = new Array();
 		if (prop.elements == undefined) {

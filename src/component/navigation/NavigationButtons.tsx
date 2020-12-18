@@ -1,6 +1,5 @@
 
 import React, { Component } from 'react';
-import WebResponse from './../../models/WebResponse';
 interface IProps {
     limit: number,
     totalData: number,

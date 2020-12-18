@@ -5,7 +5,6 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import BaseComponent from './../../BaseComponent';
 import { mapCommonUserStateToProps } from './../../../constant/stores';
-import BaseMainMenus from './../../layout/BaseMainMenus';
 import MasterDataService from './../../../services/MasterDataService';
 import AnchorButton from './../../navigation/AnchorButton';
 import EntityProperty from '../../../models/EntityProperty';
@@ -36,6 +35,26 @@ class EditDeleteAction extends BaseComponent {
             entityProperty.entityName, recordId
         )
     }
+    getRecordById = () => {
+        const record = this.props.record;
+        const entityProperty:EntityProperty = this.props.entityProperty;
+        const recordId = EntityProperty.getRecordId(record, entityProperty);
+        this.commonAjax(
+            this.masterDataService.getById,
+            this.recordLoaded,
+            this.showCommonErrorAlert,
+            entityProperty.entityName,
+            recordId
+        );
+    }
+    recordLoaded = (response:WebResponse) => {
+        if (!response.entities || response.entities.length == 0){
+            throw new Error("Record not found");
+        }
+        if(this.props.showEditForm) {
+            this.props.showEditForm(response.entities[0]);
+        }
+    }
     recordDeleted = (response:WebResponse) => {
         this.showInfo("Record deleted");
         this.props.reload();
@@ -43,8 +62,8 @@ class EditDeleteAction extends BaseComponent {
     render() {
         return (
             <div className="btn-group">
-                <AnchorButton iconClassName="fas fa-edit"></AnchorButton>
-                <AnchorButton onClick={this.delete} className="btn btn-danger" iconClassName="fas fa-trash"></AnchorButton>
+                <AnchorButton onClick={this.getRecordById} iconClassName="fas fa-edit" className="btn btn-warning btn-sm"></AnchorButton>
+                <AnchorButton onClick={this.delete} className="btn btn-danger btn-sm" iconClassName="fas fa-trash"></AnchorButton>
             </div>
         )
     }

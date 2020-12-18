@@ -19,7 +19,7 @@ import NavigationButtons from './../../navigation/NavigationButtons';
 import MasterDataForm from './MasterDataForm';
 import AnchorButton from '../../navigation/AnchorButton';
 import EditDeleteAction from './EditDeleteAction';
-interface IState {recordData?: WebResponse,showForm:boolean}
+interface IState { recordData?: WebResponse, showForm: boolean }
 class MasterDataList extends BaseComponent {
     masterDataService: MasterDataService = MasterDataService.getInstance();
     filter: Filter = {
@@ -28,7 +28,7 @@ class MasterDataList extends BaseComponent {
         fieldsFilter: {}
     };
     state: IState = {
-        showForm:false
+        showForm: false
     }
     entityProperty: EntityProperty;
     constructor(props: any) {
@@ -43,7 +43,7 @@ class MasterDataList extends BaseComponent {
         for (const key in fieldsFilter) {
             const element = fieldsFilter[key];
             if (element == undefined || element == null || new String(element).length == 0) {
-                if (this.filter.fieldsFilter!=undefined) {
+                if (this.filter.fieldsFilter != undefined) {
                     delete this.filter.fieldsFilter[key];
                 }
             }
@@ -53,8 +53,8 @@ class MasterDataList extends BaseComponent {
     loadEntities = (page: number | undefined) => {
 
         const entityName = this.entityProperty.entityName;
-        this.filter.page = page??this.filter.page;
-        
+        this.filter.page = page ?? this.filter.page;
+
         this.adjustFilter();
         const request: WebRequest = {
             entity: entityName,
@@ -124,12 +124,12 @@ class MasterDataList extends BaseComponent {
         }
 
         if (this.state.showForm == true) {
-            return <MasterDataForm entityProperty={this.entityProperty} onClose={(e)=>{this.setState({showForm:false})}} app={this.parentApp} />
+            return <MasterDataForm entityProperty={this.entityProperty} onClose={(e) => { this.setState({ showForm: false }) }} app={this.parentApp} />
         }
 
         return (
             <div id="MasterDataList" className="container-fluid">
-                <AnchorButton show={this.entityProperty.editable==true} style={{marginBottom:'5px'}} onClick={(e)=>this.setState({showForm:true})} iconClassName="fas fa-plus">Add Record</AnchorButton>
+                <AnchorButton show={this.entityProperty.editable == true} style={{ marginBottom: '5px' }} onClick={(e) => this.setState({ showForm: true })} iconClassName="fas fa-plus">Add Record</AnchorButton>
                 <form id="filter-form" onSubmit={(e) => { e.preventDefault() }}>
                     <Modal title="Filter">
                         <div>
@@ -156,8 +156,15 @@ class MasterDataList extends BaseComponent {
                                         const values: Array<any> = EntityValues.parseValues(result, this.props.entityProperty);
                                         return (<tr>
                                             <td>{number}</td>
-                                            {values.map(value => <td>{value}</td>)}
-                                            <td><EditDeleteAction record={result} entityProperty={this.entityProperty} reload={()=>this.loadEntities(undefined)} app={this.parentApp}/></td>
+                                            {values.map(value => {
+                                                try {
+
+                                                    return (<td>{value}</td>)
+                                                } catch (error) {
+                                                    return null
+                                                }
+                                            })}
+                                            <td><EditDeleteAction record={result} entityProperty={this.entityProperty} reload={() => this.loadEntities(undefined)} app={this.parentApp} /></td>
                                         </tr>)
 
                                     })}

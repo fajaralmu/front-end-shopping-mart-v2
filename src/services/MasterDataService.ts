@@ -54,6 +54,17 @@ export default class MasterDataService
         return commonAjaxPostCalls(endpoint, request);
       
     }
+    loadAllEntities(code:string){
+        const request:WebRequest = {
+            entity:code,
+            filter: {
+                limit:0,page:0
+            }
+        }
+        const endpoint:string = contextPath().concat("api/app/entity/get");
+        return commonAjaxPostCalls(endpoint, request);
+      
+    }
     getById(code:string, id:number){
         const request:WebRequest = {
             entity:code,
