@@ -15,5 +15,8 @@ export default class Filter{
 	monthTo?:number;
 	yearTo?:number;
 	maxValue?:number;
+	
+	//
+	useExistingFilterPage?:boolean = false;
 
 }

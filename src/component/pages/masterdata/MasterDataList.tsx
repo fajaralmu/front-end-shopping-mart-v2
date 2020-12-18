@@ -74,18 +74,21 @@ class MasterDataList extends BaseComponent {
     }
     filterFormSubmit = (e) => {
         e.preventDefault();
-        this.loadEntities(0);
+        let page = this.filter.useExistingFilterPage ? this.filter.page : 0;
+        this.loadEntities(page);
+        this.filter.useExistingFilterPage = false;
     }
     filterOnChange = (e) => {
         const name = e.target.name;
         const value = e.target.value;
-        if (this.filter.fieldsFilter==undefined) {
+        if (this.filter.fieldsFilter == undefined) {
             this.filter.fieldsFilter = {};
         }
         this.filter.fieldsFilter[name] = value;
     }
     filterReset = (e) => {
         this.filter.fieldsFilter = {};
+        this.filter.limit = 5;
     }
     render() {
         if (undefined == this.state.recordData) {
@@ -98,22 +101,25 @@ class MasterDataList extends BaseComponent {
         }
         return (
             <div id="MasterDataList" className="container-fluid">
-                <form id="filter-form" onSubmit={(e) => {  this.filterFormSubmit(e) }}>
-                    <Modal title="Data List">
-                        <div style={{ overflow: 'scroll' }}>
-                            <div>
-                                <NavigationButtons 
-                                limit={this.filter.limit??5}
-                                totalData={this.state.recordData.totalData??0}
-                                activePage={this.filter.page??0}
-                                onClick={this.loadEntities} />
-                                <button className="btn btn-light">
-                                    Reload
-                                </button>
-                                <button onClick={this.filterReset} type="reset" className="btn btn-warning">
-                                    Reset
-                                </button>
+                <form id="filter-form" onSubmit={(e) => { this.filterFormSubmit(e) }}>
+                    <Modal title="Filter">
+                        <div>
+                            <NavigationButtons limit={this.filter.limit ?? 5} totalData={this.state.recordData.totalData ?? 0}
+                                activePage={this.filter.page ?? 0} onClick={this.loadEntities} />
+                            <div className="form-group row">
+                                <div className="col-6">
+                                    <input onChange={(e) => { this.filter.useExistingFilterPage = true; this.filter.page = parseInt(e.target.value) - 1 }} min="1" className="form-control" type="number" placeholder="go to page" />
+                                </div>
+                                <div className="col-6"><input onChange={(e) => this.filter.limit = parseInt(e.target.value)} min="1" className="form-control" type="number" placeholder="record per page" />
+                                </div>
                             </div>
+                            <SubmitResetButton onReset={this.filterReset} />
+                        </div>
+                    </Modal>
+                    <Modal title="Data List">
+
+
+                        <div style={{ overflow: 'scroll' }}>
                             <table className="table">
                                 <DataTableHeader filterOnChange={this.filterOnChange} headerProps={headerProps} />
                                 <tbody>
@@ -138,6 +144,12 @@ class MasterDataList extends BaseComponent {
     }
 
 }
+const SubmitResetButton = (props: any) => {
+    return (<div style={{ marginTop: '10px' }} className="btn-group">
+        <button className="btn btn-secondary">Apply Filter</button>
+        <button onClick={props.onReset} type="reset" className="btn btn-warning">Reset</button>
+    </div>)
+}
 const DataTableHeader = (props: any) => {
     const headerProps: HeaderProps[] = props.headerProps;
     return (<thead>
@@ -145,9 +157,9 @@ const DataTableHeader = (props: any) => {
             <th>No</th>
             {headerProps.map(headerProp => {
                 return (
-                    <th>
+                    <th >
                         <p>{headerProp.label}</p>
-                        <input onChange={(e)=>props.filterOnChange(e)} placeholder={headerProp.label} className="input" name={headerProp.value} />
+                        <input onChange={(e) => props.filterOnChange(e)} placeholder={headerProp.label} className="input-filter" name={headerProp.value} />
                     </th>
                 )
             })}
