@@ -93,7 +93,7 @@ export default class MasterDataService
             entity:code,
             [code]:model
         }
-        const endpoint:string = contextPath().concat("api/app/entity/update");
+        const endpoint:string = contextPath().concat("api/app/entity/add");
         return commonAjaxPostCalls(endpoint, request);
     }
 }

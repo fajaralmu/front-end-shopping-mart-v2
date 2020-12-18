@@ -30,7 +30,10 @@ class FormInputField extends BaseComponent {
     }
     getRequiredAttr = () => {
         const requiredAttr = { required: this.getEntityElement().required == true }
-        return requiredAttr;
+        return  ( 
+            null
+        //  requiredAttr
+        )
     }
     inputListLoaded = (response: WebResponse) => {
         if (!response.entities || response.entities.length == 0) {

@@ -18,8 +18,6 @@ import { toBase64FromFile } from './../../../utils/ComponentUtil';
 class MasterDataForm extends BaseComponent {
     masterDataService: MasterDataService = MasterDataService.getInstance();
     
-    waiting: number = 0;
-    timeout?: any = undefined;
     constructor(props: any) {
         super(props, true);
     }
@@ -43,6 +41,7 @@ class MasterDataForm extends BaseComponent {
     submit = (form: HTMLFormElement) => {
         const formData: FormData = new FormData(form);
         const object = {}, app = this;
+        const promises:Promise<any>[] = new Array();
         formData.forEach((value, key) => {
             const element = EntityProperty.getEntityElement(this.getEntityProperty(), key);
             if (!element) return false;
@@ -55,12 +54,11 @@ class MasterDataForm extends BaseComponent {
                     }
                     break;
                 case FieldType.FIELD_TYPE_IMAGE:
-                    this. waiting += 1;
-                    toBase64FromFile(value).then(data => {
+                    let promise = toBase64FromFile(value).then(data => {
                         object[key] = data;
-                        app.decrementWaiting();
-                    }).catch(this.decrementWaiting)
-                    .finally();
+                    }).catch(console.error)
+                    .finally(function(){console.debug("finish")});
+                    promises.push(promise);
                     break;
                 default:
                     object[key] = value;
@@ -69,21 +67,10 @@ class MasterDataForm extends BaseComponent {
             return true;
         });
 
-        this.timeout = setTimeout(function(){
-            app.waitAndStore(object);
-        }, 1);
-
-    }
-    waitAndStore = (object:any) => {
-        while (this.waiting) {
-            console.debug("WAITING.......", this.waiting);
-        }
-        console.debug("OBJ: ", object);
-        clearTimeout(this.timeout);
-        this.ajaxSubmit(object);
-    }
-    decrementWaiting = () => {
-        this. waiting -= 1; console.warn("WAIITNG: ", this.waiting);
+        Promise.all(promises).then(function(val){
+            console.debug("OBJ: ", object);
+            app.ajaxSubmit(object);
+        });
     }
     ajaxSubmit = (object: any) => {
         this.commonAjax(
