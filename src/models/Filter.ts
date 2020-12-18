@@ -1,7 +1,7 @@
 
 export default class Filter{
-	limit?:number;
-	page?:number;
+	limit? :number = 5; 
+	page? :number = 0;
 	orderType?:string;
 	orderBy?:string;
 	contains?:boolean;

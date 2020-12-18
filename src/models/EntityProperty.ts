@@ -1,4 +1,6 @@
+
 import EntityElement from "./EntityElement";
+import HeaderProps from './HeaderProps'; 
 
 export default class EntityProperty{
 	groupNames?:string;
@@ -14,13 +16,32 @@ export default class EntityProperty{
 	formInputColumn?:number;
 	editable?:boolean;
 	withDetail?:boolean;
-	dateElements?:[];
-	imageElements?:[];
-	currencyElements?:[];
-	multipleSelectElements?:[];
-	elements?:Set<EntityElement>;
-	fieldNameList?:[];
+	dateElements?:any[];
+	imageElements?:any[];
+	currencyElements?:any[];
+	multipleSelectElements?:any[];
+	elements:EntityElement[] = new Array();
+	fieldNameList?:string[];
 	ignoreBaseField?:boolean;
 	isQuestionare?:boolean;
+
+	static getHeaderLabels = (prop:EntityProperty) : HeaderProps[] => {
+		const result:HeaderProps[] = new Array();
+		if (prop.elements == undefined) {
+			return result;
+		}
+		const elements:EntityElement[] = prop.elements;
+		for (let i = 0; i < elements.length; i++) {
+			
+			const element = elements[i];
+			const header:HeaderProps=  {
+				label:element.lableName,
+				value:element.id,
+				date:element.type == 'date'
+			};
+			result.push(header);
+		}
+		return result;
+	}
 
 }

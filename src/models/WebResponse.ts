@@ -12,8 +12,8 @@ export default class WebResponse{
 	user?:User;
 	code?:string;
 	message?:string;
-	entities?:[];
-	generalList?:[];
+	entities?:any[];
+	generalList?:any[];
 	entity?:BaseEntity;
 	filter?:Filter;
 	totalData?:number;

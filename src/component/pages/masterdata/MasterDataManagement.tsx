@@ -66,17 +66,17 @@ class MasterDataManagement extends BaseComponent {
             this.entityPropertyLoaded,
             (e:any)=> {this.loadingEntityProperty=false; this.showCommonErrorAlert(e)},
             this.code
-        )
+        ) 
         
     }
     render() {
         if (this.state.entityProperty == undefined) {
-            return <div id="MasterDataList">
-                <h3>Please Wait...</h3>
+            return <div id="MasterDataManagement">
+                <h3>Please Wait... 1</h3>
             </div>
         }
         return (
-            <div id="MasterDataList">
+            <div id="MasterDataManagement">
                 <h2>{this.state.entityProperty.alias}  - {this.state.entityProperty.entityName}</h2>
                 <MasterDataList app={this.parentApp} entityProperty={this.state.entityProperty} />
             </div>

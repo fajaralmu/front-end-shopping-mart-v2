@@ -1,12 +1,13 @@
 import EntityProperty from './EntityProperty';
+import { FieldType } from './FieldType';
 
 export default class EntityElement{
 	ignoreBaseField?:boolean;
 	isGrouped?:boolean;
-	id?:string;
-	type?:string;
+	id:string="0";
+	type:string="text";
 	className?:string;
-	lableName?:string;
+	lableName :string="Label";
 	jsonList?:string;
 	optionItemName?:string;
 	optionValueName?:string;
@@ -30,5 +31,6 @@ export default class EntityElement{
 	hasPreview?:boolean;
 	entityProperty?:EntityProperty;
 	additionalMap?:{};
+	fieldType?:FieldType =FieldType.FIELD_TYPE_TEXT;
 
 }
