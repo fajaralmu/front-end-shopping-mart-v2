@@ -50,6 +50,7 @@ class MasterDataForm extends BaseComponent {
         const formData: FormData = new FormData(form);
         const object: {} = {}, app = this;
         const promises: Promise<any>[] = new Array();
+        const nulledFields:any[] = [];
         formData.forEach((value, key) => {
             if (!object[key]) {
                 object[key] = new Array();
@@ -66,28 +67,34 @@ class MasterDataForm extends BaseComponent {
                     break;
                 case FieldType.FIELD_TYPE_IMAGE:
                     console.debug("img = ", key);
-                    let promise = toBase64FromFile(value).then(data => {
-                        object[key].push(data);
-                    }).catch(console.error)
-                        .finally(function () { console.debug("finish") });
-                    promises.push(promise);
+                    if (value == "NULLED") {
+                        console.debug("NULLED VALUE ADD: ", key);
+                        nulledFields.push(key);
+                    } else {
+                        let promise = toBase64FromFile(value).then(data => {
+                            object[key].push(data);
+                        }).catch(console.error)
+                            .finally(function () { console.debug("finish") });
+                        promises.push(promise);
+                    }
                     break;
                 default:
                     object[key].push(value);
                     break;
             }
             return true;
-        });
-
+        }); 
         Promise.all(promises).then(function (val) {
-            const objectPayload = app.generateRequestPayload(object);
+            const objectPayload = app.generateRequestPayload(object, nulledFields);
             console.debug("OBJ: ", objectPayload);
             app.ajaxSubmit(objectPayload);
         });
     }
 
-    generateRequestPayload = (rawObject: {}): {} => {
-        const result = this.editMode && this.recordToEdit? this.recordToEdit : {};
+    generateRequestPayload = (rawObject: {}, nulledFields:any[]): {} => { 
+        const result:{nulledFields:Array<any>} = this.editMode && this.recordToEdit? 
+        {...this.recordToEdit, nulledFields:nulledFields} : 
+        {nulledFields:new Array() };
         for (const key in rawObject) {
             const element: any[] = rawObject[key];
             if (element.length == 1) {
@@ -96,6 +103,7 @@ class MasterDataForm extends BaseComponent {
                 result[key] = element.join("~");
             }
         }
+        result.nulledFields = nulledFields;
         return result;
     }
 

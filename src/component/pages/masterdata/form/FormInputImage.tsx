@@ -7,11 +7,12 @@ import { baseImageUrl } from '../../../../constant/Url';
 import BaseComponent from '../../../BaseComponent';
 interface IState {
     singlePreviewData?: string,
+    showInputFile: boolean
 }
-export default class FormInputImage extends BaseComponent
-{
+export default class FormInputImage extends BaseComponent {
     state: IState = {
         singlePreviewData: undefined,
+        showInputFile: false
     }
     ref: React.RefObject<any> = React.createRef();
     constructor(props: any) {
@@ -26,18 +27,18 @@ export default class FormInputImage extends BaseComponent
     removeImage = (e) => {
         const app = this;
         this.showConfirmationDanger("Remove image?")
-        .then(function(ok){
-            if (ok) {
-                app.doRemoveImage();
-            }
-        })   
+            .then(function (ok) {
+                if (ok) {
+                    app.doRemoveImage();
+                }
+            })
     }
 
     doRemoveImage = () => {
         if (this.ref.current) {
             this.ref.current.value = null;
         }
-        this.setState({ singlePreviewData: undefined });
+        this.setState({ singlePreviewData: undefined, showInputFile: false });
     }
 
     getEntityElement(): EntityElement {
@@ -50,15 +51,24 @@ export default class FormInputImage extends BaseComponent
         if (!this.props.recordToEdit) return;
         let defaultValue = this.props.recordToEdit[this.getEntityElement().id];
         if (!defaultValue) return;
-        const fullUrl = baseImageUrl+defaultValue;
-        this.setState({singlePreviewData:fullUrl});
+        const fullUrl = baseImageUrl + defaultValue;
+        this.setState({ singlePreviewData: fullUrl, showInputFile:true });
     }
     render() {
         const element: EntityElement = this.getEntityElement();
         return (
             <React.Fragment>
-                <input ref={this.ref}
-                    onChange={this.changeSingleImageData} type="file" accept="image/*" name={element.id} className='form-control' />
+                {this.state.showInputFile ?
+                    <input ref={this.ref}
+                        onChange={this.changeSingleImageData} type="file" accept="image/*" name={element.id} className='form-control' />
+
+                    :
+                    <Fragment>
+                        <p></p>
+                        <AnchorButton onClick={(e)=> this.setState({showInputFile:true})} iconClassName="fas fa-plus" className="btn btn-info btn-sm">Add Image</AnchorButton>
+                        <input type="hidden" name={element.id} value="NULLED" />
+                    </Fragment>
+                }
                 <ImagePreview imageData={this.state.singlePreviewData} />
                 <AnchorButton show={this.state.singlePreviewData != undefined} onClick={this.removeImage} iconClassName="fas fa-times" className="btn btn-danger btn-sm">remove</AnchorButton>
             </React.Fragment>
