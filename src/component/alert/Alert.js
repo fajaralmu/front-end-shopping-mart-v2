@@ -5,6 +5,7 @@ class Alert extends Component {
     constructor(props) {
         super(props);
         this.yesButtonRef = React.createRef();
+        this.noButtonRef = React.createRef();
 
         this.onYes = (e) => {
              
@@ -26,23 +27,29 @@ class Alert extends Component {
     }
 
     componentDidMount () {
-        if (this.yesButtonRef.current) {
+        const isError = this.props.isError == true;
+        if (!isError && this.yesButtonRef.current) {
             this.yesButtonRef.current.focus();
+        } else if (isError && this.noButtonRef.current) {
+            this.noButtonRef.current.focus();
         }
     }
 
     render() {
         const title = this.props.title ? this.props.title : "Info";
         const yesOnly = this.props.yesOnly == true;
+        const isError = this.props.isError == true;
+        const headerClassName = isError ? 'bg-danger':'bg-info';
+        const headerFontClassName = 'text-light';
         return (
             <>
                 <Backdrop />
                 <div className="modal fade show" style={{ display: 'block' }} id="exampleModalCenter" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div className="modal-dialog modal-dialog-centered" role="document">
                         <div className="modal-content">
-                            <Header title={title} onClose={this.onClose} />
+                            <Header fontClassName={headerFontClassName} className={headerClassName} title={title} onClose={this.onClose} />
                             <div className="modal-body"> {this.props.children}</div>
-                            <Footer yesButtonRef={this.yesButtonRef} yesOnly={yesOnly} onYes={this.onYes} onNo={this.onNo} />
+                            <Footer noButtonRef={this.noButtonRef} yesButtonRef={this.yesButtonRef} yesOnly={yesOnly} onYes={this.onYes} onNo={this.onNo} />
                         </div>
                     </div>
                 </div>
@@ -59,20 +66,20 @@ function Backdrop(props) {
 
 function Footer(props) {
     return (
-        <div className="modal-footer">
+        <div className={"modal-footer "+props.className}>
             <button ref={props.yesButtonRef} type="button"
-                onClick={props.onYes} className="btn btn-primary">Ok</button>
-            {props.yesOnly ? null : <button type="button"
-                onClick={props.onNo} className="btn btn-secondary">No</button>}
+                onClick={props.onYes} className="btn btn-outline-primary">Yes</button>
+            {props.yesOnly ? null : <button ref={props.noButtonRef} type="button"
+                onClick={props.onNo} className="btn btn-outline-secondary">No</button>}
         </div>
     )
 }
 
 function Header(props) {
-    return (<div className="modal-header">
-        <h5 className="modal-title" id="exampleModalCenterTitle">{props.title}</h5>
+    return (<div className={"modal-header "+props.className}>
+        <h5 className={"modal-title "+props.fontClassName }id="exampleModalCenterTitle">{props.title}</h5>
         <button onClick={props.onClose} type="button" className="close">
-            <span aria-hidden="true">&times;</span>
+            <span aria-hidden="true" className={props.fontClassName}><i className="fas fa-times"/></span>
         </button>
     </div>)
 }

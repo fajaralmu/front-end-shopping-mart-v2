@@ -17,7 +17,7 @@ class EditDeleteAction extends BaseComponent {
     }
     delete = (e) => {
         const app = this;
-        this.showConfirmation("Delete record")
+        this.showConfirmationDanger("Delete record?")
         .then(function(ok){
             if (ok) {
                 app.doDelete();

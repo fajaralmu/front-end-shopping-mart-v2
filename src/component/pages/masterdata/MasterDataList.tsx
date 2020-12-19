@@ -122,6 +122,11 @@ class MasterDataList extends BaseComponent {
         this.recordToEdit = response.entities[0];
         this.setState({showForm:true});
     }
+    showCreateForm = (e) => {
+        this.recordToEdit = undefined;
+        this.setState({ showForm: true });
+
+    }
     render() {
         if (undefined == this.state.recordData) {
             return <h2>Please Wait..</h2>
@@ -138,7 +143,7 @@ class MasterDataList extends BaseComponent {
 
         return (
             <div id="MasterDataList" className="container-fluid">
-                <AnchorButton show={this.entityProperty.editable == true} style={{ marginBottom: '5px' }} onClick={(e) => this.setState({ showForm: true })} iconClassName="fas fa-plus">Add Record</AnchorButton>
+                <AnchorButton show={this.entityProperty.editable == true} style={{ marginBottom: '5px' }} onClick={this.showCreateForm} iconClassName="fas fa-plus">Add Record</AnchorButton>
                 <form id="filter-form" onSubmit={(e) => { e.preventDefault() }}>
                     <Modal title="Filter">
                         <div>

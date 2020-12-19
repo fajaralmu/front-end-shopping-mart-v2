@@ -3,19 +3,19 @@ import React, { Fragment, Component } from 'react';
 import { toBase64v2 } from '../../../utils/ComponentUtil';
 import AnchorButton from './../../navigation/AnchorButton';
 import EntityElement from './../../../models/EntityElement';
+import { baseImageUrl } from '../../../constant/Url';
+import BaseComponent from './../../BaseComponent';
 interface IState {
     singlePreviewData?: string,
-    inputElements: number[]
 }
-export default class FormInputImage extends Component<any, IState>
+export default class FormInputImage extends BaseComponent
 {
     state: IState = {
         singlePreviewData: undefined,
-        inputElements: [1]
     }
     ref: React.RefObject<any> = React.createRef();
     constructor(props: any) {
-        super(props);
+        super(props, false);
     }
     changeSingleImageData = (e) => {
         const app = this;
@@ -23,24 +23,35 @@ export default class FormInputImage extends Component<any, IState>
             app.setState({ singlePreviewData: data });
         })
     }
-    removeSingleImageData = (e) => {
+    removeImage = (e) => {
+        const app = this;
+        this.showConfirmationDanger("Remove image?")
+        .then(function(ok){
+            if (ok) {
+                app.doRemoveImage();
+            }
+        })   
+    }
+
+    doRemoveImage = () => {
         if (this.ref.current) {
             this.ref.current.value = null;
         }
         this.setState({ singlePreviewData: undefined });
     }
-    addInputElement = (e) => {
-        const element = this.state.inputElements;
-        element.push(element[element.length - 1]);
-        this.setState({ inputElements: element });
-    }
-    popInputElement = (e) => {
-        const element = this.state.inputElements;
-        element.pop();
-        this.setState({ inputElements: element });
-    }
+
     getEntityElement(): EntityElement {
         return this.props.element;
+    }
+    componentDidMount() {
+        this.prepopulateForm();
+    }
+    prepopulateForm() {
+        if (!this.props.recordToEdit) return;
+        let defaultValue = this.props.recordToEdit[this.getEntityElement().id];
+        if (!defaultValue) return;
+        const fullUrl = baseImageUrl+defaultValue;
+        this.setState({singlePreviewData:fullUrl});
     }
     render() {
         const element: EntityElement = this.getEntityElement();
@@ -49,7 +60,7 @@ export default class FormInputImage extends Component<any, IState>
                 <input ref={this.ref}
                     onChange={this.changeSingleImageData} type="file" accept="image/*" name={element.id} className='form-control' />
                 <ImagePreview imageData={this.state.singlePreviewData} />
-                <AnchorButton show={this.state.singlePreviewData != undefined} onClick={this.removeSingleImageData} iconClassName="fas fa-times" className="btn btn-danger btn-sm">remove</AnchorButton>
+                <AnchorButton show={this.state.singlePreviewData != undefined} onClick={this.removeImage} iconClassName="fas fa-times" className="btn btn-danger btn-sm">remove</AnchorButton>
             </React.Fragment>
         )
     }
