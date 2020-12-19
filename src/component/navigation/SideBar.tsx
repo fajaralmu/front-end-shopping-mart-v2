@@ -25,7 +25,8 @@ class SideBar extends BaseComponent {
                 {menus.map(menu => {
                     return (
                         <li><Link to={parentMenu.url + "/" + menu.url}>
-                            <span><i className={Menu.getIconClassName(menu)}></i>&nbsp;{menu.name}</span>
+                            <span style={{marginRight:'5px'}}><i className={Menu.getIconClassName(menu)}></i></span>
+                            <span>{menu.name}</span>
                         </Link></li>
                     )
                 })
