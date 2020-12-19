@@ -3,17 +3,17 @@
 import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import BaseComponent from './../../BaseComponent';
-import { mapCommonUserStateToProps } from './../../../constant/stores';
-import Modal from '../../container/Modal';
-import EntityProperty from './../../../models/EntityProperty';
-import EntityElement from './../../../models/EntityElement';
-import MasterDataService from './../../../services/MasterDataService';
-import AnchorButton from './../../navigation/AnchorButton';
-import WebResponse from './../../../models/WebResponse';
+import BaseComponent from '../../../BaseComponent';
+import { mapCommonUserStateToProps } from '../../../../constant/stores';
+import Modal from '../../../container/Modal';
+import EntityProperty from '../../../../models/EntityProperty';
+import EntityElement from '../../../../models/EntityElement';
+import MasterDataService from '../../../../services/MasterDataService';
+import AnchorButton from '../../../navigation/AnchorButton';
+import WebResponse from '../../../../models/WebResponse'; 
+import { FieldType } from '../../../../models/FieldType';
+import { toBase64FromFile } from '../../../../utils/ComponentUtil';
 import FormInputField from './FormInputField';
-import { FieldType } from '../../../models/FieldType';
-import { toBase64FromFile } from './../../../utils/ComponentUtil';
 
 class MasterDataForm extends BaseComponent {
     masterDataService: MasterDataService = MasterDataService.getInstance();
@@ -111,12 +111,12 @@ class MasterDataForm extends BaseComponent {
     render() {
         const entityProperty: EntityProperty = this.getEntityProperty();
 
-        const editModeStr = this.editMode ? " EDIT MODE":""
-        return (
+        const editModeStr = this.editMode ?  <span className="badge badge-warning">Edit Mode</span>:""
+        return ( 
             <div id="MasterDataForm" className="container-fluid">
                 <AnchorButton style={{ marginBottom: '5px' }} onClick={this.props.onClose} iconClassName="fas fa-angle-left">Back</AnchorButton>
                 <form onSubmit={this.onSubmit} id="record-form">
-                    <Modal title={entityProperty.alias + " Record Form"+editModeStr} footerContent={<SubmitReset />}>
+                <Modal title={<span>{entityProperty.alias} Record Form {editModeStr}</span>} footerContent={<SubmitReset />}>
                         <InputFields recordToEdit={this.recordToEdit} app={this.parentApp} entityProperty={entityProperty} />
                     </Modal>
                 </form>

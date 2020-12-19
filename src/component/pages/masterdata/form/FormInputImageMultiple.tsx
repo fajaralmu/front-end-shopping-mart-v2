@@ -1,8 +1,8 @@
 
 import React, { Fragment, Component } from 'react';
-import { toBase64v2 } from '../../../utils/ComponentUtil';
-import AnchorButton from '../../navigation/AnchorButton';
-import EntityElement from '../../../models/EntityElement';
+import { toBase64v2 } from '../../../../utils/ComponentUtil';
+import AnchorButton from '../../../navigation/AnchorButton';
+import EntityElement from '../../../../models/EntityElement';
 interface IState {
     previewData: Map<number, string>,
     inputElements: number[]

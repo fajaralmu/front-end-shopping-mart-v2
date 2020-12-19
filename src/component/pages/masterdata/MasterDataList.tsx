@@ -16,7 +16,7 @@ import HeaderProps from './../../../models/HeaderProps';
 import './DataTable.css'
 import EntityValues from './../../../utils/EntityValues';
 import NavigationButtons from './../../navigation/NavigationButtons';
-import MasterDataForm from './MasterDataForm';
+import MasterDataForm from './form/MasterDataForm';
 import AnchorButton from '../../navigation/AnchorButton';
 import EditDeleteAction from './EditDeleteAction';
 interface IState { recordData?: WebResponse, showForm: boolean }

@@ -2,17 +2,17 @@
 
 import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import BaseComponent from './../../BaseComponent';
-import { mapCommonUserStateToProps } from './../../../constant/stores';
-import EntityElement from './../../../models/EntityElement';
-import MasterDataService from './../../../services/MasterDataService';
-import { FieldType } from '../../../models/FieldType';
-import WebResponse from './../../../models/WebResponse';
+import { connect } from 'react-redux'; 
+import { mapCommonUserStateToProps } from '../../../../constant/stores';
+import EntityElement from '../../../../models/EntityElement';
+import MasterDataService from '../../../../services/MasterDataService';
+import { FieldType } from '../../../../models/FieldType';
+import WebResponse from '../../../../models/WebResponse';
 import FormInputImage from './FormInputImage';
 import FormInputImageMultiple from './FormInputImageMultiple';
+import BaseComponent from './../../../BaseComponent';
 interface IState {
-    inputList: any[],
+    inputList: any[], 
     singlePreviewData?: string,
     inputElements: number[]
 }
