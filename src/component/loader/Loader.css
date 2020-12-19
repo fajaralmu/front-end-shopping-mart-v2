@@ -21,6 +21,7 @@
     width:100%;
     font-family: 'Lucida Sans';
     position: fixed;  
+    background-color: none;
 }
  .loader{
     font-size: '60';

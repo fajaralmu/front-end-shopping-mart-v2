@@ -26,23 +26,7 @@ class MasterDataForm extends BaseComponent {
             this.recordToEdit = props.recordToEdit;
         }
     }
-    populateForm = () => {
-        if (this.editMode == false && !this.recordToEdit) {return;}
-        for (const key in this.recordToEdit) {
-            const val = this.recordToEdit[key];
-            const inputs = document.getElementsByName(key);
-            if (inputs[0].tagName == 'textarea') {
-                inputs[0].innerHTML =  val;
-            } else {
-                inputs[0].setAttribute("value", val);
-            }
-        }
-    }
-    componentDidMount() {
-        if (this.editMode) {
-            this.populateForm();
-        }
-    }
+    
     getEntityProperty(): EntityProperty {
         return this.props.entityProperty;
     }
@@ -101,8 +85,9 @@ class MasterDataForm extends BaseComponent {
             app.ajaxSubmit(objectPayload);
         });
     }
+
     generateRequestPayload = (rawObject: {}): {} => {
-        const result = {};
+        const result = this.editMode && this.recordToEdit? this.recordToEdit : {};
         for (const key in rawObject) {
             const element: any[] = rawObject[key];
             if (element.length == 1) {
@@ -113,10 +98,11 @@ class MasterDataForm extends BaseComponent {
         }
         return result;
     }
+
     ajaxSubmit = (object: any) => {
         this.commonAjax(
             this.masterDataService.save, this.recordSaved, this.showCommonErrorAlert,
-            this.getEntityProperty().entityName, object
+            this.getEntityProperty().entityName, object, this.editMode
         )
     }
     recordSaved = (response: WebResponse) => {
@@ -131,7 +117,7 @@ class MasterDataForm extends BaseComponent {
                 <AnchorButton style={{ marginBottom: '5px' }} onClick={this.props.onClose} iconClassName="fas fa-angle-left">Back</AnchorButton>
                 <form onSubmit={this.onSubmit} id="record-form">
                     <Modal title={entityProperty.alias + " Record Form"+editModeStr} footerContent={<SubmitReset />}>
-                        <InputFields app={this.parentApp} entityProperty={entityProperty} />
+                        <InputFields recordToEdit={this.recordToEdit} app={this.parentApp} entityProperty={entityProperty} />
                     </Modal>
                 </form>
             </div>
@@ -148,7 +134,7 @@ const SubmitReset = (props) => {
     )
 }
 
-const InputFields = (props: { app: any, entityProperty: EntityProperty }) => {
+const InputFields = (props: { app: any, entityProperty: EntityProperty, recordToEdit:{}|undefined }) => {
     const elements: EntityElement[] = props.entityProperty.elements;
     const groupedElements: Array<Array<EntityElement>> = new Array();
     let counter: number = 0;
@@ -167,14 +153,11 @@ const InputFields = (props: { app: any, entityProperty: EntityProperty }) => {
                 return (
                     <div className="col-lg-6">
                         {elements.map(element => {
-                            return <FormInputField app={props.app} entityElement={element} />
+                            return <FormInputField recordToEdit={props.recordToEdit} app={props.app} entityElement={element} />
                         })}
                     </div>
                 )
             })}
-            {/* {elements.map(element => {
-                return <FormInputField app={props.app} entityElement={element} />
-            })} */}
         </div>
     )
 }

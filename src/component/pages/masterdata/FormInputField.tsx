@@ -72,6 +72,10 @@ class FormInputField extends BaseComponent {
     }
     componentDidMount() {
         this.validateInputType();
+        if (this.props.recordToEdit && this.ref.current) {
+            const fieldName = this.getEntityElement().id;
+            this.ref.current.value = this.props.recordToEdit[fieldName];
+        }
     }
 
     render() {

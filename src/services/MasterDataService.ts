@@ -88,12 +88,17 @@ export default class MasterDataService
         const endpoint:string = contextPath().concat("api/app/entity/delete");
         return commonAjaxPostCalls(endpoint, request);
     }
-    save(code:string, model:BaseEntity) {
+    save(code:string, model:BaseEntity, editMode:boolean) {
         const request:WebRequest = {
             entity:code,
             [code]:model
         }
-        const endpoint:string = contextPath().concat("api/app/entity/add");
+        let endpoint:string;
+        if (editMode) {
+            endpoint = contextPath().concat("api/app/entity/update");
+        } else {
+            endpoint = contextPath().concat("api/app/entity/add");
+        }
         return commonAjaxPostCalls(endpoint, request);
     }
 }
