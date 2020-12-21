@@ -45,7 +45,7 @@ export default class WebRequest{
 	username?:string;
 	value?:string;
 	orderedEntities?:[];
-	productFlows?:Set<ProductFlow>;
+	productFlows?:ProductFlow[];
 	regularTransaction?:boolean;
 	imageData?:string;
 	partnerId?:string;

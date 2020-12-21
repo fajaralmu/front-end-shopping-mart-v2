@@ -14,6 +14,7 @@ import HomeMain from '../pages/home/HomeMain';
 import CartMain from '../pages/cart/CartMain';
 import BaseMainMenus from './BaseMainMenus';
 import Menu from './../../models/Menu';
+import TransactionPurchasing from '../pages/transaction/purchasing/TransactionPurchasing';
 
 class ApplicationContent extends BaseComponent {
 
@@ -52,9 +53,13 @@ class ApplicationContent extends BaseComponent {
                             <MasterDataMain setSidebarMenus={this.setSidebarMenus} app={this.parentApp} />
                     } />
                     {/* -------- transaction -------- */}
-                    <Route path="/transaction" render={
+                    <Route exact path="/transaction" render={
                         (props: any) =>
                             <TransactionMain  app={this.parentApp} />
+                    } />
+                    <Route exact path="/transaction/purchasing" render={
+                        (props: any) =>
+                            <TransactionPurchasing app={this.parentApp} />
                     } />
                     {/* -------- catalog -------- */}
                     <Route path="/catalog" render={

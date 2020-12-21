@@ -6,9 +6,10 @@ export default class Modal extends Component<any, any> {
     }
 
     render() {
-        const title = this.props.title?? "Title";
+        const title = this.props.title?? "Title"; 
+        const props = (({ footerContent, ...props }) => props)(this.props) // remove b and c
         return (
-            <div {...this.props} className="modal-content " style={{marginBottom:'10px'}}>
+            <div {...props} className="modal-content " style={{marginBottom:'10px'}}>
                 <div className="modal-header">
                     <h5 className="modal-title">{title}</h5>
                     <button type="button" className="close" data-dismiss="modal" aria-label="Close">

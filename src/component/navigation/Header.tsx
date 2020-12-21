@@ -1,5 +1,5 @@
 
-import React, { Component, Fragment } from 'react';
+import React, { useRef , Fragment } from 'react';
 import BaseComponent from './../BaseComponent';
 import { mapCommonUserStateToProps } from './../../constant/stores';
 import { withRouter, Link } from 'react-router-dom';
@@ -39,7 +39,7 @@ class Header extends BaseComponent{
                             if (menu == null || menu.authenticated && this.isLoggedUserNull()) return null;
                             const isActive = this.props.activeMenuCode == menu.code;
                             return (
-                                <li key={"menu" + new String(menu.code)} className={"nav-item " + (isActive ? "active" : "")}>
+                                <li key={"header-menu-" + new String(menu.code)} className={"nav-item " + (isActive ? "active" : "")}>
                                     <Link onClick={() => this.props.setMenu(menu)} style={{ marginLeft: '10px' }}
                                         className="nav-link"
                                         to={menu.url}><span>{menu.name}</span>

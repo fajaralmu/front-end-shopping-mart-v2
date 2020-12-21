@@ -149,7 +149,7 @@ export default class BaseComponent extends Component<any, any> {
     componentDidUpdate() {
         if (this.authenticated == true && this.isLoggedUserNull()) {
             console.debug(typeof this , "BACK TO LOGIN");
-            this.backToLogin();
+            this.validateLoginStatus();
         }
     }
 }

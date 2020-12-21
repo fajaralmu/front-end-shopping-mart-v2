@@ -26,8 +26,8 @@ export default class BaseTransactionService {
         return commonAjaxPostCalls(endpoint, request);
     }
 
-    submitTransactionSelling = (request:any) => this.submitTransaction({...request, type:'SELLING' })
-    submitTransactionPurchasing = (request:any) => this.submitTransaction({...request, type:'PURCHASING' })
+    submitTransactionSelling = (transaction:Transaction) => this.submitTransaction({...transaction, type:'SELLING' })
+    submitTransactionPurchasing = (transaction:Transaction) => this.submitTransaction({...transaction, type:'PURCHASING' })
 
     submitTransaction = (raw:Transaction) => {
         console.debug("submitTransaction ", raw.type);

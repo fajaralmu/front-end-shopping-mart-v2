@@ -4,6 +4,7 @@ import Product from './Product';
 import ProductFlowStock from './ProductFlowStock';
 
 export default class ProductFlow extends BaseEntity{
+
 	transaction?:Transaction;
 	expiryDate?:Date;
 	price?:number;
@@ -12,6 +13,11 @@ export default class ProductFlow extends BaseEntity{
 	product?:Product;
 	transactionId?:number;
 	productFlowStock?:ProductFlowStock;
-	totalPrice?:number;
+	totalPrice?:number; 
+	static create(product:Product) :Product{
+		const obj = new ProductFlow();
+		obj.product = product;
+		return obj;
 
+	}
 }

@@ -12,7 +12,7 @@ export default class Transaction extends BaseEntity{
 	mode?:string;
 	transactionDate?:Date;
 	user?:User;
-	productFlows?:Set<ProductFlow>;
+	productFlows?:ProductFlow[];
 	productFlow?:any;
 
 }
