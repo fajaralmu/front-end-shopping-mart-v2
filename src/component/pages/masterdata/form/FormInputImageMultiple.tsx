@@ -3,11 +3,13 @@ import React, { Fragment, Component } from 'react';
 import { toBase64v2 } from '../../../../utils/ComponentUtil';
 import AnchorButton from '../../../navigation/AnchorButton';
 import EntityElement from '../../../../models/EntityElement';
+import { baseImageUrl } from '../../../../constant/Url';
+import BaseComponent from './../../../BaseComponent';
 interface IState {
     previewData: Map<number, string>,
     inputElements: number[]
 }
-export default class FormInputImageMultiple extends Component<any, IState>
+export default class FormInputImageMultiple extends BaseComponent
 {
     state: IState = {
         previewData: new Map(),
@@ -15,7 +17,7 @@ export default class FormInputImageMultiple extends Component<any, IState>
     }
     ref: React.RefObject<any> = React.createRef();
     constructor(props: any) {
-        super(props);
+        super(props, false);
     }
     setImageData = (e, index) => {
         const app = this;
@@ -25,38 +27,91 @@ export default class FormInputImageMultiple extends Component<any, IState>
             app.setState({ previewData: previewData });
         })
     }
-     
+
     addInputElement = (e) => {
         const element = this.state.inputElements;
-        element.push(element[element.length - 1]+1);
+        if (element.length == 0){
+            element.push(1);
+        } else {
+            element.push(element[element.length - 1] + 1);
+        }
         this.setState({ inputElements: element });
     }
-    removeInputElement = (removedIndex:number) => {
+    removeInputElement = (removedIndex: number) => {
+        const app = this;
+        this.showConfirmationDanger("Delete image?")
+        .then(function (ok) {
+            if (ok) {
+                app.doRemoveInputElement(removedIndex);
+            }
+        })
+    }
+
+    doRemoveInputElement = (removedIndex: number) => {
+        const previewData = this.state.previewData;
         const element = this.state.inputElements;
         for (let i = 0; i < element.length; i++) {
             const index = element[i];
             if (index == removedIndex) {
                 element.splice(i, 1);
+                previewData.delete(removedIndex);
             }
         }
-        this.setState({ inputElements: element });
+        this.setState({ inputElements: element,previewData:previewData });
     }
     getEntityElement(): EntityElement {
         return this.props.element;
     }
+    componentDidMount() {
+        this.prepopulateForm();
+    }
+    prepopulateForm() {
+        if (!this.props.recordToEdit) {
+            return;
+        }
+        let defaultValue = this.props.recordToEdit[this.getEntityElement().id];
+        if (!defaultValue || new String(defaultValue).trim() == "") {
+            return;
+        }
+        const previewData: Map<number, string> = this.state.previewData;
+        const imageNames: string[] = new String(defaultValue).split("~");
+        const inputElements: number[] = new Array<number>();
+        for (let i = 0; i < imageNames.length; i++) {
+            const imageName: string = imageNames[i];
+            previewData.set(i, imageName);
+            inputElements.push(i);
+        }
+        this.setState({ previewData: previewData, inputElements: inputElements });
+    }
     render() {
         const element: EntityElement = this.getEntityElement();
-        
+
         return (
             <React.Fragment>
                 {this.state.inputElements.map(index => {
-                    return <Fragment><input
-                        onChange={(e) => this.setImageData(e, index)} type="file" accept="image/*" 
-                        name={element.id} className='form-control' />
-                        <ImagePreview imageData={this.state.previewData.get(index)} />
-                        <AnchorButton show={this.state.previewData != undefined} 
-                           onClick={(e)=>this.removeInputElement(index)} iconClassName="fas fa-times" className="btn btn-danger btn-sm">remove {index}</AnchorButton>
-                    </Fragment>
+                    const previewData: string | undefined = this.state.previewData.get(index);
+                    const isNull = previewData == undefined  || new String(previewData).trim() == "";
+                    const isBase64 = !isNull &&  isBase64Image(previewData);
+                    return (
+                        <Fragment>
+                            {isNull?
+                            <input onChange={(e) => this.setImageData(e, index)} type="file" accept="image/*"
+                            name={element.id} className='form-control' />:null}
+                            {isBase64 ?
+                                <div>
+                                     <input value={previewData}  type="hidden" name={element.id}/>
+                                    <ImagePreview imageData={previewData} />
+                                </div>
+                                :
+                                !isNull?
+                                <div>
+                                    <input value={previewData}  name={element.id} className='form-control' />
+                                    <ImagePreview imageData={baseImageUrl + previewData} />
+                                </div>:null
+                            }
+                            <AnchorButton show={this.state.previewData != undefined}
+                                onClick={(e: any) => this.removeInputElement(index)} iconClassName="fas fa-times" className="btn btn-danger btn-sm">remove {index}</AnchorButton>
+                        </Fragment>)
                 })}
                 <p></p>
                 <AnchorButton iconClassName="fas fa-plus" onClick={this.addInputElement}>Add</AnchorButton>
@@ -64,6 +119,9 @@ export default class FormInputImageMultiple extends Component<any, IState>
         )
     }
 
+}
+const isBase64Image = (string?: string) => {
+    return string && string.startsWith("data:image");
 }
 const ImagePreview = (props) => {
     if (props.show == false || !props.imageData) return null;

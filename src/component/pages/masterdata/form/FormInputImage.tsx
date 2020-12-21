@@ -48,9 +48,13 @@ export default class FormInputImage extends BaseComponent {
         this.prepopulateForm();
     }
     prepopulateForm() {
-        if (!this.props.recordToEdit) return;
+        if (!this.props.recordToEdit){ 
+            return;
+        }
         let defaultValue = this.props.recordToEdit[this.getEntityElement().id];
-        if (!defaultValue) return;
+        if (!defaultValue){ 
+            return;
+        }
         const fullUrl = baseImageUrl + defaultValue;
         this.setState({ singlePreviewData: fullUrl, showInputFile:true });
     }

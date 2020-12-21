@@ -52,10 +52,11 @@ class MasterDataForm extends BaseComponent {
         const promises: Promise<any>[] = new Array();
         const nulledFields:any[] = [];
         formData.forEach((value, key) => {
+            console.debug("Form data ", key);
             if (!object[key]) {
                 object[key] = new Array();
             }
-            const element = this.getEntityElement(key);
+            const element:EntityElement|undefined = this.getEntityElement(key);
             if (!element) return false;
             switch (element.fieldType) {
                 case FieldType.FIELD_TYPE_DYNAMIC_LIST:
@@ -66,16 +67,19 @@ class MasterDataForm extends BaseComponent {
                     }
                     break;
                 case FieldType.FIELD_TYPE_IMAGE:
-                    console.debug("img = ", key);
+                    console.debug(key, " is image");
                     if (value == "NULLED") {
                         console.debug("NULLED VALUE ADD: ", key);
                         nulledFields.push(key);
-                    } else {
+                   
+                    } else if(value.constructor.name == "File") {
                         let promise = toBase64FromFile(value).then(data => {
                             object[key].push(data);
                         }).catch(console.error)
                             .finally(function () { console.debug("finish") });
                         promises.push(promise);
+                    } else {
+                        object[key].push(value);
                     }
                     break;
                 default:
@@ -86,7 +90,7 @@ class MasterDataForm extends BaseComponent {
         }); 
         Promise.all(promises).then(function (val) {
             const objectPayload = app.generateRequestPayload(object, nulledFields);
-            console.debug("OBJ: ", objectPayload);
+            console.debug("Record object to save: ", objectPayload);
             app.ajaxSubmit(objectPayload);
         });
     }
@@ -97,6 +101,7 @@ class MasterDataForm extends BaseComponent {
         {nulledFields:new Array() };
         for (const key in rawObject) {
             const element: any[] = rawObject[key];
+            console.debug(key, " length: ", element.length);
             if (element.length == 1) {
                 result[key] = element[0];
             } else if (element.length > 1) {
