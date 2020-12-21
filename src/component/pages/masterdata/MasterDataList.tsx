@@ -172,13 +172,12 @@ class MasterDataList extends BaseComponent {
                                             <td>{number}</td>
                                             {values.map(value => {
                                                 try {
-
                                                     return (<td>{value}</td>)
                                                 } catch (error) {
-                                                    return null
+                                                    return (<td></td>)
                                                 }
                                             })}
-                                            <td><EditDeleteAction showEditForm={this.showEditForm} record={result} entityProperty={this.entityProperty} reload={() => this.loadEntities(undefined)} app={this.parentApp} /></td>
+                                            <td><EditDeleteAction show={this.entityProperty.editable==true} showEditForm={this.showEditForm} record={result} entityProperty={this.entityProperty} reload={() => this.loadEntities(undefined)} app={this.parentApp} /></td>
                                         </tr>)
 
                                     })}

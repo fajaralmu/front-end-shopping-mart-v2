@@ -13,25 +13,32 @@ class SideBar extends BaseComponent {
     constructor(props: { brand: any, sidebarMenus?: Menu[] }) {
         super(props, false);
     }
-
+    isSidebarActive = (menu:Menu) => {
+        const parentMenu: Menu = this.props.parentMenu;
+        if (null == parentMenu) { return false; }
+        const pathName = this.props.location.pathname;
+        return parentMenu.url+"/"+menu.url == pathName;
+    }
     render() {
         const parentMenu: Menu = this.props.parentMenu;
         if (null == parentMenu) { return null }
         const menus: Menu[] = this.props.sidebarMenus == null ? [] : this.props.sidebarMenus;
 
         return (
-            <div id="sidebar" className="sidebar-nav bg-secondary">
+            <ul id="sidebar"  className="sidebar-nav bg-secondary">
                 <Brand show={parentMenu != null} brand={parentMenu} />
                 {menus.map(menu => {
+                    const isActive:boolean = this.isSidebarActive(menu);
+                    const menuClassName = isActive?'menu-active':'regular-menu';
                     return (
-                        <li><Link to={parentMenu.url + "/" + menu.url}>
-                            <span style={{marginRight:'5px'}}><i className={Menu.getIconClassName(menu)}></i></span>
-                            <span>{menu.name}</span>
+                        <li><Link  to={parentMenu.url + "/" + menu.url}>
+                            <span className={menuClassName} style={{marginRight:'5px'}}><i className={Menu.getIconClassName(menu)}></i></span>
+                            <span className={menuClassName} >{menu.name}</span>
                         </Link></li>
                     )
                 })
                 }
-            </div >
+            </ul >
         )
     }
 

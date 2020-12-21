@@ -9,8 +9,7 @@ interface IState {
     previewData: Map<number, string>,
     inputElements: number[]
 }
-export default class FormInputImageMultiple extends BaseComponent
-{
+export default class FormInputImageMultiple extends BaseComponent {
     state: IState = {
         previewData: new Map(),
         inputElements: [1]
@@ -30,7 +29,7 @@ export default class FormInputImageMultiple extends BaseComponent
 
     addInputElement = (e) => {
         const element = this.state.inputElements;
-        if (element.length == 0){
+        if (element.length == 0) {
             element.push(1);
         } else {
             element.push(element[element.length - 1] + 1);
@@ -40,11 +39,11 @@ export default class FormInputImageMultiple extends BaseComponent
     removeInputElement = (removedIndex: number) => {
         const app = this;
         this.showConfirmationDanger("Delete image?")
-        .then(function (ok) {
-            if (ok) {
-                app.doRemoveInputElement(removedIndex);
-            }
-        })
+            .then(function (ok) {
+                if (ok) {
+                    app.doRemoveInputElement(removedIndex);
+                }
+            })
     }
 
     doRemoveInputElement = (removedIndex: number) => {
@@ -57,7 +56,7 @@ export default class FormInputImageMultiple extends BaseComponent
                 previewData.delete(removedIndex);
             }
         }
-        this.setState({ inputElements: element,previewData:previewData });
+        this.setState({ inputElements: element, previewData: previewData });
     }
     getEntityElement(): EntityElement {
         return this.props.element;
@@ -90,27 +89,31 @@ export default class FormInputImageMultiple extends BaseComponent
             <React.Fragment>
                 {this.state.inputElements.map(index => {
                     const previewData: string | undefined = this.state.previewData.get(index);
-                    const isNull = previewData == undefined  || new String(previewData).trim() == "";
-                    const isBase64 = !isNull &&  isBase64Image(previewData);
+                    const isNull = previewData == undefined || new String(previewData).trim() == "";
+                    const isBase64 = !isNull && isBase64Image(previewData);
                     return (
                         <Fragment>
-                            {isNull?
-                            <input onChange={(e) => this.setImageData(e, index)} type="file" accept="image/*"
-                            name={element.id} className='form-control' />:null}
+                            {isNull ?
+                                <input onChange={(e) => this.setImageData(e, index)} type="file" accept="image/*"
+                                    name={element.id} className='form-control' /> : null}
                             {isBase64 ?
                                 <div>
-                                     <input value={previewData}  type="hidden" name={element.id}/>
+                                    <input value={previewData} type="hidden" name={element.id} />
                                     <ImagePreview imageData={previewData} />
                                 </div>
                                 :
-                                !isNull?
-                                <div>
-                                    <input value={previewData}  name={element.id} className='form-control' />
-                                    <ImagePreview imageData={baseImageUrl + previewData} />
-                                </div>:null
+                                !isNull ?
+                                    <div>
+                                        <input value={previewData} type="hidden" name={element.id} className='form-control' />
+                                        <ImagePreview imageData={baseImageUrl + previewData} />
+                                        <p className="badge badge-warning">{previewData}</p>
+                                    </div> :
+                                    null
                             }
                             <AnchorButton show={this.state.previewData != undefined}
-                                onClick={(e: any) => this.removeInputElement(index)} iconClassName="fas fa-times" className="btn btn-danger btn-sm">remove {index}</AnchorButton>
+                                onClick={(e: any) => this.removeInputElement(index)} iconClassName="fas fa-times" className="btn btn-danger btn-sm">
+                                remove {index}
+                            </AnchorButton>
                         </Fragment>)
                 })}
                 <p></p>

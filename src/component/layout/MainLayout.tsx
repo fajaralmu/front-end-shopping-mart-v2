@@ -55,6 +55,7 @@ class MainLayout extends BaseComponent {
     }
     setCurrentMenu = () => {
         const pathName = extractMenuPath(this.props.location.pathname);
+       
         if (pathName == this.currentPathName) {
             return;
         }
@@ -83,7 +84,7 @@ class MainLayout extends BaseComponent {
                 <div id="page-content" className="container-fluid" style={{ margin: 0, padding: 0, minHeight: '80vh' }}>
                     {/* <div className="?"> */}
                     {showSidebar == true ? <div style={{ position: 'absolute' }}>
-                        <div id="sidebar">
+                        <div >
                             <SideBar sidebarMenus={this.getSubMenus()} parentMenu={this.state.menu} app={this.props.app} />
                         </div>
                     </div> : null}
