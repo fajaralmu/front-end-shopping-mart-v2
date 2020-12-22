@@ -129,6 +129,11 @@ export const menus: Menu[] = [
                 code: 'trx_purchasing',
                 name: 'Purchasing',
                 url: 'purchasing',
+            },
+            {
+                code: 'trx_detail',
+                name: 'Transaction Detail',
+                url: 'detail',
             }
         ]
     },

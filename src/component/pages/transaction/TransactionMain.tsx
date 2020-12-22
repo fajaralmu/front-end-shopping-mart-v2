@@ -16,8 +16,8 @@ class TransactionMain extends BaseMainMenus
 
     render(){
         return (
-            <div id="TransactionMain">
-                <h2>TransactionMain</h2>
+            <div id="TransactionMain" className="container-fluid">
+                <h2>Transaction Page</h2>
             </div>
         )
     }

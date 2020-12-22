@@ -11,6 +11,7 @@ import ProductFlow from './../../../../models/ProductFlow';
 import Modal from '../../../container/Modal';
 import MasterDataService from './../../../../services/MasterDataService';
 import WebResponse from './../../../../models/WebResponse';
+import FormGroup from './../../../form/FormGroup';
 interface IState {
     supplier?: Supplier; 
     supplierNotFound: boolean;
@@ -56,8 +57,9 @@ class SupplierForm extends BaseComponent {
                     </Fragment>
                 } >
                     <div className="form-group">
-                        <label>Supplier Code</label>
-                        <input required type="number" className="form-control" name="id" />
+                        <FormGroup label="Code">
+                            <input placeholder="Supplier code" required type="number" className="form-control" name="id" />
+                        </FormGroup>
                     </div>
                     <SupplierDetail supplier={this.state.supplier} notFound={this.state.supplierNotFound} />
                 </Modal>

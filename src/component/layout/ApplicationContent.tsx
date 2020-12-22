@@ -16,6 +16,7 @@ import BaseMainMenus from './BaseMainMenus';
 import Menu from './../../models/Menu';
 import TransactionPurchasing from '../pages/transaction/purchasing/TransactionPurchasing';
 import TransactionSelling from '../pages/transaction/selling/TransactionSelling';
+import TransactionDetail from '../pages/transaction/detail/TransactionDetail';
 
 class ApplicationContent extends BaseComponent {
 
@@ -65,6 +66,10 @@ class ApplicationContent extends BaseComponent {
                     <Route exact path="/transaction/selling" render={
                         (props: any) =>
                             <TransactionSelling app={this.parentApp} />
+                    } />
+                    <Route exact path="/transaction/detail" render={
+                        (props: any) =>
+                            <TransactionDetail app={this.parentApp} />
                     } />
                     {/* -------- catalog -------- */}
                     <Route path="/catalog" render={

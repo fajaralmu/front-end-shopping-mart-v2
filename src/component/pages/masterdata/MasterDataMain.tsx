@@ -75,8 +75,8 @@ class MasterDataMain extends BaseMainMenus {
             return <MasterDataManagement app={this.parentApp} code={this.getCode()} />
         }
         return (
-            <div id="MasterDataMain">
-                <h2>MasterDataMain</h2>
+            <div id="MasterDataMain" className="container-fluid">
+                <h2>Master Data Page</h2>
             </div>
         )
     }

@@ -80,7 +80,7 @@ class MasterDataManagement extends BaseComponent {
             </div>
         }
         return (
-            <div id="MasterDataManagement">
+            <div id="MasterDataManagement" className="container-fluid">
                 <h2>{this.state.entityProperty.alias}</h2>
                 <MasterDataList app={this.parentApp} entityProperty={this.state.entityProperty} />
             </div>

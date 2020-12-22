@@ -2,6 +2,7 @@ import { Component } from 'react';
 import { byId } from '../utils/ComponentUtil';
 import WebResponse from './../models/WebResponse';
 import ApplicationProfile from './../models/ApplicationProfile';
+import User from './../models/User';
 
 export default class BaseComponent extends Component<any, any> {
     parentApp: any;
@@ -89,7 +90,7 @@ export default class BaseComponent extends Component<any, any> {
     commonAjaxWithProgress(method: Function, successCallback: Function, errorCallback: Function, ...params:any) {
         this.doAjax(method, true, successCallback, errorCallback, ...params);
     }
-    getLoggedUser() {
+    getLoggedUser():User|undefined {
         return this.props.loggedUser;
     }
     isLoggedUserNull(): boolean {

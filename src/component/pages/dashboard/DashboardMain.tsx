@@ -14,8 +14,11 @@ class DashboardMain extends BaseMainMenus
     }
     render(){
         return (
-            <div id="DashboardMain">
-                <h2>DashboardMain</h2>
+            <div id="DashboardMain" className="container-fluid">
+                <h2>Dashboard</h2>
+                <div className="alert alert-info">
+                    Welcome, <strong>{this.getLoggedUser()?.displayName}</strong>
+                </div>
             </div>
         )
     }

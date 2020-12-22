@@ -80,7 +80,7 @@ class TransactionPurchasing extends BaseTransactionComponent {
         const supplierExist = this.state.supplier != undefined;
         const showSubmitTrxButton = productFlowsPopulated == true && supplierExist == true;
         return (
-            <div id="TransactionPurchasing">
+            <div id="TransactionPurchasing" className="container-fluid">
                 <h2>Purchasing</h2>
                 <div className="row">
                     <div className="col-md-6" >

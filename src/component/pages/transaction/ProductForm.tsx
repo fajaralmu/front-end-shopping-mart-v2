@@ -8,6 +8,7 @@ import ProductFlow from '../../../models/ProductFlow';
 import Modal from '../../container/Modal';
 import MasterDataService from '../../../services/MasterDataService';
 import WebResponse from '../../../models/WebResponse';
+import FormGroup from './../../form/FormGroup';
 interface IState {
     product?: Product;
     productFlows: ProductFlow[];
@@ -15,7 +16,7 @@ interface IState {
     productNotFound: boolean;
 }
 export default class ProductForm extends BaseComponent {
-    
+
     transactionService = TransactionPurchasingService.getInstance();
     masterDataService = MasterDataService.getInstance();
     state: IState = {
@@ -52,7 +53,7 @@ export default class ProductForm extends BaseComponent {
         //     this.productLoaded, this.productNotFound, 'product', { code: code });
 
         this.commonAjaxWithProgress(this.transactionService.getStockInfo,
-            this.productLoaded, this.productNotFound,  code  );
+            this.productLoaded, this.productNotFound, code);
     }
     render() {
         return (
@@ -62,11 +63,12 @@ export default class ProductForm extends BaseComponent {
                     <Fragment>
                         <input type="submit" className="btn btn-secondary" value="Search" />
                         <input type="reset" className="btn btn-outline-secondary" />
-                    </Fragment> 
+                    </Fragment>
                 } >
                     <div className="form-group">
-                        <label>Product Code</label>
-                        <input required type="text" className="form-control" name="code" />
+                        <FormGroup label="Code">
+                            <input placeholder="Product code" required type="text" className="form-control" name="code" />
+                        </FormGroup>
                     </div>
                     <ProductDetail product={this.state.product} notFound={this.state.productNotFound} />
                 </Modal>

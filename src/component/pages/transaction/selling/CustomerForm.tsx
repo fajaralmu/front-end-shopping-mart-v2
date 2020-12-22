@@ -11,13 +11,14 @@ import ProductFlow from '../../../../models/ProductFlow';
 import Modal from '../../../container/Modal';
 import MasterDataService from '../../../../services/MasterDataService';
 import WebResponse from '../../../../models/WebResponse';
+import FormGroup from './../../../form/FormGroup';
 interface IState {
-    customer?: Customer; 
+    customer?: Customer;
     customerNotFound: boolean;
 }
-class CustomerForm extends BaseComponent { 
+class CustomerForm extends BaseComponent {
     masterDataService = MasterDataService.getInstance();
-    state: IState = { 
+    state: IState = {
         customerNotFound: false,
     }
     constructor(props: any) {
@@ -56,8 +57,9 @@ class CustomerForm extends BaseComponent {
                     </Fragment>
                 } >
                     <div className="form-group">
-                        <label>Customer Code</label>
-                        <input required type="number" className="form-control" name="id" />
+                        <FormGroup label="Code">
+                            <input placeholder="Customer code" required type="number" className="form-control" name="id" />
+                        </FormGroup>
                     </div>
                     <CustomerDetail customer={this.state.customer} notFound={this.state.customerNotFound} />
                 </Modal>
@@ -87,5 +89,5 @@ const CustomerDetail = (props: { customer?: Customer, notFound: boolean }) => {
 }
 
 export default withRouter(connect(
-    mapCommonUserStateToProps, 
+    mapCommonUserStateToProps,
 )(CustomerForm))

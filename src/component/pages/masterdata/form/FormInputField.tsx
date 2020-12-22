@@ -2,7 +2,7 @@
 
 import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux'; 
+import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../../constant/stores';
 import EntityElement from '../../../../models/EntityElement';
 import MasterDataService from '../../../../services/MasterDataService';
@@ -11,8 +11,9 @@ import WebResponse from '../../../../models/WebResponse';
 import FormInputImage from './FormInputImage';
 import FormInputImageMultiple from './FormInputImageMultiple';
 import BaseComponent from './../../../BaseComponent';
+import FormGroup from './../../../form/FormGroup';
 interface IState {
-    inputList: any[], 
+    inputList: any[],
     singlePreviewData?: string,
     inputElements: number[]
 }
@@ -85,19 +86,19 @@ class FormInputField extends BaseComponent {
         let recordValue = this.props.recordToEdit[fieldName];
         if (!recordValue) return;
 
-        const fieldType:FieldType = this.getEntityElement().fieldType;
+        const fieldType: FieldType = this.getEntityElement().fieldType;
         let defaultInputValue = undefined;
         switch (fieldType) {
             case FieldType.FIELD_TYPE_DYNAMIC_LIST:
             case FieldType.FIELD_TYPE_FIXED_LIST:
-                if (this.state.inputList.length == 0){
+                if (this.state.inputList.length == 0) {
                     break;
                 }
                 const optionValueName = this.getEntityElement().optionValueName;
                 if (!optionValueName) break;
                 defaultInputValue = recordValue[optionValueName];
                 break;
-        
+
             default:
                 defaultInputValue = recordValue;
                 break;
@@ -115,10 +116,9 @@ class FormInputField extends BaseComponent {
         }
         if (element.idField == true) {
             return (
-                <div className="form-group">
-                    <label>{element.lableName}</label>
+                <FormGroup orientation="vertical" label={element.lableName}>
                     <input {...requiredAttr} value="Generated" ref={this.ref} className="form-control" name={element.id} disabled />
-                </div>
+                </FormGroup>
             )
         }
         let input = <Fragment />;
@@ -140,7 +140,7 @@ class FormInputField extends BaseComponent {
             case FieldType.FIELD_TYPE_IMAGE:
                 input = element.multiple ?
                     <FormInputImageMultiple app={this.parentApp} recordToEdit={this.props.recordToEdit} element={element} />
-                    : 
+                    :
                     <FormInputImage app={this.parentApp} recordToEdit={this.props.recordToEdit} element={element} />
                 break;
             case FieldType.FIELD_TYPE_TEXTAREA:
@@ -151,10 +151,9 @@ class FormInputField extends BaseComponent {
 
         }
         return (
-            <div className="form-group" >
-                <label>{element.lableName}</label>
+            <FormGroup orientation='vertical' label={element.lableName}>
                 { input}
-            </div>
+            </FormGroup>
         )
     }
 

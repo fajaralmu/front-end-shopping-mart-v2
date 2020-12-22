@@ -74,7 +74,7 @@ class TransactionSelling extends BaseTransactionComponent {
         const showSubmitTrxButton = productFlowsPopulated == true && customerExist == true;
         const selectedProductFlow = this.state.selectedProductFlow;
         return (
-            <div id="TransactionSelling">
+            <div id="TransactionSelling"  className="container-fluid">
                 <h2>Selling</h2>
                 <div className="row">
                     <div className="col-md-6" >
