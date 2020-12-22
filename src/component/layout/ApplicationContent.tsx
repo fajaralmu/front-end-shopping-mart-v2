@@ -15,6 +15,7 @@ import CartMain from '../pages/cart/CartMain';
 import BaseMainMenus from './BaseMainMenus';
 import Menu from './../../models/Menu';
 import TransactionPurchasing from '../pages/transaction/purchasing/TransactionPurchasing';
+import TransactionSelling from '../pages/transaction/selling/TransactionSelling';
 
 class ApplicationContent extends BaseComponent {
 
@@ -60,6 +61,10 @@ class ApplicationContent extends BaseComponent {
                     <Route exact path="/transaction/purchasing" render={
                         (props: any) =>
                             <TransactionPurchasing app={this.parentApp} />
+                    } />
+                    <Route exact path="/transaction/selling" render={
+                        (props: any) =>
+                            <TransactionSelling app={this.parentApp} />
                     } />
                     {/* -------- catalog -------- */}
                     <Route path="/catalog" render={

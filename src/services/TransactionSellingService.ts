@@ -13,7 +13,6 @@ export default class TransactionSellingService extends BaseTransactionService{
     }
 
     getCustomerList = (raw:any) => {
-        
         const fieldsFilter = {};
         fieldsFilter[raw.key] = raw.value;
         const request:WebRequest = {
@@ -29,7 +28,5 @@ export default class TransactionSellingService extends BaseTransactionService{
         const endpoint = url.contextPath().concat("api/app/entity/get")
         return commonAjaxPostCalls(endpoint, request);
     }
-
-    
 
 }

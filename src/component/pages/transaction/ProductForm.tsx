@@ -1,13 +1,13 @@
 
 
 import React, { Fragment } from 'react';
-import BaseComponent from '../../../BaseComponent';
-import TransactionPurchasingService from '../../../../services/TransactionPurchasingService';
-import Product from '../../../../models/Product';
-import ProductFlow from '../../../../models/ProductFlow';
-import Modal from '../../../container/Modal';
-import MasterDataService from '../../../../services/MasterDataService';
-import WebResponse from '../../../../models/WebResponse';
+import BaseComponent from '../../BaseComponent';
+import TransactionPurchasingService from '../../../services/TransactionPurchasingService';
+import Product from '../../../models/Product';
+import ProductFlow from '../../../models/ProductFlow';
+import Modal from '../../container/Modal';
+import MasterDataService from '../../../services/MasterDataService';
+import WebResponse from '../../../models/WebResponse';
 interface IState {
     product?: Product;
     productFlows: ProductFlow[];
@@ -51,7 +51,7 @@ export default class ProductForm extends BaseComponent {
         // this.commonAjax(this.masterDataService.getBy,
         //     this.productLoaded, this.productNotFound, 'product', { code: code });
 
-        this.commonAjax(this.transactionService.getStockInfo,
+        this.commonAjaxWithProgress(this.transactionService.getStockInfo,
             this.productLoaded, this.productNotFound,  code  );
     }
     render() {

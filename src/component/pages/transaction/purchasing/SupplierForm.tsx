@@ -12,16 +12,12 @@ import Modal from '../../../container/Modal';
 import MasterDataService from './../../../../services/MasterDataService';
 import WebResponse from './../../../../models/WebResponse';
 interface IState {
-    supplier?: Supplier;
-    productFlows: ProductFlow[];
-    selectedProductFlow?: ProductFlow;
+    supplier?: Supplier; 
     supplierNotFound: boolean;
 }
-class SupplierForm extends BaseComponent {
-    TransactionService = TransactionPurchasingService.getInstance();
+class SupplierForm extends BaseComponent { 
     masterDataService = MasterDataService.getInstance();
-    state: IState = {
-        productFlows: [],
+    state: IState = { 
         supplierNotFound: false,
     }
     constructor(props: any) {
