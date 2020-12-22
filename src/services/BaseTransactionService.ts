@@ -68,4 +68,17 @@ export default class BaseTransactionService {
                 catch((e:any) =>{ console.error(e); reject(e)});
         })
     }
+
+    getStockInfo = (productCode:string) => {
+        const request:WebRequest = {
+            entity: "product",
+            filter: {
+                limit: 1,
+                exacts: true,
+                fieldsFilter: { "code": productCode, withStock: true }
+            }
+        }
+        const endpoint = url.contextPath().concat("api/public/get")
+        return commonAjaxPostCalls(endpoint, request);
+    }
 }

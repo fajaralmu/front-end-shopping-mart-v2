@@ -15,7 +15,8 @@ interface IState {
     productNotFound: boolean;
 }
 export default class ProductForm extends BaseComponent {
-    TransactionService = TransactionPurchasingService.getInstance();
+    
+    transactionService = TransactionPurchasingService.getInstance();
     masterDataService = MasterDataService.getInstance();
     state: IState = {
         productFlows: [],
@@ -47,8 +48,11 @@ export default class ProductForm extends BaseComponent {
         this.setState({ productNotFound: true });
     }
     loadProduct = (code: string) => {
-        this.commonAjax(this.masterDataService.getBy,
-            this.productLoaded, this.productNotFound, 'product', { code: code });
+        // this.commonAjax(this.masterDataService.getBy,
+        //     this.productLoaded, this.productNotFound, 'product', { code: code });
+
+        this.commonAjax(this.transactionService.getStockInfo,
+            this.productLoaded, this.productNotFound,  code  );
     }
     render() {
         return (
@@ -96,7 +100,7 @@ const ProductDetail = (props: { product?: Product, notFound: boolean }) => {
                         <td>{product.unit ? product.unit.name : '-'}</td>
                         <td>{product.category ? product.category.name : '-'}</td>
                         <td style={{ fontFamily: 'monospace' }}>{product.price}</td>
-                        <td></td>
+                        <td>{product.count}</td>
                     </tr>
                 </tbody>
             </table>
