@@ -36,7 +36,8 @@ class MasterDataMain extends BaseMainMenus {
             sidebarMenus.push({
                 name: element.label,
                 url: element.entityName,
-                code: element.entityName
+                code: element.entityName,
+                menuClass: element.iconClassName 
             });
         }
         if (this.props.setSidebarMenus) {

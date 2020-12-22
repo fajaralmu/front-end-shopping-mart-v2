@@ -122,17 +122,19 @@ export const menus: Menu[] = [
             {
                 code: 'trx_selling',
                 name: 'Selling',
-                menuClass: 'fas fa-folder',
+                menuClass: 'fas fa-cash-register',
                 url: 'selling',
             },
             {
                 code: 'trx_purchasing',
                 name: 'Purchasing',
+                menuClass: 'fas fa-shopping-basket',
                 url: 'purchasing',
             },
             {
                 code: 'trx_detail',
                 name: 'Transaction Detail',
+                menuClass: 'fas fa-clipboard-list',
                 url: 'detail',
             }
         ]
