@@ -5,11 +5,24 @@
 
 @media screen and (max-width: 991px) {
 	 
-	#sidebar {
+	/* #sidebar {
 		display: none;
+	} */
+	.menu-label, #sidebar-brand {
+		display:none;
 	}
-	#app-conten {
-		padding-left: 20px;
+	#sidebar {
+		width:min-content;
+	}
+	.sidebar-nav li {
+		text-indent: 5px;
+		
+	}
+	.sidebar-nav li  a{
+		padding-right: 10px;
+	}
+	#app-content {
+		padding-left: 80px;
 	}
 }
 

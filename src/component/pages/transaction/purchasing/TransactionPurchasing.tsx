@@ -115,7 +115,7 @@ class TransactionPurchasing extends BaseComponent {
             return;
         }
         const propName = e.target.name;
-        const value = e.target.value;
+        const value = e.target.type=='number'?parseInt(e.target.value) : e.target.value;
         productFlow[propName] = value;
         this.setState({ selectedProductFlow: productFlow });
 
@@ -273,6 +273,15 @@ class TransactionPurchasing extends BaseComponent {
                                             </tr>
                                         )
                                     })}
+                                    <tr>
+                                        <td colSpan={2}><strong>Total</strong></td>
+                                        <td>{totalUnitAndPrice(this.state.productFlows).unit}</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>{totalUnitAndPrice(this.state.productFlows).price}</td>
+                                        <td></td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </Modal>
@@ -280,14 +289,22 @@ class TransactionPurchasing extends BaseComponent {
                 </div>
             </div >
         )
+    } 
+} 
+
+const totalUnitAndPrice = (productFlows:ProductFlow[]):{unit:number, price:number} => {
+    let totalUnit:number = 0, totalPrice:number = 0;
+    for (let i = 0; i < productFlows.length; i++) {
+        const element = productFlows[i];
+        totalUnit+=(element.count?element.count:0);
+        totalPrice+=((element.count??0)*(element.price??0));
     }
-
+    return {
+        unit:totalUnit,
+        price:totalPrice    
+    }
 }
-const mapDispatchToProps = (dispatch: Function) => ({
-})
-
 
 export default withRouter(connect(
-    mapCommonUserStateToProps,
-    mapDispatchToProps
+    mapCommonUserStateToProps, 
 )(TransactionPurchasing))

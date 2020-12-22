@@ -33,7 +33,7 @@ class SideBar extends BaseComponent {
                     return (
                         <li key={"SIDEBAR_"+menu.code}><Link  to={parentMenu.url + "/" + menu.url}>
                             <span className={menuClassName} style={{marginRight:'5px'}}><i className={Menu.getIconClassName(menu)}></i></span>
-                            <span className={menuClassName} >{menu.name}</span>
+                            <span className={'menu-label '+menuClassName} >{menu.name}</span>
                         </Link></li>
                     )
                 })
@@ -46,7 +46,7 @@ class SideBar extends BaseComponent {
 const Brand = (props) => {
     if (props.show == false) return null;
     return (
-        <li className="sidebar-brand" style={{ marginBottom: '20px' }}><div
+        <li id="sidebar-brand" className="sidebar-brand" style={{ marginBottom: '20px' }}><div
             style={{
                 textAlign: 'center', paddingTop: '10px',
                 paddingBottom: '10px'
