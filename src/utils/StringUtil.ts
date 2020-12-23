@@ -1,7 +1,6 @@
 let index = 1;
 export const uniqueId = function () {
-	let string = "";
-	string = new Date().getUTCMilliseconds();
+	let string = new String(new Date().getUTCMilliseconds()).toString();
 	index++;
 	return index + "-" + string;
 }
