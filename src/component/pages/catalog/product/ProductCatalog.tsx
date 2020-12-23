@@ -57,21 +57,13 @@ class ProductCatalog extends BaseComponent {
             filter.page = page;
         }
         filter.fieldsFilter = this.state.fieldsFilter;
-        if (filter.fieldsFilter['withStock'] == true) {
-            this.commonAjaxWithProgress(
-                this.catalogService.getProductList,
-                this.productsLoaded,
-                this.productNotLoaded,
-                filter,
-            )
-        } else {
-            this.commonAjax(
-                this.catalogService.getProductList,
-                this.productsLoaded,
-                this.productNotLoaded,
-                filter,
-            )
-        }
+       const withProgess = filter.fieldsFilter['withStock'] == true;
+            
+        this.doAjax(
+            this.catalogService.getProductList, withProgess,
+            this.productsLoaded, this.productNotLoaded,
+            filter,
+        )
         filter.useExistingFilterPage = false;
         this.setState({ filter: filter });
     }
@@ -109,6 +101,11 @@ class ProductCatalog extends BaseComponent {
         filter.useExistingFilterPage = true;
         this.setState({ filter: filter });
     }
+    setLimit = (limit:number) => {
+        const filter = this.state.filter;
+        filter.limit = limit;
+        this.setState({ filter: filter });
+    }
 
     render() {
         const products: Product[] = this.state.products;
@@ -139,9 +136,14 @@ class ProductCatalog extends BaseComponent {
                                 <label style={{ paddingLeft: '5px' }}>{this.state.fieldsFilter['withStock'] == true ? "Yes" : "No"}</label>
                             </FormGroup>
                             <FormGroup orientation="vertical" className="col-md-3" label="Go To Page">
-                                <input min="1" type="number" onChange={
+                                <input name="page" min="1" type="number" onChange={
                                     (e) => this.setFilterPage(parseInt(e.target.value) - 1)
                                 } defaultValue={(this.state.filter.page ?? 0) + 1} className="form-control" />
+                            </FormGroup>
+                            <FormGroup orientation="vertical" className="col-md-3" label="Displayed Item">
+                                <input name="limit" min="1" type="number" onChange={
+                                    (e) => this.setLimit(parseInt(e.target.value))
+                                } defaultValue={this.state.filter.limit } className="form-control" />
                             </FormGroup>
                             <FormGroup orientation="vertical" className="col-md-3" label="Total Data">
                                 <label>{this.state.totalData}</label>
