@@ -87,21 +87,27 @@ class ProductCatalog extends BaseComponent {
         const input: HTMLInputElement = e.target;
         let name: string = input.name;
         let value: any;
+        
         if (input.type == 'checkbox') {
             value = input.checked == true;
         } else {
             value = input.value;
         }
         const fieldsFilter = this.state.fieldsFilter;
-        fieldsFilter[name] = value;
+        if (value == undefined || new String(value).trim() == "") {
+            if (fieldsFilter[name])
+                delete fieldsFilter[name];
+        } else {
+            fieldsFilter[name] = value;
+        }
         this.setState({ fieldsFilter: fieldsFilter });
     }
-    setFilterPage = (value:any) => {
+    setFilterPage = (value: any) => {
         const page = parseInt(value);
         const filter = this.state.filter;
         filter.page = page;
         filter.useExistingFilterPage = true;
-        this.setState({filter:filter});
+        this.setState({ filter: filter });
     }
 
     render() {
@@ -122,6 +128,7 @@ class ProductCatalog extends BaseComponent {
                             </FormGroup>
                             <FormGroup orientation="vertical" className="col-md-6" label="Category">
                                 <select onChange={this.setFieldsFilterValue} defaultValue={this.state.fieldsFilter['category,id[EXACTS]']} className="form-control" name="category,id[EXACTS]">
+                                    <option value="">All</option>
                                     {this.state.categories.map(category => {
                                         return <option value={category.id}>{category.name}</option>
                                     })}
@@ -133,8 +140,8 @@ class ProductCatalog extends BaseComponent {
                             </FormGroup>
                             <FormGroup orientation="vertical" className="col-md-3" label="Go To Page">
                                 <input min="1" type="number" onChange={
-                                    (e)=>this.setFilterPage(parseInt(e.target.value)-1)
-                                } defaultValue={(this.state.filter.page??0)+1} className="form-control" />
+                                    (e) => this.setFilterPage(parseInt(e.target.value) - 1)
+                                } defaultValue={(this.state.filter.page ?? 0) + 1} className="form-control" />
                             </FormGroup>
                             <FormGroup orientation="vertical" className="col-md-3" label="Total Data">
                                 <label>{this.state.totalData}</label>
@@ -143,28 +150,28 @@ class ProductCatalog extends BaseComponent {
                     </Modal>
                 </form>
                 <DataNotFound show={this.state.dataNotFound} />
-                <NavigationButtons limit={this.state.filter.limit??20} activePage={this.state.filter.page??0}
-                    totalData={this.state.totalData} onClick={(page)=>this.loadProducts(page)} />
-                <ProductList products={this.state.products}withStock={this.state.fieldsFilter['withStock']} />
+                <NavigationButtons limit={this.state.filter.limit ?? 20} activePage={this.state.filter.page ?? 0}
+                    totalData={this.state.totalData} onClick={(page) => this.loadProducts(page)} />
+                <ProductList products={this.state.products} withStock={this.state.fieldsFilter['withStock']} />
             </div>
         )
     }
 }
 
-const ProductList = (props: { products: Product[], withStock:boolean }) => {
+const ProductList = (props: { products: Product[], withStock: boolean }) => {
 
     return (
         <Modal title="Product List">
-            
+
             <div className="row">
                 {props.products.map(product => {
-                    const imgName = product.imageUrl ? product.imageUrl.split("~")[0]??'Default.bmp' : 'Default.bmp';
+                    const imgName = product.imageUrl ? product.imageUrl.split("~")[0] ?? 'Default.bmp' : 'Default.bmp';
                     return (
                         <div className="col-md-2 catalog-item rounded border">
-                                <img  className="rounded img-fluid" src={baseImageUrl + imgName} />
-                                <h6>{product.name}</h6>
-                                <span className="text-info"><strong>{beautifyNominal(product.price)}</strong></span>
-                                {props.withStock?<span style={{marginLeft:'5px'}} className='badge badge-dark'>{product.count}</span>:null}
+                            <img className="rounded img-fluid" src={baseImageUrl + imgName} />
+                            <h6>{product.name}</h6>
+                            <span className="text-info"><strong>{beautifyNominal(product.price)}</strong></span>
+                            {props.withStock ? <span style={{ marginLeft: '5px' }} className='badge badge-dark'>{product.count}</span> : null}
                         </div>
                     )
                 })}
