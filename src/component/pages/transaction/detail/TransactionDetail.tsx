@@ -14,6 +14,7 @@ import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
 import ProductFlow from './../../../../models/ProductFlow';
 import Product from '../../../../models/Product';
 import { totalUnitAndPrice } from '../BaseTransactionComponent';
+import SimpleError from './../../../alert/SimpleError';
 interface IState {
     transactionData?: Transaction;
     transactionCode?: string;
@@ -82,7 +83,7 @@ class TransactionDetail extends BaseComponent {
                     </form>
                     <div className="col-md-6"></div>
                     <div className="col-md-12">
-                        <DataNotFound show={this.state.dataNotFound == true} />
+                        <SimpleError show={this.state.dataNotFound == true} >Data not found</SimpleError>
                         <TransactionData show={this.state.transactionData != undefined} transaction={this.state.transactionData} />
                     </div>
                 </div>
@@ -170,14 +171,7 @@ const TransactionData = (props) => {
             </div>
         </Modal>
     )
-}
-const DataNotFound = (props) => {
-    if (props.show == false) return null;
-
-    return (
-        <div className="alert alert-warning">Data not found</div>
-    )
-}
+} 
 const mapDispatchToProps = (dispatch: Function) => ({
 })
 

@@ -16,6 +16,7 @@ import Category from './../../../../models/Category';
 import { baseImageUrl } from '../../../../constant/Url';
 import { beautifyNominal } from '../../../../utils/StringUtil';
 import NavigationButtons from '../../../navigation/NavigationButtons';
+import SimpleError from './../../../alert/SimpleError';
 class IState {
     products: Product[] = [];
     filter: Filter = {
@@ -57,8 +58,8 @@ class ProductCatalog extends BaseComponent {
             filter.page = page;
         }
         filter.fieldsFilter = this.state.fieldsFilter;
-       const withProgess = filter.fieldsFilter['withStock'] == true;
-            
+        const withProgess = filter.fieldsFilter['withStock'] == true;
+
         this.doAjax(
             this.catalogService.getProductList, withProgess,
             this.productsLoaded, this.productNotLoaded,
@@ -79,7 +80,7 @@ class ProductCatalog extends BaseComponent {
         const input: HTMLInputElement = e.target;
         let name: string = input.name;
         let value: any;
-        
+
         if (input.type == 'checkbox') {
             value = input.checked == true;
         } else {
@@ -101,9 +102,22 @@ class ProductCatalog extends BaseComponent {
         filter.useExistingFilterPage = true;
         this.setState({ filter: filter });
     }
-    setLimit = (limit:number) => {
+    setLimit = (limit: number) => {
         const filter = this.state.filter;
         filter.limit = limit;
+        this.setState({ filter: filter });
+    }
+    setOrder = (e) => {
+        const value = e.target.value;
+        const filter = this.state.filter;
+        if (value != '') {
+            const rawOrder: string[] = new String(value).split("-");
+            filter.orderBy = rawOrder[0];
+            filter.orderType = rawOrder[1];
+        } else {
+            delete filter.orderBy;
+            delete filter.orderType;
+        }
         this.setState({ filter: filter });
     }
 
@@ -123,7 +137,15 @@ class ProductCatalog extends BaseComponent {
                             <FormGroup orientation="vertical" className="col-md-6" label="Name">
                                 <input onChange={this.setFieldsFilterValue} defaultValue={this.state.fieldsFilter['name']} name="name" placeholder="Product Name" className="form-control" />
                             </FormGroup>
-                            <FormGroup orientation="vertical" className="col-md-6" label="Category">
+                            <FormGroup orientation="vertical" className="col-md-3" label="Order By">
+                                <select onChange={this.setOrder} className="form-control">
+                                    <option value="name-asc">Name [A-Z]</option>
+                                    <option value="name-desc">Name [Z-A]</option>
+                                    <option value="price-asc">Price [Cheap]</option>
+                                    <option value="price-desc">Price [Expensive]</option>
+                                </select>
+                            </FormGroup>
+                            <FormGroup orientation="vertical" className="col-md-3" label="Category">
                                 <select onChange={this.setFieldsFilterValue} defaultValue={this.state.fieldsFilter['category,id[EXACTS]']} className="form-control" name="category,id[EXACTS]">
                                     <option value="">All</option>
                                     {this.state.categories.map(category => {
@@ -131,6 +153,7 @@ class ProductCatalog extends BaseComponent {
                                     })}
                                 </select>
                             </FormGroup>
+
                             <FormGroup orientation="vertical" className="col-md-3" label="With Stock">
                                 <input onChange={this.setFieldsFilterValue} defaultChecked={this.state.fieldsFilter['withStock'] == true} type="checkbox" name="withStock" />
                                 <label style={{ paddingLeft: '5px' }}>{this.state.fieldsFilter['withStock'] == true ? "Yes" : "No"}</label>
@@ -143,7 +166,7 @@ class ProductCatalog extends BaseComponent {
                             <FormGroup orientation="vertical" className="col-md-3" label="Displayed Item">
                                 <input name="limit" min="1" type="number" onChange={
                                     (e) => this.setLimit(parseInt(e.target.value))
-                                } defaultValue={this.state.filter.limit } className="form-control" />
+                                } defaultValue={this.state.filter.limit} className="form-control" />
                             </FormGroup>
                             <FormGroup orientation="vertical" className="col-md-3" label="Total Data">
                                 <label>{this.state.totalData}</label>
@@ -151,7 +174,7 @@ class ProductCatalog extends BaseComponent {
                         </div>
                     </Modal>
                 </form>
-                <DataNotFound show={this.state.dataNotFound} />
+                <SimpleError show={this.state.dataNotFound}>Data not found</SimpleError>
                 <NavigationButtons limit={this.state.filter.limit ?? 20} activePage={this.state.filter.page ?? 0}
                     totalData={this.state.totalData} onClick={(page) => this.loadProducts(page)} />
                 <ProductList products={this.state.products} withStock={this.state.fieldsFilter['withStock']} />
@@ -161,10 +184,8 @@ class ProductCatalog extends BaseComponent {
 }
 
 const ProductList = (props: { products: Product[], withStock: boolean }) => {
-
     return (
         <Modal title="Product List">
-
             <div className="row">
                 {props.products.map(product => {
                     const imgName = product.imageUrl ? product.imageUrl.split("~")[0] ?? 'Default.bmp' : 'Default.bmp';
@@ -182,12 +203,6 @@ const ProductList = (props: { products: Product[], withStock: boolean }) => {
     )
 }
 
-const DataNotFound = (props) => {
-    if (props.show == false) return null;
-    return (
-        <div className="alert alert-warning">Data not found</div>
-    )
-}
 
 export default withRouter(connect(
     mapCommonUserStateToProps
