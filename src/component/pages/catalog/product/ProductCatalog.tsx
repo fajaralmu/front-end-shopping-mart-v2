@@ -13,16 +13,18 @@ import WebResponse from './../../../../models/WebResponse';
 import Modal from '../../../container/Modal';
 import FormGroup from '../../../form/FormGroup';
 import Category from './../../../../models/Category';
-import { baseImageUrl } from '../../../../constant/Url';
-import { beautifyNominal } from '../../../../utils/StringUtil';
 import NavigationButtons from '../../../navigation/NavigationButtons';
 import SimpleError from './../../../alert/SimpleError';
+import ProductCatalogList from './ProductCatalogList';
+import AnchorButton from '../../../navigation/AnchorButton';
 class IState {
-    products: Product[] = [];
+    products: Product[] = []; 
     filter: Filter = {
         limit: 20,
         page: 0,
         useExistingFilterPage: false,
+        orderBy: 'name',
+        orderType: 'asc'
     };
     fieldsFilter: {} = {
         withStock: true,
@@ -127,12 +129,10 @@ class ProductCatalog extends BaseComponent {
             <div id="ProductCatalog" className="container-fluid">
                 <h2>Product Catalog</h2>
                 <form onSubmit={this.filter} >
-                    <Modal title="Filter" footerContent={
-                        <Fragment>
-                            <input type="submit" className="btn btn-primary" />
-                            <input type="reset" className="btn btn-warning" />
-                        </Fragment>
-                    }>
+                    
+                    <Modal toggleable={true} title="Filter" footerContent={
+                        <input type="submit" className="btn btn-primary" />
+                    }  >
                         <div className="row">
                             <FormGroup orientation="vertical" className="col-md-6" label="Name">
                                 <input onChange={this.setFieldsFilterValue} defaultValue={this.state.fieldsFilter['name']} name="name" placeholder="Product Name" className="form-control" />
@@ -176,33 +176,12 @@ class ProductCatalog extends BaseComponent {
                 </form>
                 <SimpleError show={this.state.dataNotFound}>Data not found</SimpleError>
                 <NavigationButtons limit={this.state.filter.limit ?? 20} activePage={this.state.filter.page ?? 0}
-                    totalData={this.state.totalData} onClick={(page) => this.loadProducts(page)} />
-                <ProductList products={this.state.products} withStock={this.state.fieldsFilter['withStock']} />
+                    totalData={this.state.totalData} onClick={(page: number) => this.loadProducts(page)} />
+                <ProductCatalogList products={products} withStock={this.state.fieldsFilter['withStock']} />
             </div>
         )
     }
 }
-
-const ProductList = (props: { products: Product[], withStock: boolean }) => {
-    return (
-        <Modal title="Product List">
-            <div className="row">
-                {props.products.map(product => {
-                    const imgName = product.imageUrl ? product.imageUrl.split("~")[0] ?? 'Default.bmp' : 'Default.bmp';
-                    return (
-                        <div className="col-md-2 catalog-item rounded border">
-                            <img className="rounded img-fluid" src={baseImageUrl + imgName} />
-                            <h6>{product.name}</h6>
-                            <span className="text-info"><strong>{beautifyNominal(product.price)}</strong></span>
-                            {props.withStock ? <span style={{ marginLeft: '5px' }} className='badge badge-dark'>{product.count}</span> : null}
-                        </div>
-                    )
-                })}
-            </div>
-        </Modal>
-    )
-}
-
 
 export default withRouter(connect(
     mapCommonUserStateToProps

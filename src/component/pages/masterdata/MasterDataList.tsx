@@ -145,10 +145,9 @@ class MasterDataList extends BaseComponent {
             <div id="MasterDataList">
                 <AnchorButton show={this.entityProperty.editable == true} style={{ marginBottom: '5px' }} onClick={this.showCreateForm} iconClassName="fas fa-plus">Add Record</AnchorButton>
                 <form id="filter-form" onSubmit={(e) => { e.preventDefault() }}>
-                    <Modal title="Filter">
+                    <Modal title="Filter" toggleable={true}>
                         <div>
-                            <NavigationButtons limit={this.filter.limit ?? 5} totalData={this.state.recordData.totalData ?? 0}
-                                activePage={this.filter.page ?? 0} onClick={this.loadEntities} />
+                           
                             <div className="form-group row">
                                 <div className="col-6">
                                     <input onChange={(e) => { this.filter.useExistingFilterPage = true; this.filter.page = parseInt(e.target.value) - 1 }} min="1" className="form-control" type="number" placeholder="go to page" />
@@ -160,6 +159,8 @@ class MasterDataList extends BaseComponent {
                             <SubmitResetButton onSubmit={this.filterFormSubmit} onReset={this.filterReset} />
                         </div>
                     </Modal>
+                    <NavigationButtons limit={this.filter.limit ?? 5} totalData={this.state.recordData.totalData ?? 0}
+                                activePage={this.filter.page ?? 0} onClick={this.loadEntities} />
                     <Modal title="Data List">
                         <div style={{ overflow: 'scroll' }}>
                             <table className="table">

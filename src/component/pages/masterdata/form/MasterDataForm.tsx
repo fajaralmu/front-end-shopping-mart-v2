@@ -126,7 +126,7 @@ class MasterDataForm extends BaseComponent {
 
         const editModeStr = this.editMode ?  <span className="badge badge-warning">Edit Mode</span>:""
         return ( 
-            <div id="MasterDataForm" className="container-fluid">
+            <div id="MasterDataForm" >
                 <AnchorButton style={{ marginBottom: '5px' }} onClick={this.props.onClose} iconClassName="fas fa-angle-left">Back</AnchorButton>
                 <form onSubmit={this.onSubmit} id="record-form">
                 <Modal title={<span>{entityProperty.alias} Record Form {editModeStr}</span>} footerContent={<SubmitReset />}>
