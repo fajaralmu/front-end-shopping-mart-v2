@@ -17,6 +17,7 @@ import Menu from './../../models/Menu';
 import TransactionPurchasing from '../pages/transaction/purchasing/TransactionPurchasing';
 import TransactionSelling from '../pages/transaction/selling/TransactionSelling';
 import TransactionDetail from '../pages/transaction/detail/TransactionDetail';
+import ProductCatalog from '../pages/catalog/product/ProductCatalog';
 
 class ApplicationContent extends BaseComponent {
 
@@ -72,14 +73,18 @@ class ApplicationContent extends BaseComponent {
                             <TransactionDetail app={this.parentApp} />
                     } />
                     {/* -------- catalog -------- */}
-                    <Route path="/catalog" render={
-                        (props: any) => {
-                            console.debug("Render caralog");
+                    <Route exact path="/catalog" render={
+                        (props: any) => { 
                             return <CatalogMain  app={this.parentApp} />
                         }
                     } />
+                    <Route exact path="/catalog/product" render={
+                        (props: any) => { 
+                            return <ProductCatalog  app={this.parentApp} />
+                        }
+                    } />
                     {/* -------- home -------- */}
-                    <Route path="/cart" render={
+                    <Route exact path="/cart" render={
                         (props: any) =>
                             <CartMain  app={this.parentApp} />
                     } />

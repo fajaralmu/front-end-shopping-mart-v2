@@ -17,6 +17,6 @@ export default class Filter{
 	maxValue?:number;
 	
 	//
-	useExistingFilterPage?:boolean = false;
+	useExistingFilterPage?:boolean = false; 
 
 }

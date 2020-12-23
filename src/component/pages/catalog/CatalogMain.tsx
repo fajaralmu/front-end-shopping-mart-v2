@@ -16,7 +16,7 @@ class CatalogMain extends BaseMainMenus
     
     render(){
         return (
-            <div id="CatalogMain">
+            <div id="CatalogMain" className="container-fluid">
                 <h2>CatalogMain</h2>
             </div>
         )

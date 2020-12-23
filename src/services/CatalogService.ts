@@ -1,6 +1,7 @@
 import * as url from '../constant/Url'
 import { commonAjaxPostCalls } from './Promises';
 import WebRequest from './../models/WebRequest';
+import Filter from './../models/Filter';
 export default class CatalogService {
     private static instance?:CatalogService;
 
@@ -15,19 +16,15 @@ export default class CatalogService {
      * 
      * @param {JSON} raw 
      */
-    getProductList = (raw:any) => {
+    getProductList = (raw:Filter) => {
          
         const fieldsFilter = {
-            withStock: raw.withStock == true,
-            withSupplier: raw.withSupplier == true,
-            withCategories: raw.withCategories == true,
+            // withStock: raw.withStock == true,
+            // withSupplier: raw.withSupplier == true,
+            // withCategories: raw.withCategories == true,
             ... raw.fieldsFilter
         }
-        if (raw.key) {
-            fieldsFilter[raw.key] = raw.value;
-        } else {
-            fieldsFilter['name'] = raw.name;
-        } 
+        
         const request:WebRequest = {
             entity: "product",
             filter: {
@@ -35,8 +32,8 @@ export default class CatalogService {
                 limit: raw.limit ? raw.limit : 10,
                 page: raw.page ? raw.page : 0,
                 fieldsFilter: fieldsFilter,
-                orderBy: raw.orderby,
-                orderType: raw.ordertype
+                orderBy: raw.orderBy,
+                orderType: raw.orderType
             }
         }
         const endpoint = url.contextPath().concat("api/public/get");
@@ -49,12 +46,13 @@ export default class CatalogService {
      * @param {String} code 
      */
     getProductDetail = (code:string) => this.getProductList({
-        key: 'code',
-        value: code,
         limit: 1,
         exacts: true,
-        withStock: true,
-        withSupplier: true
+        fieldsFilter: {
+            'code' : code,
+            'withStock': true,
+            'withSupplier': true,
+        }
     })
 
   /**
