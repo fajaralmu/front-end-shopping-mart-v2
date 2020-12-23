@@ -15,6 +15,7 @@ import ProductFlow from './../../../../models/ProductFlow';
 import Product from '../../../../models/Product';
 import { totalUnitAndPrice } from '../BaseTransactionComponent';
 import SimpleError from './../../../alert/SimpleError';
+import { beautifyNominal } from '../../../../utils/StringUtil';
 interface IState {
     transactionData?: Transaction;
     transactionCode?: string;
@@ -150,10 +151,10 @@ const TransactionData = (props) => {
                                     <tr key={"pf-tr-"+i}>
                                         <td>{i+1}</td>
                                         <td>{product.name}</td>
-                                        <td>{productFlow.count}</td>
+                                        <td>{beautifyNominal(productFlow.count)}</td>
                                         <td>{product.unit?.name}</td>
-                                        <td>{price}</td>
-                                        <td>{(price??0) * (productFlow.count??0)}</td>
+                                        <td>{beautifyNominal(price)}</td>
+                                        <td>{beautifyNominal((price??0) * (productFlow.count??0))}</td>
                                     </tr>
                                 )
                             })}
@@ -161,10 +162,10 @@ const TransactionData = (props) => {
                     </table>
                     <div className="alert alert-info text-left">
                         <FormGroup label="Total unit">
-                        <p>{totalUnitAndPrice(productFlows).unit}</p>
+                        <p>{beautifyNominal(totalUnitAndPrice(productFlows).unit)}</p>
                         </FormGroup>
                         <FormGroup label="Total price">
-                        <p>{totalUnitAndPrice(productFlows).productFlowPrice}</p>
+                        <p>{beautifyNominal(totalUnitAndPrice(productFlows).productFlowPrice)}</p>
                         </FormGroup>
                     </div>
                 </div>

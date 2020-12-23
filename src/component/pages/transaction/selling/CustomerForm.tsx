@@ -48,7 +48,7 @@ class CustomerForm extends BaseComponent {
         return (
 
             <form onSubmit={this.searchCustomer} >
-                <Modal title="Customer form" footerContent={
+                <Modal toggleable={true}  title="Customer form" footerContent={
                     <Fragment>
                         <input type="submit" className="btn btn-secondary" value="Search" />
                         <input type="reset" className="btn btn-outline-secondary" />

@@ -29,7 +29,7 @@ export default class Modal extends Component<any, IState> {
                 <div className="modal-header">
                     <h5 className="modal-title">{title}</h5>
                     {this.props.toggleable?
-                    <button type="button" className="close" onClick={this.hideModal} aria-label="Close">
+                    <button type="button" className="btn btn-sm" onClick={this.hideModal} aria-label="Close">
                         <span aria-hidden="true">
                             <i className='fas fa-times'/>
                         </span>

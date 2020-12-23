@@ -59,7 +59,7 @@ export default class ProductForm extends BaseComponent {
         return (
 
             <form onSubmit={this.searchProduct} >
-                <Modal title="Product form" footerContent={
+                <Modal toggleable={true}  title="Product form" footerContent={
                     <Fragment>
                         <input type="submit" className="btn btn-secondary" value="Search" />
                         <input type="reset" className="btn btn-outline-secondary" />

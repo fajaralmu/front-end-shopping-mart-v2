@@ -50,7 +50,7 @@ class SupplierForm extends BaseComponent {
         return (
 
             <form onSubmit={this.searchSupplier} >
-                <Modal title="Supplier form" footerContent={
+                <Modal toggleable={true} title="Supplier form" footerContent={
                     <Fragment>
                         <input type="submit" className="btn btn-secondary" value="Search" />
                         <input type="reset" className="btn btn-outline-secondary" />
