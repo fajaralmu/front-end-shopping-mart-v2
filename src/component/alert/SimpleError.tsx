@@ -7,7 +7,7 @@ export default class SimpleError extends Component<any, any>
         if (this.props.show == false) return null;
         return (
             <div className="alert alert-warning">
-                {this.props.children}
+                {this.props.children??"Error Occured"}
             </div>
         )
     }

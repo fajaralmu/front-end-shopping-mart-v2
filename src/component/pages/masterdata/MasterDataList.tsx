@@ -20,6 +20,7 @@ import MasterDataForm from './form/MasterDataForm';
 import AnchorButton from '../../navigation/AnchorButton';
 import EditDeleteAction from './EditDeleteAction';
 import DataTableHeader from './DataTableHeader';
+import SimpleError from './../../alert/SimpleError';
 interface IState { recordData?: WebResponse, showForm: boolean, filter:Filter }
 class MasterDataList extends BaseComponent {
     masterDataService: MasterDataService = MasterDataService.getInstance();
@@ -93,16 +94,12 @@ class MasterDataList extends BaseComponent {
         this.checkDefaultData();
     }
     getRecordNumber = (i: number): number => {
-        let res = 0;
-        res = (this.state.filter.page ?? 0) * (this.state.filter.limit ?? 5) + i + 1;
+        let res = (this.state.filter.page ?? 0) * (this.state.filter.limit ?? 5) + i + 1;
         return res;
     }
     filterFormSubmit = (e) => {
         let page = this.state.filter.useExistingFilterPage ? this.state.filter.page : 0;
         this.loadEntities(page);
-        const filter = this.state.filter;
-        filter.useExistingFilterPage = false;
-        this.setState({filter:filter});
     }
     filterOnChange = (e) => {
         const name = e.target.name;
@@ -129,8 +126,7 @@ class MasterDataList extends BaseComponent {
         this.loadEntities(0);
     }
     showEditForm = (response:WebResponse) => {
-        if (!response.entities)
-        {
+        if (!response.entities) {
             return;
         }
         this.recordToEdit = response.entities[0];
@@ -159,7 +155,7 @@ class MasterDataList extends BaseComponent {
         const headerProps: HeaderProps[] = EntityProperty.getHeaderLabels(this.props.entityProperty);
         const resultList: any[] = this.state.recordData.entities ? this.state.recordData.entities : [];
         if (headerProps == undefined || resultList == undefined) {
-            return <h3>Error</h3>
+            return <SimpleError/>
         }
 
         if (this.state.showForm == true) {
@@ -199,17 +195,15 @@ class MasterDataList extends BaseComponent {
                                                 try {
                                                     return (<td>{value}</td>)
                                                 } catch (error) {
-                                                    return (<td></td>)
+                                                    return (<td>-</td>)
                                                 }
                                             })}
                                             <td><EditDeleteAction show={this.entityProperty.editable==true} showEditForm={this.showEditForm} record={result} entityProperty={this.entityProperty} reload={() => this.loadEntities(undefined)} app={this.parentApp} /></td>
                                         </tr>)
-
                                     })}
                                 </tbody>
                             </table>
                         </div>
-
                     </Modal>
                 </form>
             </div >
