@@ -16,9 +16,12 @@ export const updateCartMiddleware = store => next => action => {
     let newAction = Object.assign({}, action, { payload: action.payload });
     delete newAction.meta;
     store.dispatch(newAction);
-
-    if (action.payload.app) {
-        action.payload.app.refresh();
+    const apps:any[] = action.payload.apps;
+    for (let i = 0; i < apps.length; i++) {
+        const app = apps[i];
+        if (app.refresh){ 
+            app.refresh();
+        }
     }
 }
 

@@ -18,6 +18,7 @@ import TransactionPurchasing from '../pages/transaction/purchasing/TransactionPu
 import TransactionSelling from '../pages/transaction/selling/TransactionSelling';
 import TransactionDetail from '../pages/transaction/detail/TransactionDetail';
 import ProductCatalog from '../pages/catalog/product/ProductCatalog';
+import CartList from '../pages/cart/CartList';
 
 class ApplicationContent extends BaseComponent {
 
@@ -87,6 +88,10 @@ class ApplicationContent extends BaseComponent {
                     <Route exact path="/cart" render={
                         (props: any) =>
                             <CartMain  app={this.parentApp} />
+                    } />
+                    <Route exact path="/cart/cartlist" render={
+                        (props: any) =>
+                            <CartList  app={this.parentApp} />
                     } />
                 </Switch>
 

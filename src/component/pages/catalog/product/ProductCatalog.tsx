@@ -16,7 +16,6 @@ import Category from './../../../../models/Category';
 import NavigationButtons from '../../../navigation/NavigationButtons';
 import SimpleError from './../../../alert/SimpleError';
 import ProductCatalogList from './ProductCatalogList';
-import AnchorButton from '../../../navigation/AnchorButton';
 class IState {
     products: Product[] = []; 
     filter: Filter = {
@@ -149,7 +148,7 @@ class ProductCatalog extends BaseComponent {
                                 <select onChange={this.setFieldsFilterValue} defaultValue={this.state.fieldsFilter['category,id[EXACTS]']} className="form-control" name="category,id[EXACTS]">
                                     <option value="">All</option>
                                     {this.state.categories.map(category => {
-                                        return <option value={category.id}>{category.name}</option>
+                                        return <option key={"category-opt-"+category.id} value={category.id}>{category.name}</option>
                                     })}
                                 </select>
                             </FormGroup>
@@ -177,12 +176,11 @@ class ProductCatalog extends BaseComponent {
                 <SimpleError show={this.state.dataNotFound}>Data not found</SimpleError>
                 <NavigationButtons limit={this.state.filter.limit ?? 20} activePage={this.state.filter.page ?? 0}
                     totalData={this.state.totalData} onClick={(page: number) => this.loadProducts(page)} />
-                <ProductCatalogList products={products} withStock={this.state.fieldsFilter['withStock']} />
+                <ProductCatalogList app={this.parentApp} products={products} withStock={this.state.fieldsFilter['withStock']} />
             </div>
         )
     }
-}
-
+} 
 export default withRouter(connect(
     mapCommonUserStateToProps
 )(ProductCatalog))

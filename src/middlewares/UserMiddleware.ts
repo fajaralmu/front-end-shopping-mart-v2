@@ -1,8 +1,5 @@
 import * as common from './Common'
-import * as types from '../redux/types'
-
-
-const POST_METHOD = "post";
+import * as types from '../redux/types' 
 const axios = require('axios');
 export const performLoginMiddleware = store => next => action => {
     if (!action.meta || action.meta.type !== types.DO_LOGIN) {
@@ -13,14 +10,13 @@ export const performLoginMiddleware = store => next => action => {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     }).then(response => {
         const responseJson = response.data;
-        let loginKey = "";
-        let loginSuccess = false;
+        let loginKey:string = "";
+        let loginSuccess:boolean = false;
 
         if (responseJson.code != null && responseJson.code == "00") {
             loginKey = responseJson.token;
             console.log("api_token: ", loginKey);
-            loginSuccess = true;
-
+            loginSuccess = true; 
         }
         let newAction = Object.assign({}, action, {
             payload: {
@@ -33,7 +29,7 @@ export const performLoginMiddleware = store => next => action => {
         store.dispatch(newAction);
     })
         .catch(console.log)
-        .finally(param => { app.endLoading(); });
+        .finally(() => { app.endLoading(); });
 
 }
 

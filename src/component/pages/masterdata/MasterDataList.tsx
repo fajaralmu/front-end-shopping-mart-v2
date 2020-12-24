@@ -26,11 +26,7 @@ class MasterDataList extends BaseComponent {
     masterDataService: MasterDataService = MasterDataService.getInstance();
     state: IState = {
         showForm: false,
-        filter: {
-            limit: 5,
-            page: 0,
-            fieldsFilter: {}
-        }
+        filter: {  limit: 5,  page: 0, fieldsFilter: {} }
     }
     recordToEdit?:{} =undefined;
     entityProperty: EntityProperty;
@@ -50,7 +46,6 @@ class MasterDataList extends BaseComponent {
                     delete filter.fieldsFilter[key];
                 }
             }
-
         } 
         return filter;
     }
@@ -80,12 +75,8 @@ class MasterDataList extends BaseComponent {
         this.entityProperty = this.props.entityProperty;
         this.loadEntities(0);
     }
-    startLoading() {
-         //
-    }
-    endLoading() {
-         //
-    }
+    startLoading() { }
+    endLoading() { }
     componentDidUpdate() {
         super.componentDidUpdate();
         this.checkDefaultData();
@@ -135,7 +126,6 @@ class MasterDataList extends BaseComponent {
     showCreateForm = (e) => {
         this.recordToEdit = undefined;
         this.setState({ showForm: true });
-
     }
     updateFilterPage = (page:any) => {
         const filter = this.state.filter;

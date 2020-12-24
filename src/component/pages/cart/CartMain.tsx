@@ -14,8 +14,8 @@ class CartMain extends BaseMainMenus
     }
     render(){
         return (
-            <div id="CartMain">
-                <h2>CartMain</h2>
+            <div id="CartMain" className="container-fluid">
+                <h2>My Shopping Cart</h2>
             </div>
         )
     }

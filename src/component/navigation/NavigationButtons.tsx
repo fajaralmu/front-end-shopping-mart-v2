@@ -1,5 +1,6 @@
 
 import React, { Component } from 'react';
+import { uniqueId } from './../../utils/StringUtil';
 interface IProps {
     limit: number,
     totalData: number,
@@ -21,7 +22,7 @@ export default class NavigationButtons extends Component<IProps, any> {
                 <ul className="pagination">
                     <li className="page-item"><a className="page-link" onClick={(e) => this.props.onClick(previusPage)}>Previous</a></li>
                     {buttonIndexes.map((page, i) => {
-                        return <li className={"page-item "+(page-1 == this.props.activePage?"active":"")}><a className="page-link " onClick={(e) => this.props.onClick(page - 1)} >{page}</a></li>
+                        return <li key={"NAV-"+uniqueId()} className={"page-item "+(page-1 == this.props.activePage?"active":"")}><a className="page-link " onClick={(e) => this.props.onClick(page - 1)} >{page}</a></li>
                     })}
                     <li className="page-item"><a className="page-link" onClick={(e) => this.props.onClick(nextPage)}>Next</a></li>
                 </ul>
@@ -37,8 +38,10 @@ const generateButtonValues = (limit: number, totalData: number, currentPage: num
     const buttonCount = Math.ceil(totalData / limit);
 
     // console.debug("current page:", currentPage);
-    const min = (currentPage) - 2;
-    const max = (currentPage) + 2;
+    const min = (currentPage) - 1;
+    const max = (currentPage) + 3;
+    // const min = (currentPage) - 2;
+    // const max = (currentPage) + 2;
 
     // console.debug("min", min, "current page:", currentPage, "max", max);
     if (buttonCount > 1) {

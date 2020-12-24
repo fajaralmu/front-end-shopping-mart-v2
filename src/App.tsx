@@ -11,6 +11,7 @@ import { mapCommonUserStateToProps } from './constant/stores';
 import Loader from './component/loader/Loader';
 import Alert from './component/alert/Alert';
 import MainLayout from './component/layout/MainLayout';
+import WebResponse from './models/WebResponse';
 
 interface IState {
   loading: boolean;
@@ -122,10 +123,10 @@ class App extends Component<any, IState> {
   }
 
   componentDidUpdate() {
+    console.debug("APP UPDATED");
     if (this.props.applicationProfile) {
       updateFavicon(this.props.applicationProfile);
     }
-
   }
 
   componentDidMount() {
@@ -134,37 +135,29 @@ class App extends Component<any, IState> {
   }
 
   render() {
-
     if (!this.props.requestId) {
       return (<Loader realtime={false} text="Please wait..." type="loading" />)
     }
-
     const usedHost = url.contextPath();
-    const applicationProfile = this.props.applicationProfile;
-
     return (
       <Fragment>
         <Loading realtime={this.state.realtime} loading={this.state.loading} loadingPercentage={this.state.loadingPercentage} />
         {this.state.showAlert ?
-          <Alert
+          <Alert title={this.alertTitle}
             isError={this.alertIsError}
-            onClose={(e)=>this.setState({showAlert:false})}
+            onClose={(e) => this.setState({ showAlert: false })}
             yesOnly={this.alertIsYesOnly}
-            title={this.alertTitle}
             onYes={this.alertOnYesCallback} onNo={this.alertOnCancelCallback}
           >{this.alertBody}</Alert> :
           null}
         <MainLayout app={this} />
         <SockJsClient url={usedHost + 'realtime-app'} topics={['/wsResp/progress/' + localStorage.getItem("requestId")]}
-          onMessage={(msg) => { this.handleMessage(msg) }}
+          onMessage={(msg: WebResponse) => { this.handleMessage(msg) }}
           ref={(client) => { this.clientRef = client }} />
-
       </Fragment>
     )
   }
-
 }
-
 
 function Loading(props) {
   if (props.loading == true) {
@@ -185,7 +178,6 @@ function updateFavicon(profile: any) {
       link.setAttribute("rel", 'shortcut icon');
       document.head.appendChild(link);
     }
-
     link.setAttribute("href", url.baseImageUrl + 'ICON/' + profile.pageIcon);
   }
 }

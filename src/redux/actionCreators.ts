@@ -1,6 +1,7 @@
 import * as types from './types'
 import * as url from '../constant/Url'
-import { contextPath } from './../constant/Url';
+import { contextPath } from '../constant/Url';
+import Product from './../models/Product';
 
 const usedHost = url.contextPath();
 const apiBaseUrl = usedHost + "api/public/"
@@ -9,8 +10,9 @@ const apiAccount = usedHost + "api/app/account/"
 const apiAdmin = usedHost + "api/app/admin/"
 const apiTransaction = usedHost + "api/app/transaction/";
  
-export const updateCart = (cart, app) => {
-    return { type: types.UPDATE_CART, payload: { cart: cart, app: app }, meta: { type: types.UPDATE_CART } };
+export const updateCart = (cart:Product[], ...apps) => {
+    // console.debug("UPDATE CART: ", cart);
+    return { type: types.UPDATE_CART, payload: { cart: cart, apps: apps }, meta: { type: types.UPDATE_CART } };
 }
 
 export const resetProducts = () => {

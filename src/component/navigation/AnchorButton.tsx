@@ -11,7 +11,7 @@ export default class AnchorButton extends Component<any, any>
         return (
             <a style={this.props.style} onClick={this.props.onClick} className={btnClassName} >
                 {this.props.iconClassName?
-                <span style={{marginRight:'5px'}}><i className={this.props.iconClassName}/></span>
+                <span style={this.props.children?{marginRight:'5px'}:{}}><i className={this.props.iconClassName}/></span>
                 :
                 null}
                 {this.props.children}

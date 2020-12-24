@@ -4,8 +4,7 @@ import * as types from './types';
 import * as userMiddleware from '../middlewares/UserMiddleware'
 import * as managementMiddleware from '../middlewares/ManagementMiddleware'
 import * as realtimeChatMiddleware from '../middlewares/RealtimeChatMiddleware'
-import * as catalogMiddleware from '../middlewares/CatalogMiddleware'
-import * as common from '../middlewares/Common';
+import * as catalogMiddleware from '../middlewares/CatalogMiddleware' 
 import { commonAuthorizedHeader } from './../middlewares/Common';
 
 const POST_METHOD = "POST";

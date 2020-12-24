@@ -16,14 +16,14 @@ export default class Modal extends Component<any, IState> {
         this.setState({show:true});
     }
     render() {
-       
+       if (this.props.show == false) { return null; }
         const title = this.props.title?? "Title"; 
         if (this.props.toggleable == true && this.state.show == false) {
             return (
                 <AnchorButton style={{marginBottom:'10px'}} onClick={this.showModal} iconClassName="fas fa-angle-down" >Show {title}</AnchorButton>
             )
         }
-        const props = (({ footerContent, ...props }) => props)(this.props) // remove b and c
+        const props = (({ show, footerContent, toggleable, ...props }) => props)(this.props) // remove b and c
         return (
             <div {...props} className="modal-content " style={{marginBottom:'10px'}}>
                 <div className="modal-header">

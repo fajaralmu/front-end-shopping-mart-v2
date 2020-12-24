@@ -77,12 +77,20 @@ export const menus: Menu[] = [
     },
     {
         code: CART,
-        name: "My Cart",
+        name: "Shopping Cart",
         url: "/cart",
         menuClass: "fa fa-shopping-cart",
         active: false,
         authenticated: false,
-        showSidebar: true
+        showSidebar: true,
+        subMenus: [
+            {
+                code: 'cart_list',
+                name: 'Shopping Cart List',
+                menuClass: 'fas fa-shopping-bag',
+                url: 'cartlist',
+            },
+        ]
     },
     {
         code: DASHBOARD,
