@@ -1,6 +1,6 @@
 
 
-import React, { Component, Fragment } from 'react';
+import React from 'react';
 import BaseComponent from './../BaseComponent';
 import { mapCommonUserStateToProps } from './../../constant/stores';
 import { withRouter } from 'react-router-dom';

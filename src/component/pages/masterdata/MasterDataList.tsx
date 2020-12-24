@@ -19,10 +19,10 @@ import NavigationButtons from './../../navigation/NavigationButtons';
 import MasterDataForm from './form/MasterDataForm';
 import AnchorButton from '../../navigation/AnchorButton';
 import EditDeleteAction from './EditDeleteAction';
+import DataTableHeader from './DataTableHeader';
 interface IState { recordData?: WebResponse, showForm: boolean, filter:Filter }
 class MasterDataList extends BaseComponent {
     masterDataService: MasterDataService = MasterDataService.getInstance();
-    
     state: IState = {
         showForm: false,
         filter: {
@@ -54,14 +54,12 @@ class MasterDataList extends BaseComponent {
         return filter;
     }
     loadEntities = (page: number | undefined) => {
-        let filter = this.state.filter;
+        const filter = this.state.filter;
         const entityName = this.entityProperty.entityName;
         filter.page = page ?? filter.page;
-
-        filter = this.adjustFilter(filter);
         const request: WebRequest = {
             entity: entityName,
-            filter: filter
+            filter: this.adjustFilter(filter)
         }
         this.commonAjax(
             this.masterDataService.loadEntities,
@@ -78,7 +76,6 @@ class MasterDataList extends BaseComponent {
         if (this.entityProperty.entityName == this.props.entityProperty.entityName && this.state.recordData != undefined) {
             return;
         }
-        
         this.entityProperty = this.props.entityProperty;
         this.loadEntities(0);
     }
@@ -225,48 +222,8 @@ const SubmitResetButton = (props: any) => {
         <button onClick={props.onSubmit} className="btn btn-secondary btn-sm"><span className="icon"><i className="fas fa-play" /></span>Apply Filter</button>
         <button onClick={props.onReset} type="reset" className="btn btn-warning btn-sm"><span className="icon"><i className="fas fa-sync" /></span>Reset</button>
     </div>)
-}
-const DataTableHeader = (props: any) => {
-    const headerProps: HeaderProps[] = props.headerProps;
-    return (<thead>
-        <tr>
-            <th>No</th>
-            {headerProps.map(headerProp => {
-                const isDate = headerProp.isDate;
-                return (
-                    <th >
-                        <p>{headerProp.label}</p>
-                        <div>
-                            {isDate ?
-                                <Fragment>
-                                    <input onChange={props.filterOnChange} name={headerProp.value + "-day"}
-                                        className="input-filter" placeholder={"day"} />
-                                    <input onChange={props.filterOnChange} name={headerProp.value + "-month"}
-                                        className="input-filter" placeholder={"month"} />
-                                    <input onChange={props.filterOnChange} name={headerProp.value + "-year"}
-                                        className="input-filter" placeholder={"year"} />
-                                </Fragment>
-                                :
-                                <input onChange={props.filterOnChange} placeholder={headerProp.label}
-                                    className="input-filter" name={headerProp.value} />
-                            }</div>
-                        <div className="btn-group">
-                            <button data-orderType="asc" onClick={props.orderButtonOnClick} data-orderBy={headerProp.value} className="btn btn-outline-secondary btn-sm">
-                                <i data-orderType="asc" onClick={props.orderButtonOnClick} data-orderBy={headerProp.value} className="fas fa-angle-up" /></button>
-                            <button data-orderType="desc" onClick={props.orderButtonOnClick} data-orderBy={headerProp.value} className="btn btn-outline-secondary btn-sm">
-                                <i data-orderType="desc" onClick={props.orderButtonOnClick} data-orderBy={headerProp.value} className="fas fa-angle-down" /></button>
-                        </div>
-                    </th>
-                )
-            })}
-            <th>Action</th>
-        </tr>
-    </thead>)
-}
-const mapDispatchToProps = (dispatch: Function) => ({
-})
+} 
 
 export default withRouter(connect(
     mapCommonUserStateToProps,
-    mapDispatchToProps
 )(MasterDataList))

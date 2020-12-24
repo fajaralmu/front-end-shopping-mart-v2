@@ -14,7 +14,7 @@ export default class NavigationButtons extends Component<IProps, any> {
         const buttonIndexes = generateButtonValues(this.props.limit, this.props.totalData, this.props.activePage);
         if (buttonIndexes.length == 0) { return null }
         const lastIndex = buttonIndexes[buttonIndexes.length - 1];
-        const nextPage = this.props.activePage + 1 > lastIndex  ? 0 : this.props.activePage + 1;
+        const nextPage = this.props.activePage + 1 >= lastIndex  ? 0 : this.props.activePage + 1;
         const previusPage = this.props.activePage - 1 < 0? lastIndex-1 : this.props.activePage - 1;
         return (<div>
             <nav aria-label="Page navigation example">
