@@ -30,7 +30,7 @@ class ApplicationContent extends BaseComponent {
     }
     render() {
         return (
-            <div style={{ paddingTop: '10px' }}>
+            <div style={{ paddingTop: '65px' }}>
                 <Switch>
                     <Route path="/login" render={
                         (props: any) =>

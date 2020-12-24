@@ -19,16 +19,17 @@ import NavigationButtons from './../../navigation/NavigationButtons';
 import MasterDataForm from './form/MasterDataForm';
 import AnchorButton from '../../navigation/AnchorButton';
 import EditDeleteAction from './EditDeleteAction';
-interface IState { recordData?: WebResponse, showForm: boolean }
+interface IState { recordData?: WebResponse, showForm: boolean, filter:Filter }
 class MasterDataList extends BaseComponent {
     masterDataService: MasterDataService = MasterDataService.getInstance();
-    filter: Filter = {
-        limit: 5,
-        page: 0,
-        fieldsFilter: {}
-    };
+    
     state: IState = {
-        showForm: false
+        showForm: false,
+        filter: {
+            limit: 5,
+            page: 0,
+            fieldsFilter: {}
+        }
     }
     recordToEdit?:{} =undefined;
     entityProperty: EntityProperty;
@@ -39,45 +40,53 @@ class MasterDataList extends BaseComponent {
     /**
      * remove fieldsfilter empty values";
      */
-    adjustFilter = () => {
-        const fieldsFilter = this.filter.fieldsFilter;
+    adjustFilter = (filter:Filter):Filter => {
+        const fieldsFilter = filter.fieldsFilter;
         for (const key in fieldsFilter) {
             const element = fieldsFilter[key];
             if (element == undefined || element == null || new String(element).length == 0) {
-                if (this.filter.fieldsFilter != undefined) {
-                    delete this.filter.fieldsFilter[key];
+                if (filter.fieldsFilter != undefined) {
+                    delete filter.fieldsFilter[key];
                 }
             }
 
-        }
+        } 
+        return filter;
     }
     loadEntities = (page: number | undefined) => {
-
+        let filter = this.state.filter;
         const entityName = this.entityProperty.entityName;
-        this.filter.page = page ?? this.filter.page;
+        filter.page = page ?? filter.page;
 
-        this.adjustFilter();
+        filter = this.adjustFilter(filter);
         const request: WebRequest = {
             entity: entityName,
-            filter: this.filter
+            filter: filter
         }
         this.commonAjax(
             this.masterDataService.loadEntities,
             this.entitiesLoaded,
             this.showCommonErrorAlert,
             request
-        )
+        );
+       
     }
     entitiesLoaded = (response: WebResponse) => {
-        this.setState({ recordData: response });
+        this.setState({ recordData: response , filter:response.filter});
     }
     checkDefaultData = () => {
-        if (this.entityProperty == this.props.entityProperty && this.state.recordData != undefined) {
+        if (this.entityProperty.entityName == this.props.entityProperty.entityName && this.state.recordData != undefined) {
             return;
         }
-
+        
         this.entityProperty = this.props.entityProperty;
         this.loadEntities(0);
+    }
+    startLoading() {
+         //
+    }
+    endLoading() {
+         //
     }
     componentDidUpdate() {
         super.componentDidUpdate();
@@ -88,30 +97,38 @@ class MasterDataList extends BaseComponent {
     }
     getRecordNumber = (i: number): number => {
         let res = 0;
-        res = (this.filter.page ?? 0) * (this.filter.limit ?? 5) + i + 1;
+        res = (this.state.filter.page ?? 0) * (this.state.filter.limit ?? 5) + i + 1;
         return res;
     }
     filterFormSubmit = (e) => {
-        let page = this.filter.useExistingFilterPage ? this.filter.page : 0;
+        let page = this.state.filter.useExistingFilterPage ? this.state.filter.page : 0;
         this.loadEntities(page);
-        this.filter.useExistingFilterPage = false;
+        const filter = this.state.filter;
+        filter.useExistingFilterPage = false;
+        this.setState({filter:filter});
     }
     filterOnChange = (e) => {
         const name = e.target.name;
         const value = e.target.value;
-        if (this.filter.fieldsFilter == undefined) {
-            this.filter.fieldsFilter = {};
+        const filter = this.state.filter;
+        if (filter.fieldsFilter == undefined) {
+            filter.fieldsFilter = {};
         }
-        this.filter.fieldsFilter[name] = value;
+        filter.fieldsFilter[name] = value;
+        this.setState({filter:filter});
     }
     filterReset = (e) => {
-        this.filter.fieldsFilter = {};
-        this.filter.limit = 5;
+        const filter = this.state.filter;
+        filter.fieldsFilter = {};
+        filter.limit = 5;
+        this.setState({filter:filter});
     }
     orderButtonOnClick = (e) => {
         const dataset: DOMStringMap = e.target.dataset;
-        this.filter.orderBy = dataset['orderby'];
-        this.filter.orderType = dataset['ordertype'];
+        const filter = this.state.filter;
+        filter.orderBy = dataset['orderby'];
+        filter.orderType = dataset['ordertype'];
+        this.setState({filter:filter});
         this.loadEntities(0);
     }
     showEditForm = (response:WebResponse) => {
@@ -126,6 +143,17 @@ class MasterDataList extends BaseComponent {
         this.recordToEdit = undefined;
         this.setState({ showForm: true });
 
+    }
+    updateFilterPage = (page:any) => {
+        const filter = this.state.filter;
+        filter.useExistingFilterPage = true; 
+        filter.page = parseInt(page) - 1;
+        this.setState({filter:filter});
+    }
+    updateFilterLimit = (limit:any) => {
+        const filter = this.state.filter;
+        filter.limit = parseInt(limit);
+        this.setState({filter:filter});
     }
     render() {
         if (undefined == this.state.recordData) {
@@ -147,20 +175,19 @@ class MasterDataList extends BaseComponent {
                 <form id="filter-form" onSubmit={(e) => { e.preventDefault() }}>
                     <Modal title="Filter" toggleable={true}>
                         <div>
-                           
                             <div className="form-group row">
                                 <div className="col-6">
-                                    <input onChange={(e) => { this.filter.useExistingFilterPage = true; this.filter.page = parseInt(e.target.value) - 1 }} min="1" className="form-control" type="number" placeholder="go to page" />
+                                    <input value={(this.state.filter.page??0)+1} onChange={(e) => { this.updateFilterPage(e.target.value)}} min="1" className="form-control" type="number" placeholder="go to page" />
                                 </div>
                                 <div className="col-6">
-                                    <input onChange={(e) => this.filter.limit = parseInt(e.target.value)} min="1" className="form-control" type="number" placeholder="record per page" />
+                                    <input value={this.state.filter.limit} onChange={(e) =>this.updateFilterLimit(e.target.value)} min="1" className="form-control" type="number" placeholder="record per page" />
                                 </div>
                             </div>
                             <SubmitResetButton onSubmit={this.filterFormSubmit} onReset={this.filterReset} />
                         </div>
                     </Modal>
-                    <NavigationButtons limit={this.filter.limit ?? 5} totalData={this.state.recordData.totalData ?? 0}
-                                activePage={this.filter.page ?? 0} onClick={this.loadEntities} />
+                    <NavigationButtons limit={this.state.filter.limit ?? 5} totalData={this.state.recordData.totalData ?? 0}
+                                activePage={this.state.filter.page ?? 0} onClick={this.loadEntities} />
                     <Modal title="Data List">
                         <div style={{ overflow: 'scroll' }}>
                             <table className="table">

@@ -46,6 +46,12 @@ class MasterDataManagement extends BaseComponent {
             this.loadEntityProperty();
         }
     }
+    startLoading() {
+        //
+    }
+    endLoading() {
+        //
+    }
     loadEntityProperty() {
 
         if (undefined == this.code && this.loadingEntityProperty == true) {

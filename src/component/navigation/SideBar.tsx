@@ -13,11 +13,25 @@ class SideBar extends BaseComponent {
     constructor(props: { brand: any, sidebarMenus?: Menu[] }) {
         super(props, false);
     }
-    isSidebarActive = (menu:Menu) => {
+    isSidebarActive = (menu: Menu) => {
         const parentMenu: Menu = this.props.parentMenu;
         if (null == parentMenu) { return false; }
         const pathName = this.props.location.pathname;
-        return parentMenu.url+"/"+menu.url == pathName;
+        return parentMenu.url + "/" + menu.url == pathName;
+    }
+    componentDidMount() {
+        window.addEventListener('scroll', this.handleScroll);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.handleScroll);
+    }
+
+    handleScroll(event) {
+        let scrollTop = event.srcElement.body.scrollTop,
+            itemTranslate = Math.min(0, scrollTop / 3 - 60);
+        // console.debug("scrollTop: ", scrollTop);
+      
     }
     render() {
         const parentMenu: Menu = this.props.parentMenu;
@@ -25,15 +39,15 @@ class SideBar extends BaseComponent {
         const menus: Menu[] = this.props.sidebarMenus == null ? [] : this.props.sidebarMenus;
 
         return (
-            <ul id="sidebar"  className="sidebar-nav bg-secondary">
+            <ul id="sidebar" className="sidebar-nav bg-secondary">
                 <Brand show={parentMenu != null} brand={parentMenu} />
                 {menus.map(menu => {
-                    const isActive:boolean = this.isSidebarActive(menu);
-                    const menuClassName = isActive?'menu-active':'regular-menu';
+                    const isActive: boolean = this.isSidebarActive(menu);
+                    const menuClassName = isActive ? 'menu-active' : 'regular-menu';
                     return (
-                        <li key={"SIDEBAR_"+menu.code}><Link  to={parentMenu.url + "/" + menu.url}>
-                            <span className={menuClassName} style={{marginRight:'5px'}}><i className={Menu.getIconClassName(menu)}></i></span>
-                            <span className={'menu-label '+menuClassName} >{menu.name}</span>
+                        <li key={"SIDEBAR_" + menu.code}><Link to={parentMenu.url + "/" + menu.url}>
+                            <span className={menuClassName} style={{ marginRight: '5px' }}><i className={Menu.getIconClassName(menu)}></i></span>
+                            <span className={'menu-label ' + menuClassName} >{menu.name}</span>
                         </Link></li>
                     )
                 })

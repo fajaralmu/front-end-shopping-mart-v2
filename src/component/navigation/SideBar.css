@@ -1,9 +1,10 @@
 #sidebar {
-    position: relative;
+    position: fixed;
     /* background-color: black; */
-    height: 80vh;
+    height: 100%;
     width: 250px;
-    z-index: 100;
+    margin-top:55px;
+    z-index: 50;
 }
 .sidebar-nav {
     

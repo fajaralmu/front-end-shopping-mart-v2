@@ -83,14 +83,13 @@ class MainLayout extends BaseComponent {
                 <Header setMenuNull={this.setMenuNull} activeMenuCode={this.state.activeMenuCode} setMenu={this.setMenu} app={this.parentApp} />
                 <div id="page-content" className="container-fluid" style={{ margin: 0, padding: 0, minHeight: '80vh' }}>
                     {/* <div className="?"> */}
-                    {showSidebar == true ? <div style={{ position: 'absolute' }}>
-                        <div >
-                            <SideBar sidebarMenus={this.getSubMenus()} parentMenu={this.state.menu} app={this.props.app} />
-                        </div>
-                    </div> : null}
-                    <div className="container-fluid" style={{zIndex:  1 }} id={showSidebar ? "app-content" : "content"}>
+                    
+                    <div className="container-fluid" style={{zIndex:  1 , position:'absolute'}} id={showSidebar ? "app-content" : "content"}>
                         <ApplicationContent setSidebarMenus={this.setSidebarMenus} app={this.props.app} />
                     </div>
+                    {showSidebar == true ?  
+                            <SideBar sidebarMenus={this.getSubMenus()} parentMenu={this.state.menu} app={this.props.app} />
+                         : null}
                     {/* </div> */}
 
                 </div>

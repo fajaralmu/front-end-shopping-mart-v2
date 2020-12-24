@@ -25,7 +25,7 @@ class Header extends BaseComponent{
         const menus = getMenus();
         return (
 
-            <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+            <nav className="navbar navbar-expand-lg navbar-dark bg-dark" style={{zIndex:55, position:'fixed', width:'100%'}}>
                 <a className="navbar-brand" href="#">{this.getApplicationProfile().name}</a>
                 <button className="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03"
