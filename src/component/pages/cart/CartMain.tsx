@@ -16,6 +16,7 @@ class CartMain extends BaseMainMenus
         return (
             <div id="CartMain" className="container-fluid">
                 <h2>Shopping Cart</h2>
+                <div className="alert alert-info">Plan your shopping list</div>
             </div>
         )
     }

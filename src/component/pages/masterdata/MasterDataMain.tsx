@@ -10,23 +10,27 @@ import WebResponse from './../../../models/WebResponse';
 import Menu from './../../../models/Menu';
 import ManagementProperty from '../../../models/ManagementProperty';
 import MasterDataManagement from './MasterDataManagement';
+import Loader from '../../loader/Loader';
+import Card from '../../container/Card';
+import AnchorWithIcon from '../../navigation/AnchorWithIcon';
 
 interface IState {
-    code?:string
+    code?: string
     // managementProperties:ManagementProperty[]
 }
 class MasterDataMain extends BaseMainMenus {
     masterDataService: MasterDataService = MasterDataService.getInstance();
     state: IState = {
-        code : undefined
+        code: undefined
     };
     constructor(props: any) {
         super(props, "Master Data", true);
     }
-   
+
     managementPropertiesLoaded = (response: WebResponse) => {
         this.masterDataService.managementProperties = response.generalList ? response.generalList : [];
         this.setSidebarMenus();
+        this.refresh();
     }
     setSidebarMenus = () => {
         const sidebarMenus: Menu[] = [];
@@ -37,7 +41,7 @@ class MasterDataMain extends BaseMainMenus {
                 name: element.label,
                 url: element.entityName,
                 code: element.entityName,
-                menuClass: element.iconClassName 
+                menuClass: element.iconClassName
             });
         }
         if (this.props.setSidebarMenus) {
@@ -56,7 +60,7 @@ class MasterDataMain extends BaseMainMenus {
             this.showCommonErrorAlert
         );
     }
-    getCode = ():string => {
+    getCode = (): string => {
         return this.props.match.params.code;
     }
     componentDidMount() {
@@ -66,28 +70,47 @@ class MasterDataMain extends BaseMainMenus {
     componentDidUpdate() {
         this.setSidebarMenus();
         console.debug("this.getCode(): ", this.getCode());
-        if (this.state.code!=this.getCode()) {
-            this.setState({code:this.getCode()});
+        if (this.state.code != this.getCode()) {
+            this.setState({ code: this.getCode() });
         }
     }
 
     render() {
-        if (this.getCode()!=undefined && this.getCode() != null && this.getCode() != "") {
+        if (this.getCode() != undefined && this.getCode() != null && this.getCode() != "") {
             return <MasterDataManagement app={this.parentApp} code={this.getCode()} />
         }
+        if (this.masterDataService.managementProperties.length == 0) {
+            return <div className="container-fluid"><h3>Loading</h3></div>
+        }
+        const properties: ManagementProperty[] = this.masterDataService.managementProperties;
         return (
-            <div id="MasterDataMain" className="container-fluid">
+            <div className="container-fluid">
                 <h2>Master Data Page</h2>
+                <div className="row">
+                    {properties.map(property => {
+
+                        return (
+                            <div className="col-md-3" style={{ marginBottom: '10px' }}>
+                                <Card className="text-white bg-secondary">
+                                    <div className="row">
+                                        <div className="col-md-2"  >
+                                            <h4  ><i className={property.iconClassName} /></h4>
+                                        </div>
+                                        <div className="col-md-10">
+                                            <h4>{property.label}</h4>
+                                            <AnchorWithIcon className="btn btn-light" iconClassName="fas fa-angle-right" to={"/management/" + property.entityName} >View Page</AnchorWithIcon>
+                                        </div>
+                                    </div>
+
+                                </Card>
+                            </div>
+                        )
+                    })}
+                </div>
             </div>
         )
     }
-
 }
-const mapDispatchToProps = (dispatch: Function) => ({
-})
-
-
 export default withRouter(connect(
-    mapCommonUserStateToProps,
-    mapDispatchToProps
+    mapCommonUserStateToProps
 )(MasterDataMain))
