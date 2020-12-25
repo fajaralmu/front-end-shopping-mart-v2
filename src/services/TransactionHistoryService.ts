@@ -1,5 +1,7 @@
 import * as url from '../constant/Url'
 import { commonAjaxPostCalls } from './Promises';
+import Filter from './../models/Filter';
+import WebRequest from './../models/WebRequest';
 export default class TransactionHistoryService {
     private static instance?:TransactionHistoryService;
     
@@ -9,6 +11,13 @@ export default class TransactionHistoryService {
             this.instance = new TransactionHistoryService();
         }
         return this.instance;
+    }
+    getCashflowDetail = (filter:Filter) => {
+        const request:WebRequest = {
+            filter:filter
+        }
+        const endpoint = url.contextPath().concat("api/app/transaction/cashflowdetail");
+        return commonAjaxPostCalls(endpoint, request);
     }
     getTransactionData = function (transactionCode:string) {
         const endpoint = url.contextPath().concat("api/app/transaction/transactiondata/" + transactionCode)

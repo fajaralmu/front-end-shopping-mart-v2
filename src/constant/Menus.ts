@@ -23,7 +23,7 @@ export const getMenus = () => {
     }
     return menuSet;
 }
-export const extractMenuPath = (pathName:string) => {
+export const extractMenuPath = (pathName: string) => {
     const pathRaw = pathName.split('/');
     console.debug("pathName: ", pathName);
     let firstPath = pathRaw[0];
@@ -68,7 +68,7 @@ export const menus: Menu[] = [
             code: 'catalog_product',
             name: 'Product',
             url: 'product',
-            menuClass:'fas fa-cubes'
+            menuClass: 'fas fa-cubes'
         },
         {
             code: 'catalog_supplier',
@@ -101,21 +101,23 @@ export const menus: Menu[] = [
         active: false,
         authenticated: true,
         showSidebar: true,
-        subMenus:[
+        subMenus: [
             {
-                code:'dashboard_stat',
-                name:'Statistic',
-                url:'statistic'
+                code: 'dashboard_stat',
+                name: 'Statistic',
+                url: 'statistic',
+                menuClass: 'fas fa-chart-bar'
+
             },
             {
-                code:'dashboard_cashflow',
-                name:'Cashflow',
-                url:'cashflow'
+                code: 'dashboard_cashflow',
+                name: 'Cashflow',
+                url: 'cashflow'
             },
             {
-                code:'dashboard_productsales',
-                name:'Product Sales',
-                url:'productsales'
+                code: 'dashboard_productsales',
+                name: 'Product Sales',
+                url: 'productsales'
             }
         ]
     },

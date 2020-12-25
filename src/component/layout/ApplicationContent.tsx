@@ -20,6 +20,7 @@ import TransactionDetail from '../pages/transaction/detail/TransactionDetail';
 import ProductCatalog from '../pages/catalog/product/ProductCatalog';
 import CartList from '../pages/cart/CartList';
 import ProductCatalogDetail from '../pages/catalog/productdetail/ProductCatalogDetail';
+import DashboardStatistic from '../pages/dashboard/statistic/DashboardStatistic';
 
 class ApplicationContent extends BaseComponent {
 
@@ -44,9 +45,13 @@ class ApplicationContent extends BaseComponent {
                             <HomeMain app={this.parentApp} />
                     } />
                     {/* -------- dashboard -------- */}
-                    <Route path="/dashboard" render={
+                    <Route exact path="/dashboard" render={
                         (props: any) =>
                             <DashboardMain  app={this.parentApp} />
+                    } />
+                    <Route exact path="/dashboard/statistic" render={
+                        (props: any) =>
+                            <DashboardStatistic  app={this.parentApp} />
                     } />
                     {/* -------- masterdata -------- */}
                     <Route exact path="/management" render={

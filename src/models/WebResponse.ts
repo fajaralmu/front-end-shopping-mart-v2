@@ -2,8 +2,7 @@ import User from './User';
 import BaseEntity from './BaseEntity';
 import Filter from './Filter';
 import Transaction from './Transaction';
-import ProductFlowStock from './ProductFlowStock';
-import SessionData from './SessionData';
+import ProductFlowStock from './ProductFlowStock'; 
 import ApplicationProfile from './ApplicationProfile';
 import EntityProperty from './EntityProperty';
 
@@ -21,8 +20,7 @@ export default class WebResponse{
 	productFlowStock?:ProductFlowStock;
 	storage?:{};
 	maxValue?:number;
-	quantity?:number;
-	sessionData?:SessionData;
+	quantity?:number; 
 	applicationProfile?:ApplicationProfile;
 	percentage?:number;
 	transactionYears?:[];
@@ -34,8 +32,6 @@ export default class WebResponse{
 	loggedIn?:boolean;
 	success?:boolean;
 	entityClass?:any;
-	supplies?:[];
-	purchases?:[];
 	purchasings?:[];
 	sellings?:[];
 	entityProperty?:EntityProperty;
