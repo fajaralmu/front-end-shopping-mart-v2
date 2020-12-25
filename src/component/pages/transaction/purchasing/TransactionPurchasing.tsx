@@ -62,7 +62,7 @@ class TransactionPurchasing extends BaseTransactionComponent {
         transaction.supplier = this.state.supplier;
         const date = formData.get('date');
         transaction.transactionDate =date ? new Date(date.toString()) : new Date();
-        this.commonAjax(
+        this.commonAjaxWithProgress(
             this.transactionPurchasingService.submitTransactionPurchasing,
             this.transactionSucess,
             this.showCommonErrorAlert,

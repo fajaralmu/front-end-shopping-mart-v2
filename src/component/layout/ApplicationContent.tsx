@@ -19,6 +19,7 @@ import TransactionSelling from '../pages/transaction/selling/TransactionSelling'
 import TransactionDetail from '../pages/transaction/detail/TransactionDetail';
 import ProductCatalog from '../pages/catalog/product/ProductCatalog';
 import CartList from '../pages/cart/CartList';
+import ProductCatalogDetail from '../pages/catalog/productdetail/ProductCatalogDetail';
 
 class ApplicationContent extends BaseComponent {
 
@@ -82,6 +83,11 @@ class ApplicationContent extends BaseComponent {
                     <Route exact path="/catalog/product" render={
                         (props: any) => { 
                             return <ProductCatalog  app={this.parentApp} />
+                        }
+                    } />
+                    <Route exact path="/catalog/product/:code" render={
+                        (props: any) => { 
+                            return <ProductCatalogDetail  app={this.parentApp} />
                         }
                     } />
                     {/* -------- home -------- */}

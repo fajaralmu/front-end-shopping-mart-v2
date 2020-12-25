@@ -7,7 +7,7 @@ import Modal from './../../../container/Modal';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from './../../../../constant/stores';
 import { updateCart } from './../../../../redux/actionCreators';
-import { withRouter } from 'react-router-dom'; 
+import { withRouter, Link } from 'react-router-dom'; 
 import AnchorButton from './../../../navigation/AnchorButton'; 
 import BaseComponent from './../../../BaseComponent'; 
 class IState {
@@ -115,7 +115,7 @@ class ProductCatalogList extends BaseComponent
                         return (
                             <div key={"product_catalog_"+product.id} className="col-md-2 catalog-item rounded border">
                                 <img className="rounded img-fluid" src={baseImageUrl + imgName} />
-                                <h6>{product.name}</h6>
+                                <Link to={"/catalog/product/"+product.code} target="_blank" ><h6>{product.name}</h6></Link>
                                 <span className="text-info"><strong>{beautifyNominal(product.price)}</strong></span>
                                 {props.withStock ? <span style={{ marginLeft: '5px' }} className='badge badge-dark'>{product.count}</span> : null}
                                 {showCart ?

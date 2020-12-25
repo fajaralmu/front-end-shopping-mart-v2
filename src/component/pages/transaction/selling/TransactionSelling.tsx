@@ -55,7 +55,7 @@ class TransactionSelling extends BaseTransactionComponent {
         transaction.customer = this.state.customer;
         const date = formData.get('date');
         transaction.transactionDate = date ? new Date(date.toString()) : new Date();
-        this.commonAjax(
+        this.commonAjaxWithProgress(
             this.transactionSellingService.submitTransactionSelling,
             this.transactionSucess,
             this.showCommonErrorAlert,
