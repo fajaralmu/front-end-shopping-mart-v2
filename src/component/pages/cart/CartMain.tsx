@@ -10,12 +10,12 @@ import BaseMainMenus from './../../layout/BaseMainMenus';
 class CartMain extends BaseMainMenus
 {
     constructor(props:any){
-        super(props, "My Cart");
+        super(props, "Shopping Cart");
     }
     render(){
         return (
             <div id="CartMain" className="container-fluid">
-                <h2>My Shopping Cart</h2>
+                <h2>Shopping Cart</h2>
             </div>
         )
     }

@@ -68,7 +68,7 @@ const Brand = (props) => {
             <h3 className="text-light">
                 <i className={Menu.getIconClassName(props.brand)}></i>
             </h3>
-            <h4 className="text-light">{props.brand.name}</h4>
+            <Link to={props.brand.url}><h4 className="text-light">{props.brand.name}</h4></Link>
         </div></li>
     )
 }

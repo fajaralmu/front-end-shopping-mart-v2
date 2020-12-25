@@ -132,7 +132,7 @@ const TransactionData = (props) => {
                 </div>
                 <div className="col-md-12">
                     <h3>Products</h3>
-                    <table className="table">
+                    <table className="table table-striped">
                         <thead>
                             <tr>
                                 <th>No</th>
