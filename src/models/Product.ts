@@ -16,12 +16,24 @@ export default class Product extends BaseEntity{
 	count?:number;
 	suppliers?:Supplier[];
 
-	static getDefaultPicture(product:Product) :string{
+	static getDefaultPicture(product:Product, baseImageUrl?:string) :string{
 
 		if (product.imageUrl && product.imageUrl?.length >0) {
-			return product.imageUrl.split("~")[0];
+			return (baseImageUrl?baseImageUrl:null) + product.imageUrl.split("~")[0];
 		}
-		return "default.bmp";
+		return (baseImageUrl?baseImageUrl:null) + "default.bmp";
+	}
+	static getPictureNames(product:Product, baseImageUrl?:string): string[] {
+		if (product.imageUrl && product.imageUrl?.length >0) {
+			let names:string[] = product.imageUrl.split("~");
+			if (baseImageUrl) {
+				return names.map(name=>{
+					return baseImageUrl+name;
+				})
+			}
+			return names;
+		}
+		return [Product.getDefaultPicture(product, baseImageUrl)]
 	}
 
 }

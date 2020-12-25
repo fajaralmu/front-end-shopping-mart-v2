@@ -9,6 +9,7 @@ import WebResponse from './../../../../models/WebResponse';
 import Modal from './../../../container/Modal';
 import { baseImageUrl } from '../../../../constant/Url';
 import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
+import Carousel from './../../../container/Carousel';
 interface IState { product?:Product, notFound:boolean }
 class ProductCatalogDetail extends BaseComponent {
     catalogService:CatalogService = CatalogService.getInstance();
@@ -48,10 +49,10 @@ class ProductCatalogDetail extends BaseComponent {
             return <SimpleError>Not Found</SimpleError>
         }
         return (<div className="container-fluid">
-           
+            <h2>Product Detail</h2>
             {this.state.product?
             <Modal title={this.state.product.name}>
-                <img height="200" src={baseImageUrl+Product.getDefaultPicture(this.state.product)} />
+                <Carousel imageUrls={Product.getPictureNames(this.state.product, baseImageUrl)} />
                 <table className="table">
                     <thead>
                         <tr>

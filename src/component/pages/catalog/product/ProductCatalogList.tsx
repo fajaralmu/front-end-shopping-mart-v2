@@ -10,6 +10,7 @@ import { updateCart } from './../../../../redux/actionCreators';
 import { withRouter, Link } from 'react-router-dom'; 
 import AnchorButton from './../../../navigation/AnchorButton'; 
 import BaseComponent from './../../../BaseComponent'; 
+import Carousel from '../../../container/Carousel';
 class IState {
     showCart: boolean = false
 }
@@ -114,8 +115,10 @@ class ProductCatalogList extends BaseComponent
                         const productInCart = this.getProductInCart(product.id);
                         return (
                             <div key={"product_catalog_"+product.id} className="col-md-2 catalog-item rounded border">
-                                <img className="rounded img-fluid" src={baseImageUrl + imgName} />
-                                <Link to={"/catalog/product/"+product.code} target="_blank" ><h6>{product.name}</h6></Link>
+                                <img className="rounded img-fluid" src={baseImageUrl + imgName} /> 
+                                <Link to={"/catalog/product/"+product.code}
+                                //  target="_blank" 
+                                 ><h6>{product.name}</h6></Link>
                                 <span className="text-info"><strong>{beautifyNominal(product.price)}</strong></span>
                                 {props.withStock ? <span style={{ marginLeft: '5px' }} className='badge badge-dark'>{product.count}</span> : null}
                                 {showCart ?
