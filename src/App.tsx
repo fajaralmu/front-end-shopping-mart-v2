@@ -85,9 +85,10 @@ class App extends Component<any, IState> {
 
   }
 
-  handleMessage(msg: any) {
-    let percentage = Math.floor(msg.percentage);
-    if (msg.percentage < 0 || msg.percentage > 100) {
+  handleMessage(msg: WebResponse) {
+    const percentageFloat:number = msg.percentage??0; 
+    let percentage = Math.floor(percentageFloat);
+    if (percentageFloat < 0 || percentageFloat > 100) {
       this.endLoading();
     }
     this.setState({ loadingPercentage: percentage });
@@ -151,7 +152,7 @@ class App extends Component<any, IState> {
           >{this.alertBody}</Alert> :
           null}
         <MainLayout app={this} />
-        <SockJsClient url={usedHost + 'realtime-app'} topics={['/wsResp/progress/' + localStorage.getItem("requestId")]}
+        <SockJsClient url={usedHost + 'realtime-app'} topics={['/wsResp/progress/' + this.props.requestId]}
           onMessage={(msg: WebResponse) => { this.handleMessage(msg) }}
           ref={(client) => { this.clientRef = client }} />
       </Fragment>

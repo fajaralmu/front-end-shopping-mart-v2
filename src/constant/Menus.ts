@@ -60,7 +60,7 @@ export const menus: Menu[] = [
         code: CATALOG,
         name: "Catalog",
         url: "/catalog",
-        menuClass: "fa fa-store-alt",
+        menuClass: "fa fa-th-large",
         active: false,
         authenticated: false,
         showSidebar: true,
@@ -68,6 +68,7 @@ export const menus: Menu[] = [
             code: 'catalog_product',
             name: 'Product',
             url: 'product',
+            menuClass:'fas fa-cubes'
         },
         {
             code: 'catalog_supplier',

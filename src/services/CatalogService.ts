@@ -4,6 +4,7 @@ import WebRequest from './../models/WebRequest';
 import Filter from './../models/Filter';
 export default class CatalogService {
     private static instance?:CatalogService;
+    totalProduct:number = 0;
 
     static getInstance(): CatalogService {
         if (this.instance == null) {
@@ -11,7 +12,13 @@ export default class CatalogService {
         }
         return this.instance;
     }
-
+    setTotalProduct = (value:number) => {
+        this.totalProduct = value;
+    }
+    getTotalProduct = () => {
+        const endpoint = url.contextPath().concat("api/public/totalproduct");
+        return commonAjaxPostCalls(endpoint, {});
+    }
     /**
      * 
      * @param {JSON} raw 
