@@ -4,20 +4,22 @@ export const uniqueId = function () {
 	index++;
 	return index + "-" + string;
 }
- 
+
 export function beautifyNominal(val) {
 	if (val == "" || val == null) return "0";
-	const rawVal = parseInt(val);
-	let nominal =  Math.abs(val).toString();
+	const isDecimal:boolean = new String(val).includes(".");
+	
+	const rawVal = isDecimal? parseInt( new String(val).split(".")[0]) : parseInt(val);
+	let nominal = Math.abs(rawVal).toString();
 	let result = "";
-	if (nominal.length > 3) {
-		let zero = 0;
+	if (nominal.length > 3) { 
+		let zeroIndex: number = 0;
 		for (let i = nominal.length - 1; i > 0; i--) {
-			zero++;
+			zeroIndex++; 
 			result = nominal[i] + result;
-			if (zero == 3) {
+			if (zeroIndex == 3 ) {
 				result = "." + result;
-				zero = 0;
+				zeroIndex = 0;
 			}
 
 		}
@@ -25,8 +27,11 @@ export function beautifyNominal(val) {
 	} else {
 		result = val;
 	}
-	if(rawVal < 0){
-		result = "-"+result;
+	if (rawVal < 0) {
+		return rawVal;
+	}
+	if (isDecimal) {
+		result+= ","+ new String(val).split(".")[1];
 	}
 	return result;
 }

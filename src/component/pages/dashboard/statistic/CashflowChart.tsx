@@ -31,16 +31,16 @@ export default class CashflowChart extends Component<IProps, any>
                 <FormGroup label="Period" >{this.getPeriodString()}</FormGroup>
                 <div className="container-fluid" >
                     <h4>Selling</h4>
-                    <BarChart  dataSet={cashflowData.sellings ?? []} />
+                    <BarChart dataSet={cashflowData.sellings ?? []} />
                     <h4>Purchasing</h4>
-                    <BarChart   dataSet={cashflowData.purchasings ?? []} />
+                    <BarChart dataSet={cashflowData.purchasings ?? []} />
                 </div>
             </Card>
         )
     }
 }
 
-const maxCashflow = (cashflows:Cashflow[]) :number=>{
+const maxCashflow = (cashflows: Cashflow[]): number => {
     let max = 0;
     for (let i = 0; i < cashflows.length; i++) {
         const element = cashflows[i];
@@ -53,23 +53,34 @@ const maxCashflow = (cashflows:Cashflow[]) :number=>{
 }
 
 const BarChart = (props: { dataSet: Cashflow[] }) => {
-    const maxValue = maxCashflow(props.dataSet); 
-    const offsetX = 50;
+    const maxValue = maxCashflow(props.dataSet);
+    const middleYAxisValue = maxValue * 2 / 3;
+    const bottomYAxisValue = maxValue * 1 / 3;
+    const offsetX = 100, offsetY = 50;
+    const baseYIndex = 200, baseHeight = 150;
+    const lineWidth = (23) * (props.dataSet.length);
     return (
         <div style={{ height: '300px', overflowX: 'scroll' }}>
             <svg className="bg-light border" version="1.1"
-                baseProfile="full" width={offsetX*2 + (23) * (props.dataSet.length)} height={300} xmlns="http://www.w3.org/2000/svg">
+                baseProfile="full" width={offsetX * 2 + (23) * (props.dataSet.length)} height={300} xmlns="http://www.w3.org/2000/svg">
                 {props.dataSet.map((data, i) => {
-                    const percentage = (data.amount / maxValue) * 150;
+                    const percentage = (data.amount / maxValue) * baseHeight;
                     return (
-                        <Fragment key={uniqueId()+"-"+i}>
-                            <rect fill="green" x={offsetX + (23) * (i)} y={200 - percentage} height={percentage} width={20} ></rect>
-                            <text fontSize={10} x={offsetX + (23) * (i)} y={215}>{i+1}</text>
-                        </Fragment>)
+                        <Fragment key={uniqueId() + "-" + i}>
+                            <rect fill="green" x={offsetX + (23) * (i)} y={baseYIndex - percentage} height={percentage} width={20} ></rect>
+                            {i > 0 ? <text fontSize={10} x={offsetX + (23) * (i)} y={baseYIndex + 15}>{i}</text> : null}
+                        </Fragment>
+                    )
                 })}
-                <rect x={offsetX} y={202} className="bg-info" height={1} width={(23) * (props.dataSet.length)} />
-                <rect x={offsetX} y={50} className="bg-info" height={152} width={1}/>
-                <text fontSize={10} x={offsetX +1} y={52}>{beautifyNominal(maxValue)}</text>
+                <rect name="base_axis_x" x={offsetX} y={baseYIndex} height={2} width={lineWidth} />
+                <rect name="helper_line_top" fill="rgb(100,100,100)" x={offsetX} y={offsetY} height={1} width={lineWidth} />
+                <rect name="helper_line_middle" fill="rgb(100,100,100)" x={offsetX} y={offsetY + baseHeight * 1 / 3} height={1} width={lineWidth} />
+                <rect name="helper_line_bottom" fill="rgb(100,100,100)" x={offsetX} y={offsetY + baseHeight * 2 / 3} height={1} width={lineWidth} />
+                <rect name="base_axis_y" x={offsetX} y={offsetY} height={baseHeight} width={2} />
+
+                <text transform="translate(-10,-70) rotate(30)" name="top_val" fontSize={10} x={offsetX + 1} y={offsetY}>{beautifyNominal(maxValue)}</text>
+                <text transform="translate(-10,-70) rotate(30)" name="middle_val" fontSize={10} x={offsetX + 1} y={offsetY + baseHeight * 1 / 3}>{beautifyNominal(middleYAxisValue)}</text>
+                <text transform="translate(0,-70) rotate(30)" name="bottom_val" fontSize={10} x={offsetX + 1} y={offsetY + baseHeight * 2 / 3}>{beautifyNominal(bottomYAxisValue)}</text>
             </svg>
 
         </div>
