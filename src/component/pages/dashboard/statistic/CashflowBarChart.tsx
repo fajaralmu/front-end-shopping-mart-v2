@@ -59,7 +59,7 @@ export default class CashflowBarChart extends Component<IProps, IState>
     render() {
         const props = this.props;
         return (
-            <div style={{ height: '450px', overflowX: 'scroll' }}>
+            <div style={{ height: '470px', overflowX: 'scroll' }}>
                 <svg onMouseOut={this.unHover} className="bg-light border" version="1.1" baseProfile="full" width={this.offsetX * 2 + (23) * (props.dataSet.length)} height={300} xmlns="http://www.w3.org/2000/svg">
 
                     {props.dataSet.map((data, i) => {
@@ -69,7 +69,7 @@ export default class CashflowBarChart extends Component<IProps, IState>
                         const transform = "translate(" + xTranslated + "," + yTranslated + ") rotate(-30," + labelX + "," + labelY + ")";
                         const hovered = i == this.state.hoveredIndex;
                         return (
-                            <g className="chart-group" onMouseOver={(e) => this.hover(i)} onMouseOut={this.unHover} key={uniqueId() + "-" + i}>
+                            <g style={hovered?{cursor:'pointer'}:{}} className="chart-group" onMouseOver={(e) => this.hover(i)} onMouseOut={this.unHover} key={uniqueId() + "-" + i}>
                                 <rect fill={hovered ? "red" : "green"} x={this.offsetX + (23) * (i)} y={this.baseYIndex - percentage} height={percentage} width={20} ></rect>
                                 <text fill={hovered ? "red" : "black"} textAnchor="end" fontSize={10} x={labelX} y={labelY} transform={transform}>{data.month}-{data.year}</text>
                                 <circle cx={this.offsetX + (23) * (i + 1)} cy={this.baseYIndex} r="3" fill="red" />
