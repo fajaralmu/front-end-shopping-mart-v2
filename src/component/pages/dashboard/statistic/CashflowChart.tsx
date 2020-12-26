@@ -78,9 +78,9 @@ const BarChart = (props: { dataSet: Cashflow[] }) => {
                 <rect name="helper_line_bottom" fill="rgb(100,100,100)" x={offsetX} y={offsetY + baseHeight * 2 / 3} height={1} width={lineWidth} />
                 <rect name="base_axis_y" x={offsetX} y={offsetY} height={baseHeight} width={2} />
 
-                <text transform="translate(-10,-70) rotate(30)" name="top_val" fontSize={10} x={offsetX + 1} y={offsetY}>{beautifyNominal(maxValue)}</text>
-                <text transform="translate(-10,-70) rotate(30)" name="middle_val" fontSize={10} x={offsetX + 1} y={offsetY + baseHeight * 1 / 3}>{beautifyNominal(middleYAxisValue)}</text>
-                <text transform="translate(0,-70) rotate(30)" name="bottom_val" fontSize={10} x={offsetX + 1} y={offsetY + baseHeight * 2 / 3}>{beautifyNominal(bottomYAxisValue)}</text>
+                <text textAnchor="end" name="top_val" fontSize={10} x={offsetX } y={offsetY}>{beautifyNominal(maxValue)}</text>
+                <text textAnchor="end" name="middle_val" fontSize={10} x={offsetX } y={offsetY + baseHeight * 1 / 3}>{beautifyNominal(middleYAxisValue)}</text>
+                <text textAnchor="end" name="bottom_val" fontSize={10} x={offsetX } y={offsetY + baseHeight * 2 / 3}>{beautifyNominal(bottomYAxisValue)}</text>
             </svg>
 
         </div>
