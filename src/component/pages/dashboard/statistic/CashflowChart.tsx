@@ -6,6 +6,7 @@ import Filter from './../../../../models/Filter';
 import FormGroup from '../../../form/FormGroup';
 import Cashflow from './../../../../models/Cashflow';
 import { beautifyNominal } from '../../../../utils/StringUtil';
+import { uniqueId } from './../../../../utils/StringUtil';
 interface IProps {
     cashflowData: WebResponse
 }
@@ -55,20 +56,19 @@ const BarChart = (props: { dataSet: Cashflow[] }) => {
     const maxValue = maxCashflow(props.dataSet); 
     const offsetX = 50;
     return (
-        <div style={{ height: '250px', overflowX: 'scroll' }}>
-            
+        <div style={{ height: '300px', overflowX: 'scroll' }}>
             <svg className="bg-light border" version="1.1"
-                baseProfile="full" width={offsetX*2 + (23) * (props.dataSet.length)} height={200} xmlns="http://www.w3.org/2000/svg">
+                baseProfile="full" width={offsetX*2 + (23) * (props.dataSet.length)} height={300} xmlns="http://www.w3.org/2000/svg">
                 {props.dataSet.map((data, i) => {
-                    const percentage = (data.amount / maxValue) * 100;
+                    const percentage = (data.amount / maxValue) * 150;
                     return (
-                        <Fragment>
-                            <rect fill="black" x={offsetX + (23) * (i)} y={150 - percentage} height={percentage} width={20} ></rect>
-                            <text fontSize={10} x={offsetX + (23) * (i)} y={165}>{i+1}</text>
+                        <Fragment key={uniqueId()+"-"+i}>
+                            <rect fill="green" x={offsetX + (23) * (i)} y={200 - percentage} height={percentage} width={20} ></rect>
+                            <text fontSize={10} x={offsetX + (23) * (i)} y={215}>{i+1}</text>
                         </Fragment>)
                 })}
-                <rect x={offsetX} y={152} className="bg-info" height={1} width={(23) * (props.dataSet.length)} />
-                <rect x={offsetX} y={50} className="bg-info" height={102} width={1}/>
+                <rect x={offsetX} y={202} className="bg-info" height={1} width={(23) * (props.dataSet.length)} />
+                <rect x={offsetX} y={50} className="bg-info" height={152} width={1}/>
                 <text fontSize={10} x={offsetX +1} y={52}>{beautifyNominal(maxValue)}</text>
             </svg>
 
