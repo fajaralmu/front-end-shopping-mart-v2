@@ -1,5 +1,5 @@
 
-import React, { Component, Fragment } from 'react';
+import React, { Component, Fragment, RefObject } from 'react';
 import Card from '../../../container/Card';
 import WebResponse from './../../../../models/WebResponse';
 import Filter from './../../../../models/Filter';
@@ -13,7 +13,7 @@ interface IProps {
     cashflowData: WebResponse
 }
 export default class CashflowChart extends Component<IProps, any>
-{
+{ 
     constructor(props: IProps) {
         super(props);
     }
@@ -26,6 +26,9 @@ export default class CashflowChart extends Component<IProps, any>
         let filter: Filter = cashflowData.filter;
         return filter.month + "/" + filter.year + " - " + filter.monthTo + "/" + filter.yearTo;
     }
+    componentDidUpdate() {
+
+    }
     render() {
         const cashflowData = this.getCashflowData()
         return (
@@ -33,9 +36,9 @@ export default class CashflowChart extends Component<IProps, any>
                 <FormGroup label="Period" >{this.getPeriodString()}</FormGroup>
                 <div className="container-fluid" >
                     <h4>Selling</h4>
-                    <CashflowBarChart dataSet={cashflowData.sellings ?? []} />
+                    <CashflowBarChart updated={cashflowData.date??new Date()} dataSet={cashflowData.sellings ?? []} />
                     <h4>Purchasing</h4>
-                    <CashflowBarChart dataSet={cashflowData.purchasings ?? []} />
+                    <CashflowBarChart updated={cashflowData.date??new Date()} dataSet={cashflowData.purchasings ?? []} />
                 </div>
             </Card>
         )

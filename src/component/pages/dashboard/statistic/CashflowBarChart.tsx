@@ -7,10 +7,12 @@ import '../ChartSvg.css';
 import FormGroup from './../../../form/FormGroup';
 import Card from './../../../container/Card';
 interface IProps {
-    dataSet: Cashflow[]
+    dataSet: Cashflow[],
+    updated:Date
 }
 class IState {
     hoveredIndex: number = -1;
+    updated:Date = new Date();
 }
 export default class CashflowBarChart extends Component<IProps, IState>
 {
@@ -25,11 +27,20 @@ export default class CashflowBarChart extends Component<IProps, IState>
     state: IState = new IState();
     constructor(props: IProps) {
         super(props);
-        this.maxValue = Cashflow.maxAmount(props.dataSet);
+        this.updateSizes();
+
+    }
+    updateSizes = () => {
+        this.maxValue = Cashflow.maxAmount(this.props.dataSet);
         this.middleYAxisValue = Math.round(this.maxValue * 2 / 3);
         this.bottomYAxisValue = Math.round(this.maxValue * 1 / 3);
-        this.lineWidth = (23) * (props.dataSet.length);
-
+        this.lineWidth = (23) * (this.props.dataSet.length);
+    }
+    componentDidUpdate() {
+        this.updateSizes();
+        if (this.props.updated != this.state.updated) {
+            this.setState({updated:this.props.updated});
+        }
     }
     hover = (index: number) => {
         this.setState({ hoveredIndex: index });
@@ -75,6 +86,7 @@ export default class CashflowBarChart extends Component<IProps, IState>
                     <text textAnchor="end" name="middle_val" fontSize={10} x={this.offsetX} y={this.offsetY + this.baseHeight * 1 / 3}>{beautifyNominal(this.middleYAxisValue)}</text>
                     <text textAnchor="end" name="bottom_val" fontSize={10} x={this.offsetX} y={this.offsetY + this.baseHeight * 2 / 3}>{beautifyNominal(this.bottomYAxisValue)}</text>
                 </svg>
+                <p>Updated: {new Date(this.state.updated).toString()}</p>
                 <CashflowDetail cashflow={this.getActiveCashflow()} />
             </div>
         )
