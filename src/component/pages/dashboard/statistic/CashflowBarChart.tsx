@@ -4,6 +4,8 @@ import Cashflow from '../../../../models/Cashflow';
 import { beautifyNominal, uniqueId } from './../../../../utils/StringUtil';
 import { MONTHS } from './../../../../utils/DateUtil';
 import '../ChartSvg.css';
+import FormGroup from './../../../form/FormGroup';
+import Card from './../../../container/Card';
 interface IProps {
     dataSet: Cashflow[]
 }
@@ -48,7 +50,7 @@ export default class CashflowBarChart extends Component<IProps, IState>
         return (
             <div style={{ height: '450px', overflowX: 'scroll' }}>
                 <svg onMouseOut={this.unHover} className="bg-light border" version="1.1" baseProfile="full" width={this.offsetX * 2 + (23) * (props.dataSet.length)} height={300} xmlns="http://www.w3.org/2000/svg">
-                    
+
                     {props.dataSet.map((data, i) => {
                         const percentage = (data.amount / this.maxValue) * this.baseHeight;
                         const labelY = this.baseYIndex + 15, labelX = this.offsetX + 10 + (23) * (i);
@@ -83,24 +85,10 @@ const CashflowDetail = (props: { cashflow?: Cashflow }) => {
     const cashflow: Cashflow | undefined = props.cashflow;
     if (!cashflow) return null;
 
-    return <table className="table">
-        <thead>
-            <tr>
-                <th>Module</th>
-                <th>Month</th>
-                <th>Year</th>
-                <th>Qty</th>
-                <th>Amount</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>{cashflow.module}</td>
-                <td>{MONTHS[cashflow.month - 1]}</td>
-                <td>{cashflow.year}</td>
-                <td>{beautifyNominal(cashflow.count)}</td>
-                <td>{beautifyNominal(cashflow.amount)}</td>
-            </tr>
-        </tbody>
-    </table>
+    return (<div className="row">
+        <div className="col-md-6"><FormGroup label="Module"> {cashflow.module}</FormGroup></div>
+        <div className="col-md-6"><FormGroup label="Period">{MONTHS[cashflow.month - 1]} {cashflow.year}</FormGroup></div>
+        <div className="col-md-6"> <FormGroup label="Count">{beautifyNominal(cashflow.count)}</FormGroup></div>
+        <div className="col-md-6"> <FormGroup label="Amount">{beautifyNominal(cashflow.amount)}</FormGroup> </div>
+    </div >)
 }
