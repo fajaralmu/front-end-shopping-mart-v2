@@ -86,7 +86,7 @@ export default class CashflowBarChart extends Component<IProps, IState>
                     <text textAnchor="end" name="middle_val" fontSize={10} x={this.offsetX} y={this.offsetY + this.baseHeight * 1 / 3}>{beautifyNominal(this.middleYAxisValue)}</text>
                     <text textAnchor="end" name="bottom_val" fontSize={10} x={this.offsetX} y={this.offsetY + this.baseHeight * 2 / 3}>{beautifyNominal(this.bottomYAxisValue)}</text>
                 </svg>
-                <p>Updated: {new Date(this.state.updated).toString()}</p>
+                <p><i className="fas fa-history" /> {new Date(this.state.updated).toString()}</p>
                 <CashflowDetail cashflow={this.getActiveCashflow()} />
             </div>
         )

@@ -120,7 +120,7 @@ class ProductCatalogList extends BaseComponent
                                 //  target="_blank" 
                                  ><h6>{product.name}</h6></Link>
                                 <span className="text-info"><strong>{beautifyNominal(product.price)}</strong></span>
-                                {props.withStock ? <span style={{ marginLeft: '5px' }} className='badge badge-dark'>{product.count}</span> : null}
+                                {props.withStock ? <span style={{ marginLeft: '5px' }} className={product.count>0?'badge badge-warning text-dark':'badge badge-dark'}>{product.count}</span> : null}
                                 {showCart ?
                                     <div>
                                          

@@ -9,6 +9,7 @@ import { beautifyNominal } from '../../../../utils/StringUtil';
 import { uniqueId } from './../../../../utils/StringUtil';
 import { transform } from 'typescript';
 import CashflowBarChart from './CashflowBarChart';
+import { MONTHS } from './../../../../utils/DateUtil';
 interface IProps {
     cashflowData: WebResponse
 }
@@ -24,7 +25,7 @@ export default class CashflowChart extends Component<IProps, any>
         const cashflowData = this.getCashflowData();
         if (!cashflowData.filter) return "";
         let filter: Filter = cashflowData.filter;
-        return filter.month + "/" + filter.year + " - " + filter.monthTo + "/" + filter.yearTo;
+        return MONTHS[(filter.month??1)-1] + " " + filter.year + " - " + MONTHS[(filter.monthTo??1)-1] + " " + filter.yearTo;
     }
     componentDidUpdate() {
 
