@@ -5,6 +5,7 @@ import Modal from './../../../container/Modal';
 import FormGroup from './../../../form/FormGroup';
 import WebResponse from './../../../../models/WebResponse';
 import { MONTHS } from './../../../../utils/DateUtil';
+import Loader from './../../../loader/Loader';
 interface IProps {
     filter: Filter,
     onChange: Function,
@@ -22,7 +23,7 @@ export default class DashboardFilter extends Component<IProps, any> {
     render() {
         const cashflowData: WebResponse | undefined = this.props.cashflowData;
         if (!cashflowData) {
-            return <h2>Waiting....</h2>
+            return <div className="text-center text-secondary"><p>Please wait...</p></div>
         }
         const transactionYears: number[] = cashflowData.transactionYears ?? [];
         return (
