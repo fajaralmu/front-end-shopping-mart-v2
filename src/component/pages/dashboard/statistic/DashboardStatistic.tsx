@@ -64,7 +64,7 @@ class DashboardStatistic extends BaseComponent {
         return (
             <div className="container-fluid">
                 <h2>Statistics</h2>
-                <DashboardFilter onChange={this.updatePeriodFilter} onSubmit={this.filter} filter={this.state.filter} />
+                <DashboardFilter onChange={this.updatePeriodFilter} cashflowData={this.state.cashflowData} onSubmit={this.filter} filter={this.state.filter} />
                 {this.state.cashflowData ?
                     <CashflowChart cashflowData={this.state.cashflowData} />
                     : <SimpleError>No cashflow data</SimpleError>

@@ -23,7 +23,7 @@ export default class WebResponse{
 	quantity?:number; 
 	applicationProfile?:ApplicationProfile;
 	percentage?:number;
-	transactionYears?:[];
+	transactionYears?:number[];
 	requestId?:string;
 	token?:string;
 	monthlyDetailIncome?:{};
@@ -32,8 +32,8 @@ export default class WebResponse{
 	loggedIn?:boolean;
 	success?:boolean;
 	entityClass?:any;
-	purchasings?:[];
-	sellings?:[];
+	purchasings?:any[];
+	sellings?:any[];
 	entityProperty?:EntityProperty;
 
 }
