@@ -126,7 +126,7 @@ class ProductCatalogList extends BaseComponent
                                          
                                         <div className="btn-group">
                                             <AnchorButton onClick={(e)=>this.addOneToCart(product)} iconClassName="fas fa-plus" className="btn btn-primary btn-sm" />
-                                            <AnchorButton className="btn btn-outline-info btn-sm">{productInCart?.count??0}</AnchorButton>
+                                            <AnchorButton className="btn btn-outline-info btn-sm"><strong>{productInCart?.count??0}</strong></AnchorButton>
                                             <AnchorButton onClick={(e)=>this.reduceOneFromCart(product)} iconClassName="fas fa-minus" className="btn btn-primary btn-sm" />
                                             <AnchorButton onClick={(e)=>this.resetProductCart(product)} iconClassName="fas fa-sync" className="btn btn-warning btn-sm" />
                                         </div>

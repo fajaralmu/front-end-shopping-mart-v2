@@ -10,6 +10,8 @@ import SimpleError from '../../alert/SimpleError';
 import Modal from '../../container/Modal';
 import { beautifyNominal } from '../../../utils/StringUtil';
 import { baseImageUrl } from '../../../constant/Url';
+import AnchorButton from '../../navigation/AnchorButton';
+import { updateCart } from './../../../redux/actionCreators';
 
 class CartList extends BaseComponent {
     constructor(props: any) {
@@ -17,6 +19,26 @@ class CartList extends BaseComponent {
     }
     componentDidMount() {
         document.title = "Shopping Cart List";
+    }
+    removeFromCart = (product:Product) => {
+        const app = this;
+        this.showConfirmationDanger("Remove "+product.name+" from shopping list?")
+        .then(function(ok) {
+            if (ok) {
+                app.doRemoveFromCart(product);
+            }
+        })
+    }
+    doRemoveFromCart = (product:Product) => {
+        const cart:Product[] = this.props.cart
+        for (let i = 0; i < cart.length; i++) {
+            const element: Product = cart[i];
+            if (element.id == product.id) {
+                cart.splice(i, 1);
+                break;
+            }
+        }
+        this.props.updateCart(cart, this, this.parentApp );
     }
     render() {
         const cartList: Product[] = this.props.cart;
@@ -35,6 +57,7 @@ class CartList extends BaseComponent {
                             <th>Unit</th>
                             <th>Price</th>
                             <th>Total Price</th>
+                            <th>Option</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -52,6 +75,9 @@ class CartList extends BaseComponent {
                                     <td>{product.unit?.name}</td>
                                     <td>{beautifyNominal(product.price)}</td>
                                     <td>{beautifyNominal((product.count ?? 0) * (product.price ?? 0))}</td>
+                                    <td>
+                                        <AnchorButton onClick={(e)=>this.removeFromCart(product)} iconClassName="fas fa-times" className="btn btn-outline-danger"/>
+                                    </td>
                                 </tr>
                             )
                         })}
@@ -69,6 +95,11 @@ class CartList extends BaseComponent {
     }
 
 }
+
+const mapDispatchToProps = (dispatch: Function) => ({
+    updateCart: (cart: Product[], ...apps:any[] ) => dispatch(updateCart(cart, ...apps)),
+})
 export default withRouter(connect(
-    mapCommonUserStateToProps
+    mapCommonUserStateToProps,
+    mapDispatchToProps
 )(CartList))

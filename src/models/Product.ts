@@ -19,9 +19,9 @@ export default class Product extends BaseEntity{
 	static getDefaultPicture(product:Product, baseImageUrl?:string) :string{
 
 		if (product.imageUrl && product.imageUrl?.length >0) {
-			return (baseImageUrl?baseImageUrl:null) + product.imageUrl.split("~")[0];
+			return (baseImageUrl?baseImageUrl:"") + product.imageUrl.split("~")[0];
 		}
-		return (baseImageUrl?baseImageUrl:null) + "default.bmp";
+		return (baseImageUrl?baseImageUrl:"") + "default.bmp";
 	}
 	static getPictureNames(product:Product, baseImageUrl?:string): string[] {
 		if (product.imageUrl && product.imageUrl?.length >0) {
