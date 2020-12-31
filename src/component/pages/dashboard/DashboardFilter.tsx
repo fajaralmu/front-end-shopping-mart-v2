@@ -1,16 +1,16 @@
 
 import React, { Component } from 'react';
-import Filter from './../../../../models/Filter';
-import Modal from './../../../container/Modal';
-import FormGroup from './../../../form/FormGroup';
-import WebResponse from './../../../../models/WebResponse';
-import { MONTHS } from './../../../../utils/DateUtil';
-import Loader from './../../../loader/Loader';
+import Filter from '../../../models/Filter';
+import Modal from '../../container/Modal';
+import FormGroup from '../../form/FormGroup';
+import WebResponse from '../../../models/WebResponse';
+import { MONTHS } from '../../../utils/DateUtil';
+import Loader from '../../loader/Loader';
 interface IProps {
     filter: Filter,
     onChange: Function,
     onSubmit: (event: React.FormEvent<HTMLFormElement>) => void,
-    cashflowData?: WebResponse
+    transactionYears:number[]
 }
 export default class DashboardFilter extends Component<IProps, any> {
 
@@ -21,11 +21,7 @@ export default class DashboardFilter extends Component<IProps, any> {
         this.props.onChange(e);
     }
     render() {
-        const cashflowData: WebResponse | undefined = this.props.cashflowData;
-        if (!cashflowData) {
-            return <div className="text-center text-secondary"><p>Please wait...</p></div>
-        }
-        const transactionYears: number[] = cashflowData.transactionYears ?? [];
+        const transactionYears: number[]  = this.props.transactionYears;
         return (
             <form onSubmit={this.props.onSubmit}>
                 <Modal toggleable={true} title="Filter" footerContent={

@@ -12,6 +12,13 @@ export default class TransactionHistoryService {
         }
         return this.instance;
     }
+    getProductSales = (filter:Filter) => {
+        const request:WebRequest = {
+            filter:filter
+        }
+        const endpoint = url.contextPath().concat("api/app/transaction/productsales");
+        return commonAjaxPostCalls(endpoint, request);
+    }
     getCashflowDetail = (filter:Filter) => {
         const request:WebRequest = {
             filter:filter

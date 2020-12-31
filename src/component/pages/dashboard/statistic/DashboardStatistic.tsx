@@ -8,7 +8,7 @@ import Modal from './../../../container/Modal';
 import Filter from './../../../../models/Filter';
 import FormGroup from '../../../form/FormGroup';
 import WebResponse from './../../../../models/WebResponse';
-import DashboardFilter from './DashboardFilter';
+import DashboardFilter from '../DashboardFilter';
 import CashflowChart from './CashflowChart';
 import SimpleError from '../../../alert/SimpleError';
 const date = new Date();
@@ -60,11 +60,12 @@ class DashboardStatistic extends BaseComponent {
     }
 
     render() {
-
+        const cashflowData = this.state.cashflowData;
         return (
             <div className="container-fluid">
                 <h2>Statistics</h2>
-                <DashboardFilter onChange={this.updatePeriodFilter} cashflowData={this.state.cashflowData} onSubmit={this.filter} filter={this.state.filter} />
+                <DashboardFilter onChange={this.updatePeriodFilter} transactionYears={cashflowData && cashflowData.transactionYears? cashflowData.transactionYears:[]} 
+                    onSubmit={this.filter} filter={this.state.filter} />
                 {this.state.cashflowData ?
                     <CashflowChart cashflowData={this.state.cashflowData} />
                     : <SimpleError>No cashflow data</SimpleError>

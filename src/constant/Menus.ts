@@ -110,14 +110,10 @@ export const menus: Menu[] = [
 
             },
             {
-                code: 'dashboard_cashflow',
-                name: 'Cashflow',
-                url: 'cashflow'
-            },
-            {
                 code: 'dashboard_productsales',
                 name: 'Product Sales',
-                url: 'productsales'
+                url: 'productsales',
+                menuClass: 'fas fa-chart-line'
             }
         ]
     },

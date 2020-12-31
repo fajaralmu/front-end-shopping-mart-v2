@@ -21,6 +21,8 @@ import ProductCatalog from '../pages/catalog/product/ProductCatalog';
 import CartList from '../pages/cart/CartList';
 import ProductCatalogDetail from '../pages/catalog/productdetail/ProductCatalogDetail';
 import DashboardStatistic from '../pages/dashboard/statistic/DashboardStatistic';
+import ProductSales from './../../models/ProductSales';
+import ProductSalesPage from '../pages/dashboard/sales/ProductSalesPage';
 
 class ApplicationContent extends BaseComponent {
 
@@ -52,6 +54,10 @@ class ApplicationContent extends BaseComponent {
                     <Route exact path="/dashboard/statistic" render={
                         (props: any) =>
                             <DashboardStatistic  app={this.parentApp} />
+                    } />
+                    <Route exact path="/dashboard/productsales" render={
+                        (props: any) =>
+                            <ProductSalesPage  app={this.parentApp} />
                     } />
                     {/* -------- masterdata -------- */}
                     <Route exact path="/management" render={
