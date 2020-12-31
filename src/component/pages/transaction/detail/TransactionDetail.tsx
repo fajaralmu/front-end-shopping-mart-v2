@@ -72,7 +72,7 @@ class TransactionDetail extends BaseComponent {
                         <Modal title="Transaction Info"
                             footerContent={
                                 <Fragment>
-                                    <AnchorWithIcon iconClassName="fas fa-list" attributes={{ target: '_blank' }} to="/management/transaction" className="btn btn-secondary" >Transaction Record</AnchorWithIcon>
+                                    <AnchorWithIcon iconClassName="fas fa-list" attributes={{ target: '_blank' }} to="/management/transaction" className="btn btn-secondary" >Transactions Record</AnchorWithIcon>
                                     <input type="submit" className="btn btn-primary" value="Search" />
                                 </Fragment>
                             }

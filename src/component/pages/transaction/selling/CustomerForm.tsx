@@ -10,6 +10,7 @@ import Modal from '../../../container/Modal';
 import MasterDataService from '../../../../services/MasterDataService';
 import WebResponse from '../../../../models/WebResponse';
 import FormGroup from './../../../form/FormGroup';
+import AnchorWithIcon from './../../../navigation/AnchorWithIcon';
 interface IState {
     customer?: Customer;
     customerNotFound: boolean;
@@ -50,6 +51,7 @@ class CustomerForm extends BaseComponent {
             <form onSubmit={this.searchCustomer} >
                 <Modal toggleable={true}  title="Customer form" footerContent={
                     <Fragment>
+                        <AnchorWithIcon iconClassName="fas fa-list" attributes={{ target: '_blank' }} to="/management/customer" className="btn btn-outline-secondary" />
                         <input type="submit" className="btn btn-secondary" value="Search" />
                         <input type="reset" className="btn btn-outline-secondary" />
                     </Fragment>

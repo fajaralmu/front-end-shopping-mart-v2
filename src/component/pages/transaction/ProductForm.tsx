@@ -9,6 +9,7 @@ import Modal from '../../container/Modal';
 import MasterDataService from '../../../services/MasterDataService';
 import WebResponse from '../../../models/WebResponse';
 import FormGroup from './../../form/FormGroup';
+import AnchorWithIcon from './../../navigation/AnchorWithIcon';
 interface IState {
     product?: Product;
     productFlows: ProductFlow[];
@@ -61,6 +62,7 @@ export default class ProductForm extends BaseComponent {
             <form onSubmit={this.searchProduct} >
                 <Modal toggleable={true}  title="Product form" footerContent={
                     <Fragment>
+                        <AnchorWithIcon iconClassName="fas fa-list" attributes={{ target: '_blank' }} to="/management/product" className="btn btn-outline-secondary" />
                         <input type="submit" className="btn btn-secondary" value="Search" />
                         <input type="reset" className="btn btn-outline-secondary" />
                     </Fragment>

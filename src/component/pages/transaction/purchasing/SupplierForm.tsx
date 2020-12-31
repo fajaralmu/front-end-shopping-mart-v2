@@ -12,6 +12,7 @@ import Modal from '../../../container/Modal';
 import MasterDataService from './../../../../services/MasterDataService';
 import WebResponse from './../../../../models/WebResponse';
 import FormGroup from './../../../form/FormGroup';
+import AnchorWithIcon from './../../../navigation/AnchorWithIcon';
 interface IState {
     supplier?: Supplier; 
     supplierNotFound: boolean;
@@ -52,6 +53,7 @@ class SupplierForm extends BaseComponent {
             <form onSubmit={this.searchSupplier} >
                 <Modal toggleable={true} title="Supplier form" footerContent={
                     <Fragment>
+                        <AnchorWithIcon iconClassName="fas fa-list" attributes={{ target: '_blank' }} to="/management/supplier" className="btn btn-outline-secondary" />
                         <input type="submit" className="btn btn-secondary" value="Search" />
                         <input type="reset" className="btn btn-outline-secondary" />
                     </Fragment>
