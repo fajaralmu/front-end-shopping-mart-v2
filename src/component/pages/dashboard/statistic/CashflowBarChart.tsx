@@ -60,7 +60,7 @@ export default class CashflowBarChart extends Component<IProps, IState>
         const props = this.props;
         return (
             <div>
-                <div style={{ minHeight: '350px', overflowX: 'scroll' }}>
+                <div className="border border-secondary" style={{ minHeight: '300px', overflowX: 'scroll' }}>
                     <svg onMouseOut={this.unHover} className="bg-light border" version="1.1" baseProfile="full" width={this.offsetX * 2 + (23) * (props.dataSet.length)} height={300} xmlns="http://www.w3.org/2000/svg">
 
                         {props.dataSet.map((data, i) => {
