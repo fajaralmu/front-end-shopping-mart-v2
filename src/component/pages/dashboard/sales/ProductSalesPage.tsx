@@ -27,7 +27,7 @@ class IState {
         page: 0,
         limit: DEFAULT_LIMIT
     };
-    sortType:string = "asc";
+    sortType: string = "asc";
     activeSalesDataIndex: number = -1;
     salesData?: WebResponse = undefined
 }
@@ -50,14 +50,15 @@ class ProductSalesPage extends BaseComponent {
         this.setState({ filter: filter });
         this.loadSales();
     }
-    loadMore = () => {
-        const filter = this.state.filter;
-        filter.limit = (filter.limit ?? 0) + 50;
-        this.setState({ filter: filter });
+    reload = (e) => {
+        e.preventDefault();
+        // const filter = this.state.filter;
+        // filter.limit = (filter.limit ?? 0) + 50;
+        // this.setState({ filter: filter });
         this.loadSales();
     }
     salesDataLoaded = (response: WebResponse) => {
-        response.entities = ProductSales.sortBySalesDesc(response.entities??[]);
+        response.entities = ProductSales.sortBySalesDesc(response.entities ?? []);
         this.setState({ salesData: response });
     }
     salesDataNotLoaded = (e: any) => {
@@ -102,7 +103,7 @@ class ProductSalesPage extends BaseComponent {
         if (!salesList) {
             return;
         }
-        let sortType:string;
+        let sortType: string;
         if (this.state.sortType == "asc") {
             salesData.entities = ProductSales.sortBySales(salesList);
             sortType = "desc";
@@ -110,16 +111,17 @@ class ProductSalesPage extends BaseComponent {
             salesData.entities = ProductSales.sortBySalesDesc(salesList);
             sortType = "asc";
         }
-        this.setState({salesData:salesData, sortType: sortType, activeSalesDataIndex: -1 });
+        this.setState({ salesData: salesData, sortType: sortType, activeSalesDataIndex: -1 });
     }
     render() {
         const salesData = this.state.salesData;
         if (!salesData) {
             return <div className="container-fluid">Please wait</div>
         }
+        const showBtnLoadMore = (this.state.filter?.limit ?? 0) < (this.state.salesData?.totalData ?? 0) + 1;
         const btnSortIconClass = this.state.sortType == "asc" ? "fas fa-sort-amount-down-alt" : "fas fa-sort-amount-up";
         return (
-            <div className="container-fluid" style={{paddingBottom:'10px'}}>
+            <div className="container-fluid" style={{ paddingBottom: '10px' }}>
                 <h2>Product Sales</h2>
                 <DashboardFilter onChange={this.updatePeriodFilter} transactionYears={salesData && salesData.transactionYears ? salesData.transactionYears : []}
                     onSubmit={this.filter} filter={this.state.filter} />
@@ -128,7 +130,11 @@ class ProductSalesPage extends BaseComponent {
                         <AnchorButton className="btn btn-secondary btn-sm">Loaded Product <span className="badge badge-light">{salesData.entities?.length}</span></AnchorButton>
                         <AnchorButton className="btn btn-secondary btn-sm">Total Product <span className="badge badge-light">{salesData.totalData}</span></AnchorButton>
                         <AnchorButton className="btn btn-dark btn-sm" iconClassName={btnSortIconClass} onClick={this.sort} >Sort</AnchorButton>
-                        <AnchorButton show={(this.state.filter?.limit??0) < (this.state.salesData?.totalData??0)} className="btn btn-dark btn-sm" iconClassName="fas fa-angle-double-right" onClick={this.loadMore}>Load more</AnchorButton>
+                        <form style={{marginTop:'10px'}} className="input-group" onSubmit={this.reload} >
+                            <input placeholder="record count" name="limit" onChange={this.updatePeriodFilter} value={this.state.filter.limit} type="number" min={1} max={this.state.salesData?.totalData} className="form-control" />
+                           {showBtnLoadMore? <button type="submit"  className="btn btn-dark btn-sm" ><i className="fas fa-angle-double-right"/> Load more</button>
+                           :null}
+                        </form>
                     </div>
                 </Modal>
                 <DashboardBarChart
@@ -143,7 +149,7 @@ class ProductSalesPage extends BaseComponent {
 const ProductSalesDetail = (props: { productSales?: ProductSales }) => {
     const productSales: ProductSales | undefined = props.productSales;
     if (!productSales || !productSales.product) return <div className="container-fluid" style={{ minHeight: '120px' }}>
-        <div className="alert alert-info"><i className="fas fa-hand-point-up"/> Click the chart to see detail</div>
+        <div className="alert alert-info"><i className="fas fa-hand-point-up" /> Click the chart to see detail</div>
     </div>;
 
     return (<div className="row" style={{ minHeight: '120px' }}>

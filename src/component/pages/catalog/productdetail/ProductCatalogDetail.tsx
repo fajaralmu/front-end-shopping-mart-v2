@@ -57,6 +57,7 @@ class ProductCatalogDetail extends BaseComponent {
                     <thead>
                         <tr>
                             <th>Name</th>
+                            <th>Description</th>
                             <th>Unit</th>
                             <th>Category</th>
                             <th>Current Stock</th>
@@ -65,6 +66,7 @@ class ProductCatalogDetail extends BaseComponent {
                     <tbody>
                         <tr>
                             <td>{this.state.product.name}</td>
+                            <td>{this.state.product.description}</td>
                             <td>{this.state.product.unit?.name}</td>
                             <td>{this.state.product.category?.name}</td>
                             <td>{this.state.product.count}</td>
