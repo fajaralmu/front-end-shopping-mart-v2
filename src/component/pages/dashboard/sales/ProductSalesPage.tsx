@@ -8,11 +8,14 @@ import Filter from './../../../../models/Filter';
 import WebResponse from './../../../../models/WebResponse';
 import DashboardFilter from './../DashboardFilter';
 import ProductSales from './../../../../models/ProductSales';
-import DashboardBarChart from './../statistic/DashboardBarChart';
+import DashboardBarChart from '../DashboardBarChart';
 import FormGroup from './../../../form/FormGroup';
 import { beautifyNominal } from '../../../../utils/StringUtil';
 import AnchorButton from '../../../navigation/AnchorButton';
 import Modal from './../../../container/Modal';
+import Carousel from '../../../container/Carousel';
+import Product from '../../../../models/Product';
+import { baseImageUrl } from '../../../../constant/Url';
 const date: Date = new Date();
 const DEFAULT_LIMIT: number = 50;
 class IState {
@@ -104,7 +107,7 @@ class ProductSalesPage extends BaseComponent {
                     </div>
                 </Modal>
                 <DashboardBarChart
-                    onHover={this.setActiveSalesData} onUnHover={this.unSelectSalesData}
+                    onClick={this.setActiveSalesData} onUnHover={this.unSelectSalesData}
                     updated={salesData.date ?? new Date()} dataSet={ProductSales.toDataSets(salesData?.entities ?? [])} />
                 <ProductSalesDetail productSales={this.getActiveSalesData()} />
             </div>
@@ -113,14 +116,20 @@ class ProductSalesPage extends BaseComponent {
 }
 
 const ProductSalesDetail = (props: { productSales?: ProductSales }) => {
-    const cashflow: ProductSales | undefined = props.productSales;
-    if (!cashflow) return <div className="container-fluid" style={{ minHeight: '120px' }}>
-        <div className="alert alert-info">Hover over chart to see detail</div>
+    const productSales: ProductSales | undefined = props.productSales;
+    if (!productSales || !productSales.product) return <div className="container-fluid" style={{ minHeight: '120px' }}>
+        <div className="alert alert-info">Click the chart to see detail</div>
     </div>;
 
     return (<div className="row" style={{ minHeight: '120px' }}>
-        <div className="col-md-6"><FormGroup label="Name">{cashflow.product ? cashflow.product.name : ""}</FormGroup></div>
-        <div className="col-md-6"> <FormGroup label="Count">{beautifyNominal(cashflow.sales)}</FormGroup></div>
+        <div className="col-md-6">
+            <Carousel imageUrls={Product.getPictureNames(productSales.product, baseImageUrl)} />
+        </div>
+        <div className="col-md-6 row">
+            <div className="col-md-12"><FormGroup label="Name">{productSales.product ? productSales.product.name : ""}</FormGroup></div>
+            <div className="col-md-12"> <FormGroup label="Count">{beautifyNominal(productSales.sales)}</FormGroup></div>
+
+        </div>
     </div >)
 }
 export default withRouter(connect(

@@ -1,15 +1,15 @@
 
 import React, { Component } from 'react';
-import Cashflow from '../../../../models/Cashflow';
-import { beautifyNominal, uniqueId } from '../../../../utils/StringUtil';
-import { MONTHS } from '../../../../utils/DateUtil';
-import '../ChartSvg.css';
-import FormGroup from '../../../form/FormGroup'; 
-import DataSet from '../../../../models/DataSet';
+import Cashflow from '../../../models/Cashflow';
+import { beautifyNominal, uniqueId } from '../../../utils/StringUtil';
+import { MONTHS } from '../../../utils/DateUtil';
+import './ChartSvg.css';
+import FormGroup from '../../form/FormGroup'; 
+import DataSet from '../../../models/DataSet';
 interface IProps {
     dataSet: DataSet[],
     updated: Date,
-    onHover?:(index:number)=>void
+    onClick?:(index:number)=>void
     onUnHover?:()=>void
 }
 class IState {
@@ -58,15 +58,18 @@ export default class DashboardBarChart extends Component<IProps, IState>
     }
     hover = (index: number) => {
         this.setState({ hoveredIndex: index });
-        if (this.props.onHover) {
-            this.props.onHover(index);
+        
+    }
+    onClick = (index:number) => {
+        if (this.props.onClick) {
+            this.props.onClick(index);
         }
     }
     unHover = () => {
         this.setState({ hoveredIndex: -1 });
-        if (this.props.onUnHover) {
-            this.props.onUnHover();
-        }
+        // if (this.props.onUnHover) {
+        //     this.props.onUnHover();
+        // }
     }
   
     render() {
@@ -83,7 +86,8 @@ export default class DashboardBarChart extends Component<IProps, IState>
                             const transform = "translate(" + xTranslated + "," + yTranslated + ") rotate(-30," + labelX + "," + labelY + ")";
                             const hovered = i == this.state.hoveredIndex;
                             return (
-                                <g style={hovered ? { cursor: 'pointer' } : {}} className="chart-group" onMouseOver={(e) => this.hover(i)} onMouseOut={this.unHover} key={uniqueId() + "-" + i}>
+                                <g style={hovered ? { cursor: 'pointer' } : {}} className="chart-group"
+                                 onMouseOver={(e) => this.hover(i)} onClick={(e) => this.onClick(i)} onMouseOut={this.unHover} key={uniqueId() + "-" + i}>
                                     <rect fill={hovered ? "red" : "green"} x={this.offsetX + (23) * (i)} y={this.baseYIndex - percentage} height={percentage} width={20} ></rect>
                                     <text fill={hovered ? "red" : "black"} textAnchor="end" fontSize={10} x={labelX} y={labelY} transform={transform}>{data.getLabel()}</text>
                                     <circle cx={this.offsetX + (23) * (i + 1)} cy={this.baseYIndex} r="3" fill="red" />
