@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import BaseComponent from '../../../BaseComponent';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -27,6 +27,7 @@ class IState {
         page: 0,
         limit: DEFAULT_LIMIT
     };
+    sortType:string = "asc";
     activeSalesDataIndex: number = -1;
     salesData?: WebResponse = undefined
 }
@@ -90,19 +91,40 @@ class ProductSalesPage extends BaseComponent {
         }
         return undefined;
     }
+    sort = (e) => {
+        const salesData = this.state.salesData;
+        if (!salesData) {
+            return;
+        }
+        const salesList = salesData ? salesData.entities : undefined;
+        if (!salesList) {
+            return;
+        }
+        let sortType:string;
+        if (this.state.sortType == "asc") {
+            salesData.entities = ProductSales.sortBySales(salesList);
+            sortType = "desc";
+        } else {
+            salesData.entities = ProductSales.sortBySalesDesc(salesList);
+            sortType = "asc";
+        }
+        this.setState({salesData:salesData, sortType: sortType });
+    }
     render() {
         const salesData = this.state.salesData;
         if (!salesData) {
             return <div className="container-fluid">Please wait</div>
         }
+        const btnSortIconClass = this.state.sortType == "asc" ? "fas fa-sort-amount-down-alt" : "fas fa-sort-amount-up";
         return (
             <div className="container-fluid">
                 <h2>Product Sales</h2>
                 <DashboardFilter onChange={this.updatePeriodFilter} transactionYears={salesData && salesData.transactionYears ? salesData.transactionYears : []}
                     onSubmit={this.filter} filter={this.state.filter} />
                 <Modal title="Options">
-                    <div className="btn-group">
+                    <div className="inline-buttons-parent">
                         <AnchorButton className="btn btn-primary">Loaded Product <span className="badge badge-light">{salesData.entities?.length}</span></AnchorButton>
+                        <AnchorButton iconClassName={btnSortIconClass} onClick={this.sort} >Sort</AnchorButton>
                         <AnchorButton iconClassName="fas fa-angle-double-right" onClick={this.loadMore}>Load more</AnchorButton>
                     </div>
                 </Modal>
@@ -118,7 +140,7 @@ class ProductSalesPage extends BaseComponent {
 const ProductSalesDetail = (props: { productSales?: ProductSales }) => {
     const productSales: ProductSales | undefined = props.productSales;
     if (!productSales || !productSales.product) return <div className="container-fluid" style={{ minHeight: '120px' }}>
-        <div className="alert alert-info">Click the chart to see detail</div>
+        <div className="alert alert-info"><i className="fas fa-hand-point-up"/> Click the chart to see detail</div>
     </div>;
 
     return (<div className="row" style={{ minHeight: '120px' }}>

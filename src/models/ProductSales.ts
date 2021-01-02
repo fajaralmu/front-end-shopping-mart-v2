@@ -32,4 +32,14 @@ export default class ProductSales extends BaseEntity implements DataSet{
         }
         return dataSets;
     }
+    static sortBySales = (objects:ProductSales[]) : ProductSales[] => {
+        return objects.sort((p1, p2)=>{
+            return (p1.sales??0) - (p2.sales??0);
+        })
+    }
+    static sortBySalesDesc = (objects:ProductSales[]) : ProductSales[] => {
+        return objects.sort((p1, p2)=>{
+            return (p2.sales??0) - (p1.sales??0);
+        })
+    }
 }

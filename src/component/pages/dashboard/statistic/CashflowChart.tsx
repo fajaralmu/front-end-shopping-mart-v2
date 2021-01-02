@@ -88,7 +88,7 @@ export default class CashflowChart extends Component<IProps, IState>
 const CashflowDetail = (props: { cashflow?: Cashflow }) => {
     const cashflow: Cashflow | undefined = props.cashflow;
     if (!cashflow) return <div className="container-fluid" style={{ minHeight: '120px' }}>
-        <div className="alert alert-info">Click the chart to see detail</div>
+        <div className="alert alert-info"><i className="fas fa-hand-point-up"/> Click the chart to see detail</div>
     </div>;
 
     return (<div className="row" style={{ minHeight: '120px' }}>

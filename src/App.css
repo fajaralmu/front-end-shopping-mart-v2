@@ -54,3 +54,6 @@ a {
 .icon{
   margin-right: 5px; 
 }
+.inline-buttons-parent > * {
+  margin-right: 10px;
+}
