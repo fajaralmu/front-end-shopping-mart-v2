@@ -8,7 +8,7 @@ import Cashflow from './../../../../models/Cashflow';
 import { beautifyNominal } from '../../../../utils/StringUtil';
 import { uniqueId } from './../../../../utils/StringUtil';
 import { transform } from 'typescript';
-import CashflowBarChart from './CashflowBarChart';
+import DashboardBarChart from './DashboardBarChart';
 import { MONTHS } from './../../../../utils/DateUtil';
 interface IProps {
     cashflowData: WebResponse
@@ -70,12 +70,12 @@ export default class CashflowChart extends Component<IProps, IState>
                 <FormGroup label="Period" >{this.getPeriodString()}</FormGroup>
                 <div className="container-fluid" >
                     <h4>Selling</h4>
-                    <CashflowBarChart 
+                    <DashboardBarChart 
                         onHover={this.setActiveSellingData} onUnHover={this.unSelectSellingData}
                         updated={cashflowData.date ?? new Date()} dataSet={Cashflow.toDataSets(cashflowData.sellings ?? [])} />
                     <CashflowDetail cashflow={this.getSellingData()} />
                     <h4>Purchasing</h4>
-                    <CashflowBarChart 
+                    <DashboardBarChart 
                         onHover={this.setActivePurchasingData} onUnHover={this.unSelectPurchasingData}
                         updated={cashflowData.date ?? new Date()} dataSet={Cashflow.toDataSets(cashflowData.purchasings ?? [])} />
                      <CashflowDetail cashflow={this.getPurchasingData()} />

@@ -1,11 +1,11 @@
 
 import React, { Component } from 'react';
 import Cashflow from '../../../../models/Cashflow';
-import { beautifyNominal, uniqueId } from './../../../../utils/StringUtil';
-import { MONTHS } from './../../../../utils/DateUtil';
+import { beautifyNominal, uniqueId } from '../../../../utils/StringUtil';
+import { MONTHS } from '../../../../utils/DateUtil';
 import '../ChartSvg.css';
-import FormGroup from './../../../form/FormGroup'; 
-import DataSet from './../../../../models/DataSet';
+import FormGroup from '../../../form/FormGroup'; 
+import DataSet from '../../../../models/DataSet';
 interface IProps {
     dataSet: DataSet[],
     updated: Date,
@@ -16,7 +16,7 @@ class IState {
     hoveredIndex: number = -1;
     updated: Date = new Date();
 }
-export default class CashflowBarChart extends Component<IProps, IState>
+export default class DashboardBarChart extends Component<IProps, IState>
 {
     middleYAxisValue: number = 0;
     bottomYAxisValue: number = 0;
@@ -85,7 +85,7 @@ export default class CashflowBarChart extends Component<IProps, IState>
                             return (
                                 <g style={hovered ? { cursor: 'pointer' } : {}} className="chart-group" onMouseOver={(e) => this.hover(i)} onMouseOut={this.unHover} key={uniqueId() + "-" + i}>
                                     <rect fill={hovered ? "red" : "green"} x={this.offsetX + (23) * (i)} y={this.baseYIndex - percentage} height={percentage} width={20} ></rect>
-                                    <text fill={hovered ? "red" : "black"} textAnchor="end" fontSize={10} x={labelX} y={labelY} transform={transform}>{data.getPeriodInfo()}</text>
+                                    <text fill={hovered ? "red" : "black"} textAnchor="end" fontSize={10} x={labelX} y={labelY} transform={transform}>{data.getLabel()}</text>
                                     <circle cx={this.offsetX + (23) * (i + 1)} cy={this.baseYIndex} r="3" fill="red" />
                                 </g>
                             )

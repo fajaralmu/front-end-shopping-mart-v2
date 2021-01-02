@@ -7,12 +7,12 @@ export default class Cashflow implements DataSet {
     year: number = new Date().getFullYear();
     month: number = 1;
     getAmount: () => number;
-    getPeriodInfo: () => string;
+    getLabel: () => string;
     constructor() {
         this.getAmount = () => {
             return this.amount;
         }
-       this.getPeriodInfo = () => {
+       this.getLabel = () => {
             return this.month+"-"+this.year;
         }
     }

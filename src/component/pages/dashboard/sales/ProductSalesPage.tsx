@@ -7,6 +7,10 @@ import TransactionHistoryService from '../../../../services/TransactionHistorySe
 import Filter from './../../../../models/Filter';
 import WebResponse from './../../../../models/WebResponse';
 import DashboardFilter from './../DashboardFilter';
+import ProductSales from './../../../../models/ProductSales';
+import DashboardBarChart from './../statistic/DashboardBarChart';
+import FormGroup from './../../../form/FormGroup';
+import { beautifyNominal } from '../../../../utils/StringUtil';
 const date = new Date();
 class IState {
     filter: Filter = {
@@ -17,6 +21,7 @@ class IState {
         page:0,
         limit:20
     };
+    activeSalesDataIndex:number = -1;
     salesData?: WebResponse = undefined
 }
 class ProductSalesPage extends BaseComponent
@@ -54,17 +59,52 @@ class ProductSalesPage extends BaseComponent
         this.validateLoginStatus();
         this.loadSales();
     }
+    setActiveSalesData = (i:number) => {
+        this.setState({activeSalesDataIndex:i});
+    }
+    unSelectSalesData = () => {
+        this.setState({activeSalesDataIndex:-1});
+    }
+    getActiveSalesData = () => {
+        const salesList = this.state.salesData?this.state.salesData.entities: undefined;
+        if (!salesList) {
+            return undefined;
+        }
+        for (let i = 0; i < salesList.length; i++) {
+            const element = salesList[i];
+            if (this.state.activeSalesDataIndex == i) return element;
+        }
+        return undefined;
+    }
     render() {
         const salesData = this.state.salesData;
+        if (!salesData) {
+            return <div className="container-fluid">Please wait</div>
+        }
         return (
             <div className="container-fluid">
             <h2>Product Sales</h2>
             <DashboardFilter onChange={this.updatePeriodFilter} transactionYears={salesData && salesData.transactionYears? salesData.transactionYears:[]} 
                 onSubmit={this.filter} filter={this.state.filter} />
-               
+                <DashboardBarChart 
+                       onHover={this.setActiveSalesData} onUnHover={this.unSelectSalesData}
+                        updated={salesData.date ?? new Date()} dataSet={ProductSales.toDataSets(salesData?.entities ?? [])} />
+                <ProductSalesDetail productSales={this.getActiveSalesData()} />
             </div>
         )
     }
+}
+
+const ProductSalesDetail = (props: { productSales?: ProductSales }) => {
+    const cashflow: ProductSales | undefined = props.productSales;
+    if (!cashflow) return <div className="container-fluid" style={{ minHeight: '120px' }}>
+        <div className="alert alert-info">Hover over chart to see detail</div>
+    </div>;
+
+    return (<div className="row" style={{ minHeight: '120px' }}>
+        <div className="col-md-6"><FormGroup label="Name">{cashflow.product?cashflow.product.name:""}</FormGroup></div>
+        <div className="col-md-6"> <FormGroup label="Count">{beautifyNominal(cashflow.sales)}</FormGroup></div>
+    </div >)
 }
 export default withRouter(connect(
     mapCommonUserStateToProps,

@@ -11,14 +11,14 @@ export default class ProductSales extends BaseEntity implements DataSet{
 	maxValue?:number;
 	monthName?:string;
 	getAmount: () => number;
-    getPeriodInfo: () => string;
+    getLabel: () => string;
     constructor() {
 		super();
         this.getAmount = () => {
 			return this.sales??0;
         }
-       this.getPeriodInfo = () => {
-            return this.month+"-"+this.year;
+       this.getLabel = () => {
+            return this.product?this.product.name??"":"";
         }
     }
 	static toDataSet = (object:ProductSales) : DataSet => {
