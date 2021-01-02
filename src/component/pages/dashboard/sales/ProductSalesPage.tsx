@@ -57,10 +57,12 @@ class ProductSalesPage extends BaseComponent {
         this.loadSales();
     }
     salesDataLoaded = (response: WebResponse) => {
+        response.entities = ProductSales.sortBySalesDesc(response.entities??[]);
         this.setState({ salesData: response });
     }
     salesDataNotLoaded = (e: any) => {
         console.error(e);
+        this.validateLoginStatus();
     }
     loadSales = () => {
         this.commonAjaxWithProgress(
@@ -108,7 +110,7 @@ class ProductSalesPage extends BaseComponent {
             salesData.entities = ProductSales.sortBySalesDesc(salesList);
             sortType = "asc";
         }
-        this.setState({salesData:salesData, sortType: sortType });
+        this.setState({salesData:salesData, sortType: sortType, activeSalesDataIndex: -1 });
     }
     render() {
         const salesData = this.state.salesData;
@@ -117,15 +119,16 @@ class ProductSalesPage extends BaseComponent {
         }
         const btnSortIconClass = this.state.sortType == "asc" ? "fas fa-sort-amount-down-alt" : "fas fa-sort-amount-up";
         return (
-            <div className="container-fluid">
+            <div className="container-fluid" style={{paddingBottom:'10px'}}>
                 <h2>Product Sales</h2>
                 <DashboardFilter onChange={this.updatePeriodFilter} transactionYears={salesData && salesData.transactionYears ? salesData.transactionYears : []}
                     onSubmit={this.filter} filter={this.state.filter} />
                 <Modal title="Options">
                     <div className="inline-buttons-parent">
-                        <AnchorButton className="btn btn-primary">Loaded Product <span className="badge badge-light">{salesData.entities?.length}</span></AnchorButton>
-                        <AnchorButton iconClassName={btnSortIconClass} onClick={this.sort} >Sort</AnchorButton>
-                        <AnchorButton iconClassName="fas fa-angle-double-right" onClick={this.loadMore}>Load more</AnchorButton>
+                        <AnchorButton className="btn btn-secondary btn-sm">Loaded Product <span className="badge badge-light">{salesData.entities?.length}</span></AnchorButton>
+                        <AnchorButton className="btn btn-secondary btn-sm">Total Product <span className="badge badge-light">{salesData.totalData}</span></AnchorButton>
+                        <AnchorButton className="btn btn-dark btn-sm" iconClassName={btnSortIconClass} onClick={this.sort} >Sort</AnchorButton>
+                        <AnchorButton show={(this.state.filter?.limit??0) < (this.state.salesData?.totalData??0)} className="btn btn-dark btn-sm" iconClassName="fas fa-angle-double-right" onClick={this.loadMore}>Load more</AnchorButton>
                     </div>
                 </Modal>
                 <DashboardBarChart
