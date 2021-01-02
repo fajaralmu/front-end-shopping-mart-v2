@@ -1,6 +1,13 @@
 
 import React, { Component } from 'react';
-export default class AnchorButton extends Component<any, any>
+interface IProps {
+    show?:boolean;
+    className?:string;
+    style?:any;
+    onClick?:any;
+    iconClassName?:string;
+}
+export default class AnchorButton extends Component<IProps, any>
 {
     constructor(props:any) {
         super(props);
