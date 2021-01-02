@@ -14,7 +14,7 @@ import { beautifyNominal } from '../../../../utils/StringUtil';
 import AnchorButton from '../../../navigation/AnchorButton';
 import Modal from './../../../container/Modal';
 const date: Date = new Date();
-const DEFAULT_LIMIT: number = 20;
+const DEFAULT_LIMIT: number = 50;
 class IState {
     filter: Filter = {
         month: date.getMonth() + 1,
@@ -48,7 +48,7 @@ class ProductSalesPage extends BaseComponent {
     }
     loadMore = () => {
         const filter = this.state.filter;
-        filter.limit = (filter.limit ?? 0) + 10;
+        filter.limit = (filter.limit ?? 0) + 50;
         this.setState({ filter: filter });
         this.loadSales();
     }

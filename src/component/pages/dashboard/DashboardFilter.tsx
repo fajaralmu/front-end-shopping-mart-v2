@@ -6,24 +6,40 @@ import FormGroup from '../../form/FormGroup';
 import WebResponse from '../../../models/WebResponse';
 import { MONTHS } from '../../../utils/DateUtil';
 import Loader from '../../loader/Loader';
+import SimpleError from '../../alert/SimpleError';
 interface IProps {
     filter: Filter,
     onChange: Function,
     onSubmit: (event: React.FormEvent<HTMLFormElement>) => void,
     transactionYears:number[]
 }
-export default class DashboardFilter extends Component<IProps, any> {
-
+class IState {
+    error:boolean = false;
+}
+export default class DashboardFilter extends Component<IProps, IState> {
+    state = new IState();
     constructor(props: IProps) {
         super(props);
     }
     updatePeriodFilter = (e) => {
         this.props.onChange(e);
     }
+    submit = (e) => {
+        e.preventDefault();
+        if (this.props.filter.yearTo == undefined || this.props.filter.year == undefined) {
+            return;
+        }
+        if (this.props.filter.year > this.props.filter.yearTo) {
+            this.setState({error:true});
+            return;
+        }
+        this.setState({error:false});
+        this.props.onSubmit(e);
+    }
     render() {
         const transactionYears: number[]  = this.props.transactionYears;
         return (
-            <form onSubmit={this.props.onSubmit}>
+            <form onSubmit={this.submit}>
                 <Modal toggleable={true} title="Filter" footerContent={
                     <input type="submit" className="btn btn-primary" />
                 }>
@@ -66,6 +82,7 @@ export default class DashboardFilter extends Component<IProps, any> {
                             </FormGroup>
                         </div>
                     </div>
+                    <SimpleError show={this.state.error} >Invalid Year</SimpleError>
                 </Modal>
             </form>
         )
