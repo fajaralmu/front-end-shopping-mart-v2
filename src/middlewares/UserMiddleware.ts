@@ -43,7 +43,8 @@ export const requestAppIdMiddleware = store => next => action => {
             alert("Error requesting app ID");
             return;
         }
-
+        common.updateAccessToken(response);
+        console.debug("response header:",response.headers['access-token']);
         let newAction = Object.assign({}, action, { payload: { loginStatus: data.loggedIn, ...data } });
         delete newAction.meta;
         store.dispatch(newAction);

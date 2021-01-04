@@ -1,8 +1,7 @@
 import { createStore, applyMiddleware } from 'redux'
 import { initialState, rootReducer } from './reducers'
 import * as types from './types';
-import * as userMiddleware from '../middlewares/UserMiddleware'
-import * as managementMiddleware from '../middlewares/ManagementMiddleware'
+import * as userMiddleware from '../middlewares/UserMiddleware' 
 import * as realtimeChatMiddleware from '../middlewares/RealtimeChatMiddleware'
 import * as catalogMiddleware from '../middlewares/CatalogMiddleware' 
 import { commonAuthorizedHeader } from './../middlewares/Common';
@@ -28,16 +27,7 @@ export const configureStore = () => {
             getCashflowDetailMiddleware,
             getProductSalesMiddleware,
             resetProductsMiddleware,   
-            getProductSalesDetailMiddleware,  
-
-            /*enntity management*/
-            managementMiddleware.getEntityListMiddleware,
-            managementMiddleware.getEntityByIdMiddleware,
-            managementMiddleware.updateEntityMiddleware,
-            managementMiddleware.removeManagedEntityMiddleware, 
-            managementMiddleware.getEntitiesWithCallbackMiddleware,
-            managementMiddleware.getEntityPropertyMiddleware,
-            managementMiddleware.getManagementMenusMiddleware,
+            getProductSalesDetailMiddleware,
 
             /*realtime chat*/
             realtimeChatMiddleware.storeChatMessageLocallyMiddleware,

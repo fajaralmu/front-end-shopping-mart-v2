@@ -11,6 +11,14 @@ export const getLoginKey = () => {
     return getCookie('loginKey');
 }
 
+export const updateAccessToken = (axiosResponse) => {
+    if (axiosResponse && axiosResponse.headers && axiosResponse.headers['access-token']) {
+        const accessToken = axiosResponse.headers['access-token'];
+        console.debug("update access token: ", accessToken);
+        setCookie("loginKey", accessToken);
+    }
+}
+
 export const getRequestId = () => {
     return getCookie("requestId");// document.getElementById("requestId").value;
 }
