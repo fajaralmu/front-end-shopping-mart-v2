@@ -14,7 +14,7 @@ export const performLoginMiddleware = store => next => action => {
         let loginSuccess:boolean = false;
 
         if (responseJson.code != null && responseJson.code == "00") {
-            loginKey = responseJson.token;
+            loginKey = response.headers['access-token'];
             console.log("api_token: ", loginKey);
             loginSuccess = true; 
         }
