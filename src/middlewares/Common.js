@@ -14,7 +14,7 @@ export const getLoginKey = () => {
 export const updateAccessToken = (axiosResponse) => {
     if (axiosResponse && axiosResponse.headers && axiosResponse.headers['access-token']) {
         const accessToken = axiosResponse.headers['access-token'];
-        console.debug("update access token: ", accessToken);
+        // console.debug("update access token: ", accessToken);
         setCookie("loginKey", accessToken);
     }
 }

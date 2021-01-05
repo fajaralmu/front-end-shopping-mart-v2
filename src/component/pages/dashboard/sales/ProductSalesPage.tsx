@@ -117,7 +117,8 @@ class ProductSalesPage extends BaseComponent {
     render() {
         const salesData = this.state.salesData;
         if (!salesData) {
-            return <div className="container-fluid text-center" style={{padding:'50px'}}>
+            return <div className="container-fluid" >
+                <h2>Product Sales</h2>
                 <Spinner/>
                 </div>
         }

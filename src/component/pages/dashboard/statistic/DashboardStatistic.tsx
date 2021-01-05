@@ -61,9 +61,10 @@ class DashboardStatistic extends BaseComponent {
     render() {
         const cashflowData = this.state.cashflowData;
         if (!cashflowData) {
-            return <div className="container-fluid text-center" style={{padding:'50px'}}>
-                <Spinner/>
-                </div>
+            return <div className="container-fluid" >
+                <h2>Statistics</h2>
+                <Spinner />
+            </div>
         }
         return (
             <div className="container-fluid">

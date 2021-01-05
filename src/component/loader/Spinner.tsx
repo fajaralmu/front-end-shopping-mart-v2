@@ -8,9 +8,22 @@ export default class Spinner extends Component<any, any>{
 
     render() {
         return (
-
-            <div className="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-
+            <div style={{width:'85px', height:'85px', display:'block'}} className="container-fluid text-center" >
+                 <div style={{visibility:this.props.show == false?'hidden':'visible'}} className="lds-spinner">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
         )
     }
 }

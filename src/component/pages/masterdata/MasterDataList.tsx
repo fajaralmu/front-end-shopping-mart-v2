@@ -21,14 +21,15 @@ import AnchorButton from '../../navigation/AnchorButton';
 import EditDeleteAction from './EditDeleteAction';
 import DataTableHeader from './DataTableHeader';
 import SimpleError from './../../alert/SimpleError';
-interface IState { recordData?: WebResponse, showForm: boolean, filter:Filter }
+import Spinner from './../../loader/Spinner';
+interface IState { recordData?: WebResponse, showForm: boolean, filter: Filter, loading: boolean }
 class MasterDataList extends BaseComponent {
     masterDataService: MasterDataService = MasterDataService.getInstance();
     state: IState = {
-        showForm: false,
-        filter: {  limit: 5,  page: 0, fieldsFilter: {} }
+        showForm: false, loading: false,
+        filter: { limit: 5, page: 0, fieldsFilter: {} }
     }
-    recordToEdit?:{} =undefined;
+    recordToEdit?: {} = undefined;
     entityProperty: EntityProperty;
     constructor(props: any) {
         super(props, true);
@@ -37,7 +38,7 @@ class MasterDataList extends BaseComponent {
     /**
      * remove fieldsfilter empty values";
      */
-    adjustFilter = (filter:Filter):Filter => {
+    adjustFilter = (filter: Filter): Filter => {
         const fieldsFilter = filter.fieldsFilter;
         for (const key in fieldsFilter) {
             const element = fieldsFilter[key];
@@ -46,7 +47,7 @@ class MasterDataList extends BaseComponent {
                     delete filter.fieldsFilter[key];
                 }
             }
-        } 
+        }
         return filter;
     }
     loadEntities = (page: number | undefined) => {
@@ -63,22 +64,25 @@ class MasterDataList extends BaseComponent {
             this.showCommonErrorAlert,
             request
         );
-       
+
     }
     entitiesLoaded = (response: WebResponse) => {
-        this.setState({ recordData: response , filter:response.filter});
+        this.setState({ recordData: response, filter: response.filter });
     }
     checkDefaultData = () => {
+        if (this.state.loading) {
+            return;
+        }
         if (this.entityProperty.entityName == this.props.entityProperty.entityName && this.state.recordData != undefined) {
             return;
         }
         this.entityProperty = this.props.entityProperty;
         this.loadEntities(0);
     }
-    startLoading() { }
-    endLoading() { }
+    startLoading() { this.setState({ loading: true }) }
+    endLoading() { this.setState({ loading: false }) }
     componentDidUpdate() {
-        super.componentDidUpdate();
+        this.validateLoginStatus();
         this.checkDefaultData();
     }
     componentDidMount() {
@@ -100,43 +104,43 @@ class MasterDataList extends BaseComponent {
             filter.fieldsFilter = {};
         }
         filter.fieldsFilter[name] = value;
-        this.setState({filter:filter});
+        this.setState({ filter: filter });
     }
     filterReset = (e) => {
         const filter = this.state.filter;
         filter.fieldsFilter = {};
         filter.limit = 5;
-        this.setState({filter:filter});
+        this.setState({ filter: filter });
     }
     orderButtonOnClick = (e) => {
         const dataset: DOMStringMap = e.target.dataset;
         const filter = this.state.filter;
         filter.orderBy = dataset['orderby'];
         filter.orderType = dataset['ordertype'];
-        this.setState({filter:filter});
+        this.setState({ filter: filter });
         this.loadEntities(0);
     }
-    showEditForm = (response:WebResponse) => {
+    showEditForm = (response: WebResponse) => {
         if (!response.entities) {
             return;
         }
         this.recordToEdit = response.entities[0];
-        this.setState({showForm:true});
+        this.setState({ showForm: true });
     }
     showCreateForm = (e) => {
         this.recordToEdit = undefined;
         this.setState({ showForm: true });
     }
-    updateFilterPage = (page:any) => {
+    updateFilterPage = (page: any) => {
         const filter = this.state.filter;
-        filter.useExistingFilterPage = true; 
+        filter.useExistingFilterPage = true;
         filter.page = parseInt(page) - 1;
-        this.setState({filter:filter});
+        this.setState({ filter: filter });
     }
-    updateFilterLimit = (limit:any) => {
+    updateFilterLimit = (limit: any) => {
         const filter = this.state.filter;
         filter.limit = parseInt(limit);
-        this.setState({filter:filter});
+        this.setState({ filter: filter });
     }
     render() {
         if (undefined == this.state.recordData) {
@@ -145,7 +149,7 @@ class MasterDataList extends BaseComponent {
         const headerProps: HeaderProps[] = EntityProperty.getHeaderLabels(this.props.entityProperty);
         const resultList: any[] = this.state.recordData.entities ? this.state.recordData.entities : [];
         if (headerProps == undefined || resultList == undefined) {
-            return <SimpleError/>
+            return <SimpleError />
         }
 
         if (this.state.showForm == true) {
@@ -160,37 +164,39 @@ class MasterDataList extends BaseComponent {
                         <div>
                             <div className="form-group row">
                                 <div className="col-6">
-                                    <input value={(this.state.filter.page??0)+1} onChange={(e) => { this.updateFilterPage(e.target.value)}} min="1" className="form-control" type="number" placeholder="go to page" />
+                                    <input value={(this.state.filter.page ?? 0) + 1} onChange={(e) => { this.updateFilterPage(e.target.value) }} min="1" className="form-control" type="number" placeholder="go to page" />
                                 </div>
                                 <div className="col-6">
-                                    <input value={this.state.filter.limit} onChange={(e) =>this.updateFilterLimit(e.target.value)} min="1" className="form-control" type="number" placeholder="record per page" />
+                                    <input value={this.state.filter.limit} onChange={(e) => this.updateFilterLimit(e.target.value)} min="1" className="form-control" type="number" placeholder="record per page" />
                                 </div>
                             </div>
                             <SubmitResetButton onSubmit={this.filterFormSubmit} onReset={this.filterReset} />
                         </div>
                     </Modal>
                     <NavigationButtons limit={this.state.filter.limit ?? 5} totalData={this.state.recordData.totalData ?? 0}
-                                activePage={this.state.filter.page ?? 0} onClick={this.loadEntities} />
+                        activePage={this.state.filter.page ?? 0} onClick={this.loadEntities} />
                     <Modal title="Data List">
+                        <Spinner show={this.state.loading}/>
                         <div style={{ overflow: 'scroll' }}>
                             <table className="table">
                                 <DataTableHeader orderButtonOnClick={this.orderButtonOnClick} filterOnChange={this.filterOnChange} headerProps={headerProps} />
                                 <tbody>
-                                    {resultList.map((result, i) => {
-                                        const number = this.getRecordNumber(i);
-                                        const values: Array<any> = EntityValues.parseValues(result, this.props.entityProperty);
-                                        return (<tr>
-                                            <td>{number}</td>
-                                            {values.map(value => {
-                                                try {
-                                                    return (<td>{value}</td>)
-                                                } catch (error) {
-                                                    return (<td>-</td>)
-                                                }
-                                            })}
-                                            <td><EditDeleteAction show={this.entityProperty.editable==true} showEditForm={this.showEditForm} record={result} entityProperty={this.entityProperty} reload={() => this.loadEntities(undefined)} app={this.parentApp} /></td>
-                                        </tr>)
-                                    })}
+                                    {
+                                        resultList.map((result, i) => {
+                                            const number = this.getRecordNumber(i);
+                                            const values: Array<any> = EntityValues.parseValues(result, this.props.entityProperty);
+                                            return (<tr>
+                                                <td>{number}</td>
+                                                {values.map(value => {
+                                                    try {
+                                                        return (<td>{value}</td>)
+                                                    } catch (error) {
+                                                        return (<td>-</td>)
+                                                    }
+                                                })}
+                                                <td><EditDeleteAction show={this.entityProperty.editable == true} showEditForm={this.showEditForm} record={result} entityProperty={this.entityProperty} reload={() => this.loadEntities(undefined)} app={this.parentApp} /></td>
+                                            </tr>)
+                                        })}
                                 </tbody>
                             </table>
                         </div>
@@ -206,7 +212,7 @@ const SubmitResetButton = (props: any) => {
         <button onClick={props.onSubmit} className="btn btn-secondary btn-sm"><span className="icon"><i className="fas fa-play" /></span>Apply Filter</button>
         <button onClick={props.onReset} type="reset" className="btn btn-warning btn-sm"><span className="icon"><i className="fas fa-sync" /></span>Reset</button>
     </div>)
-} 
+}
 
 export default withRouter(connect(
     mapCommonUserStateToProps,
