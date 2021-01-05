@@ -16,6 +16,7 @@ import Modal from './../../../container/Modal';
 import Carousel from '../../../container/Carousel';
 import Product from '../../../../models/Product';
 import { baseImageUrl } from '../../../../constant/Url';
+import Spinner from './../../../loader/Spinner';
 const date: Date = new Date();
 const DEFAULT_LIMIT: number = 50;
 class IState {
@@ -116,7 +117,9 @@ class ProductSalesPage extends BaseComponent {
     render() {
         const salesData = this.state.salesData;
         if (!salesData) {
-            return <div className="container-fluid">Please wait</div>
+            return <div className="container-fluid text-center" style={{padding:'50px'}}>
+                <Spinner/>
+                </div>
         }
         const showBtnLoadMore = (this.state.filter?.limit ?? 0) < (this.state.salesData?.totalData ?? 0) + 1;
         const btnSortIconClass = this.state.sortType == "asc" ? "fas fa-sort-amount-down-alt" : "fas fa-sort-amount-up";
