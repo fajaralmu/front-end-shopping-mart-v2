@@ -124,7 +124,7 @@ class App extends Component<any, IState> {
   }
 
   componentDidUpdate() {
-    console.debug("APP UPDATED");
+    // console.debug("APP UPDATED");
     if (this.props.applicationProfile) {
       updateFavicon(this.props.applicationProfile);
     }

@@ -30,7 +30,6 @@ class Header extends BaseComponent {
     render() {
         const showNavLinks: boolean = this.state.showNavLinks;
         const menus = getMenus();
-        console.debug("showNavLinks: ", showNavLinks);
         return (
             <div className="bg-dark container-fluid" style={{ position: 'fixed', zIndex: 55, padding: 0, margin: 0 }}>
                 <NavBarTop label={this.getApplicationProfile().name} />
@@ -42,7 +41,7 @@ class Header extends BaseComponent {
                         aria-expanded="false" aria-label="Toggle navigation">
                         <i className={showNavLinks ? "fas fa-times" : "fas fa-bars"} />
                     </button>
-                    <div className={"collapse navbar-collapse " + (showNavLinks ? "bg-dark" : "bg-secondary")} id="navbarToggler">
+                    <div className={"collapse navbar-collapse"} id="navbarToggler">
                         <ul id="navbar-top" className="navbar-nav mr-auto mt-2 mt-lg-0">
                             {menus.map(menu => {
                                 if (menu == null || menu.authenticated && this.isLoggedUserNull()) return null;

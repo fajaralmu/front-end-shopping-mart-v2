@@ -64,7 +64,7 @@ class EditDeleteAction extends BaseComponent {
         return (
             <div className="btn-group">
                 <AnchorButton onClick={this.getRecordById} iconClassName="fas fa-edit" className="btn btn-warning btn-sm"></AnchorButton>
-                <AnchorButton onClick={this.delete} className="btn btn-danger btn-sm" iconClassName="fas fa-trash"></AnchorButton>
+                <AnchorButton onClick={this.delete} className="btn btn-danger btn-sm" iconClassName="fas fa-times"></AnchorButton>
             </div>
         )
     }
