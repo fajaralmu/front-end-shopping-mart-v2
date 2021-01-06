@@ -86,6 +86,7 @@ class CartList extends BaseComponent {
                             <td>{beautifyNominal(totalUnit)}</td>
                             <td colSpan={2}></td>
                             <td>{beautifyNominal(totalPrice)}</td>
+                            <td></td>
                         </tr>
                     </tbody>
                 </table>

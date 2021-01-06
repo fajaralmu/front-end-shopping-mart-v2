@@ -121,7 +121,7 @@ export const menus: Menu[] = [
         code: MENU_TRANSACTION,
         name: "Transaction",
         url: "/transaction",
-        menuClass: "fas fa-truck-loading",
+        menuClass: "fas fa-suitcase",
         active: false,
         authenticated: true,
         showSidebar: true,
