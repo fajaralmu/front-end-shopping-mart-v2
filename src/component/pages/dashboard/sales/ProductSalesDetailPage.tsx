@@ -17,6 +17,7 @@ import Carousel from '../../../container/Carousel';
 import Product from '../../../../models/Product';
 import { baseImageUrl } from '../../../../constant/Url';
 import Spinner from '../../../loader/Spinner';
+import SimpleError from '../../../alert/SimpleError';
 const date: Date = new Date();
 const DEFAULT_LIMIT: number = 50;
 class IState {
@@ -31,6 +32,7 @@ class IState {
     sortType: string = "asc";
     activeSalesDataIndex: number = -1;
     salesData?: WebResponse = undefined;
+    notFound:boolean = false;
 }
 class ProductSalesDetailPage extends BaseComponent {
     transactionHistoryService: TransactionHistoryService = TransactionHistoryService.getInstance();
@@ -52,10 +54,11 @@ class ProductSalesDetailPage extends BaseComponent {
         this.loadSales();
     }
     salesDataLoaded = (response: WebResponse) => {
-        this.setState({ salesData: response });
+        this.setState({ salesData: response, notFound: false });
     }
     salesDataNotLoaded = (e: any) => {
         console.error(e);
+        this.setState({ salesData:undefined, notFound: true});
         this.validateLoginStatus();
     }
     getProductId = (): number => {
@@ -100,6 +103,9 @@ class ProductSalesDetailPage extends BaseComponent {
     }
 
     render() {
+        if (this.state.notFound) {
+            return <SimpleError>Not Found</SimpleError>
+        }
         const salesData = this.state.salesData;
         const product: Product | undefined = this.getProduct();
         if (!salesData || !product) {
