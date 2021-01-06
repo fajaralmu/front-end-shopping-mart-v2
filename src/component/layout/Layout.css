@@ -2,19 +2,16 @@
   position: absolute;
 }
 
-@media screen and (max-width: 991px) { 
+@media screen and (max-width: 991px) {
   .menu-label,
   #sidebar-brand {
     display: none;
   }
   #sidebar {
-	width: min-content;
-	margin-top: 55px;
+    width: min-content;
+    margin-top: 55px;
   }
-  .sidebar-nav li {
-    text-indent: 5px;
-  }
-  .sidebar-nav li a {
+  .sidebar-item a {
     padding-right: 10px;
   }
   #app-content {
@@ -34,10 +31,10 @@
     display: block;
   }
   #app-content {
-	padding-left: 270px;
-	margin-top: 20px;
+    padding-left: 270px;
+    margin-top: 20px;
   }
-  
+
   #navbar-brand {
     display: none;
   }
@@ -48,23 +45,23 @@
     border-top: solid 1px rgb(160, 160, 160);
   }
   .nav-item:hover {
-	border-top: solid 1px rgb(130, 130, 130);
-	background-color:rgb(95,105,110);
+    border-top: solid 1px rgb(130, 130, 130);
+    background-color: rgb(95, 105, 110);
   }
   .nav-active {
-	border-top: solid 1px rgb(120, 120, 120);
-	background-color: rgb(84,91,98);
+    border-top: solid 1px rgb(120, 120, 120);
+    background-color: rgb(84, 91, 98);
   }
   #navbar-top {
     position: relative;
     top: -1px;
   }
   #navbar {
-	padding: 0px;
+    padding: 0px;
     position: absolute;
     border-top: solid 1px rgb(160, 160, 160);
   }
   #nav-link {
-	  background-color: #6c757d;
-  }
+    background-color: #6c757d;
+  } 
 }
