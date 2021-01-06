@@ -16,7 +16,7 @@ class Header extends BaseComponent {
     }
     toggleNavLinks = () => {
         this.setState({ showNavLinks: !this.state.showNavLinks });
-    } 
+    }
     onLogout = (e: any) => {
         const app = this;
         app.showConfirmation("Logout?").then(
@@ -40,16 +40,16 @@ class Header extends BaseComponent {
                     <button onClick={this.toggleNavLinks} className="navbar-toggler" type="button" data-toggle="collapse"
                         data-target="#navbarToggler" aria-controls="navbarToggler"
                         aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
+                        <i className={showNavLinks ? "fas fa-times" : "fas fa-bars"} />
                     </button>
-                    <div className={"collapse navbar-collapse "+(showNavLinks? "bg-dark": "bg-secondary")} id="navbarToggler">
+                    <div className={"collapse navbar-collapse " + (showNavLinks ? "bg-dark" : "bg-secondary")} id="navbarToggler">
                         <ul id="navbar-top" className="navbar-nav mr-auto mt-2 mt-lg-0">
                             {menus.map(menu => {
                                 if (menu == null || menu.authenticated && this.isLoggedUserNull()) return null;
                                 const isActive = this.props.activeMenuCode == menu.code;
                                 return (
                                     <li key={"header-menu-" + new String(menu.code)} className={"nav-item " + (isActive ? "active nav-active" : "nav-inactive")}>
-                                        <Link onClick={() => this.props.setMenu(menu)} className={ "nav-link  "  }
+                                        <Link onClick={() => this.props.setMenu(menu)} className={"nav-link  "}
                                             to={menu.url}><span>{menu.name}</span>
                                         </Link></li>
                                 )
@@ -81,10 +81,10 @@ const UserIcon = (props: any) => {
     if (props.authenticated) {
         return (
             <Fragment>
-                <Link onClick={props.setMenuNull} style={{ marginRight: "5px" }} className="btn btn-success btn-sm my-2 my-sm-0"
+                <Link onClick={props.setMenuNull} style={{ marginRight: "5px" }} className="btn btn-light btn-sm my-2 my-sm-0"
                     to='/profile'><i className="fas fa-user-circle"></i>&nbsp;{props.user.displayName}
                 </Link>
-                <a className="btn btn-danger btn-sm  my-2 my-sm-0"
+                <a style={{marginRight:'5px'}} className="btn btn-danger btn-sm  my-2 my-sm-0"
                     onClick={props.onLogout}><i className="fas fa-sign-out-alt"></i>&nbsp;Logout
 				</a>
             </Fragment>);
