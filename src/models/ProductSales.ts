@@ -18,7 +18,7 @@ export default class ProductSales extends BaseEntity implements DataSet{
 			return this.sales??0;
         }
        this.getLabel = () => {
-            return this.product?this.product.name??"":"";
+            return this.product?this.product.name??"":this.month+"-"+this.year;
         }
     }
 	static toDataSet = (object:ProductSales) : DataSet => {

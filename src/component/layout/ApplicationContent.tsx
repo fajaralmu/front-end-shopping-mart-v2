@@ -23,6 +23,7 @@ import ProductCatalogDetail from '../pages/catalog/productdetail/ProductCatalogD
 import DashboardStatistic from '../pages/dashboard/statistic/DashboardStatistic';
 import ProductSales from './../../models/ProductSales';
 import ProductSalesPage from '../pages/dashboard/sales/ProductSalesPage';
+import ProductSalesDetailPage from '../pages/dashboard/sales/ProductSalesDetailPage';
 
 class ApplicationContent extends BaseComponent {
 
@@ -58,6 +59,10 @@ class ApplicationContent extends BaseComponent {
                     <Route exact path="/dashboard/productsales" render={
                         (props: any) =>
                             <ProductSalesPage  app={this.parentApp} />
+                    } />
+                     <Route exact path="/dashboard/productsales/:id" render={
+                        (props: any) =>
+                            <ProductSalesDetailPage  app={this.parentApp} />
                     } />
                     {/* -------- masterdata -------- */}
                     <Route exact path="/management" render={

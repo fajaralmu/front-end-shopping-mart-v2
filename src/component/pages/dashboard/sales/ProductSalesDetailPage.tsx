@@ -4,20 +4,19 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../../constant/stores';
 import TransactionHistoryService from '../../../../services/TransactionHistoryService';
-import Filter from './../../../../models/Filter';
-import WebResponse from './../../../../models/WebResponse';
-import DashboardFilter from './../DashboardFilter';
-import ProductSales from './../../../../models/ProductSales';
+import Filter from '../../../../models/Filter';
+import WebResponse from '../../../../models/WebResponse';
+import DashboardFilter from '../DashboardFilter';
+import ProductSales from '../../../../models/ProductSales';
 import DashboardBarChart from '../DashboardBarChart';
-import FormGroup from './../../../form/FormGroup';
+import FormGroup from '../../../form/FormGroup';
 import { beautifyNominal } from '../../../../utils/StringUtil';
 import AnchorButton from '../../../navigation/AnchorButton';
-import Modal from './../../../container/Modal';
+import Modal from '../../../container/Modal';
 import Carousel from '../../../container/Carousel';
 import Product from '../../../../models/Product';
 import { baseImageUrl } from '../../../../constant/Url';
-import Spinner from './../../../loader/Spinner';
-import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
+import Spinner from '../../../loader/Spinner';
 const date: Date = new Date();
 const DEFAULT_LIMIT: number = 50;
 class IState {
@@ -31,9 +30,9 @@ class IState {
     };
     sortType: string = "asc";
     activeSalesDataIndex: number = -1;
-    salesData?: WebResponse = undefined
+    salesData?: WebResponse = undefined;
 }
-class ProductSalesPage extends BaseComponent {
+class ProductSalesDetailPage extends BaseComponent {
     transactionHistoryService: TransactionHistoryService = TransactionHistoryService.getInstance();
     state = new IState();
     constructor(props) {
@@ -52,26 +51,29 @@ class ProductSalesPage extends BaseComponent {
         this.setState({ filter: filter });
         this.loadSales();
     }
-    reload = (e) => {
-        e.preventDefault();
-        // const filter = this.state.filter;
-        // filter.limit = (filter.limit ?? 0) + 50;
-        // this.setState({ filter: filter });
-        this.loadSales();
-    }
     salesDataLoaded = (response: WebResponse) => {
-        response.entities = ProductSales.sortBySalesDesc(response.entities ?? []);
         this.setState({ salesData: response });
     }
     salesDataNotLoaded = (e: any) => {
         console.error(e);
         this.validateLoginStatus();
     }
+    getProductId = (): number => {
+        return this.props.match.params.id;
+    }
+    getProduct = (): Product | undefined => {
+        if (!this.state.salesData || !this.state.salesData.entity) {
+            return undefined;
+        }
+        const product = this.state.salesData?.entity;
+        return Object.assign(new Product(), product);
+    }
     loadSales = () => {
         this.commonAjaxWithProgress(
-            this.transactionHistoryService.getProductSales,
+            this.transactionHistoryService.getProductSalesDetail,
             this.salesDataLoaded,
             this.salesDataNotLoaded,
+            this.getProductId(),
             this.state.filter
         )
     }
@@ -96,53 +98,22 @@ class ProductSalesPage extends BaseComponent {
         }
         return undefined;
     }
-    sort = (e) => {
-        const salesData = this.state.salesData;
-        if (!salesData) {
-            return;
-        }
-        const salesList = salesData ? salesData.entities : undefined;
-        if (!salesList) {
-            return;
-        }
-        let sortType: string;
-        if (this.state.sortType == "asc") {
-            salesData.entities = ProductSales.sortBySales(salesList);
-            sortType = "desc";
-        } else {
-            salesData.entities = ProductSales.sortBySalesDesc(salesList);
-            sortType = "asc";
-        }
-        this.setState({ salesData: salesData, sortType: sortType, activeSalesDataIndex: -1 });
-    }
+
     render() {
         const salesData = this.state.salesData;
-        if (!salesData) {
+        const product: Product | undefined = this.getProduct();
+        if (!salesData || !product) {
             return <div className="container-fluid" >
-                <h2>Product Sales</h2>
+                <h2>Product Sales : Loading</h2>
                 <Spinner />
             </div>
         }
-        const showBtnLoadMore = (this.state.filter?.limit ?? 0) < (this.state.salesData?.totalData ?? 0) + 1;
-        const btnSortIconClass = this.state.sortType == "asc" ? "fas fa-sort-amount-down-alt" : "fas fa-sort-amount-up";
         return (
             <div className="container-fluid" style={{ paddingBottom: '10px' }}>
-                <h2>Product Sales</h2>
+                <h2>Product Sales : {product.name}</h2>
                 <DashboardFilter onChange={this.updatePeriodFilter} transactionYears={salesData && salesData.transactionYears ? salesData.transactionYears : []}
                     onSubmit={this.filter} filter={this.state.filter} />
-                <Modal title="Options">
-                    <div className="inline-buttons-parent">
-                        <AnchorButton className="btn btn-secondary btn-sm">Loaded Product <span className="badge badge-light">{salesData.entities?.length}</span></AnchorButton>
-                        <AnchorButton className="btn btn-secondary btn-sm">Total Product <span className="badge badge-light">{salesData.totalData}</span></AnchorButton>
-                        <AnchorButton className="btn btn-dark btn-sm" iconClassName={btnSortIconClass} onClick={this.sort} >Sort</AnchorButton>
-                        <form style={{ marginTop: '10px' }} className="input-group" onSubmit={this.reload} >
-                            <input placeholder="Product Count" disabled className="form-control" />
-                            <input placeholder="record count" name="limit" onChange={this.updatePeriodFilter} value={this.state.filter.limit} type="number" min={1} max={this.state.salesData?.totalData} className="form-control" />
-                            {showBtnLoadMore ? <button type="submit" className="btn btn-dark btn-sm" ><i className="fas fa-sync-alt" /> Reload</button>
-                                : null}
-                        </form>
-                    </div>
-                </Modal>
+
                 <DashboardBarChart
                     onClick={this.setActiveSalesData} onUnHover={this.unSelectSalesData}
                     updated={salesData.date ?? new Date()} dataSet={ProductSales.toDataSets(salesData?.entities ?? [])} />
@@ -154,25 +125,18 @@ class ProductSalesPage extends BaseComponent {
 
 const ProductSalesDetail = (props: { productSales?: ProductSales }) => {
     const productSales: ProductSales | undefined = props.productSales;
-    if (!productSales || !productSales.product)
+    if (!productSales)
         return (<div className="container-fluid" style={{ minHeight: '120px' }}>
             <div className="alert alert-info"><i className="fas fa-hand-point-up" /> Click the chart to see detail</div>
         </div>);
 
-    return (<div className="row" style={{ minHeight: '120px' }}>
-        <div className="col-md-6">
-            <Carousel imageUrls={Product.getPictureNames(productSales.product, baseImageUrl)} />
-        </div>
-        <div className="col-md-6">
-            <FormGroup label="Name">{productSales.product ? productSales.product.name : ""}</FormGroup>
-            <FormGroup label="Sales">{beautifyNominal(productSales.sales)}</FormGroup>
-            <FormGroup label="Option">
-                <AnchorWithIcon attributes={{target:"_blank"}} to={"/dashboard/productsales/"+productSales.product.id} >Detail</AnchorWithIcon>
-            </FormGroup>
-        </div>
-    </div >);
+    return (<div  style={{ minHeight: '120px' }}>
+        <FormGroup label="Period">{productSales.monthName} {productSales.year}</FormGroup>
+        <FormGroup label="Sales">{beautifyNominal(productSales.sales)}</FormGroup>
+
+    </div>)
 }
 export default withRouter(connect(
     mapCommonUserStateToProps,
     // mapDispatchToProps
-)(ProductSalesPage))
+)(ProductSalesDetailPage))
