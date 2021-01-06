@@ -39,7 +39,7 @@ class SideBar extends BaseComponent {
         const menus: Menu[] = this.props.sidebarMenus == null ? [] : this.props.sidebarMenus;
 
         return (
-            <ul id="sidebar" className="sidebar-nav bg-secondary">
+            <ul id="sidebar" className="sidebar-nav bg-light">
                 <Brand show={parentMenu != null} brand={parentMenu} />
                 {menus.map(menu => {
                     const isActive: boolean = this.isSidebarActive(menu);
@@ -65,10 +65,10 @@ const Brand = (props) => {
                 textAlign: 'center', paddingTop: '10px',
                 paddingBottom: '10px'
             }}>
-            <h3 className="text-light">
+            <h3 className="text-dark">
                 <i className={Menu.getIconClassName(props.brand)}></i>
             </h3>
-            <Link to={props.brand.url}><h4 className="text-light">{props.brand.name}</h4></Link>
+            <Link to={props.brand.url}><h4 className="text-dark">{props.brand.name}</h4></Link>
         </div></li>
     )
 }

@@ -1,37 +1,61 @@
-
 #app-content {
-    position: absolute;
+  position: absolute;
 }
 
-@media screen and (max-width: 991px) {
-	 
-	/* #sidebar {
-		display: none;
-	} */
-	.menu-label, #sidebar-brand {
-		display:none;
-	}
-	#sidebar {
-		width:min-content;
-	}
-	.sidebar-nav li {
-		text-indent: 5px;
-		
-	}
-	.sidebar-nav li  a{
-		padding-right: 10px;
-	}
-	#app-content {
-		padding-left: 80px;
-	}
+@media screen and (max-width: 991px) { 
+  .menu-label,
+  #sidebar-brand {
+    display: none;
+  }
+  #sidebar {
+	width: min-content;
+	margin-top: 55px;
+  }
+  .sidebar-nav li {
+    text-indent: 5px;
+  }
+  .sidebar-nav li a {
+    padding-right: 10px;
+  }
+  #app-content {
+    padding-left: 80px;
+  }
+
+  #navbar-brand {
+    display: block;
+  }
+  #navbar-brand-top {
+    display: none;
+  }
 }
 
 @media screen and (min-width: 992px) {
-	 
-	#sidebar {
-		display: block;
-	}
-	#app-content {
-		padding-left: 270px;
-	}
+  #sidebar {
+    display: block;
+  }
+  #app-content {
+    padding-left: 270px;
+  }
+  
+  #navbar-brand {
+    display: none;
+  }
+  #navbar-brand-top {
+    display: block;
+  }
+  .nav-inactive {
+    border-top: solid 1px rgb(150, 150, 150);
+  }
+  .nav-active {
+    border-top: solid 1px rgb(110, 110, 110);
+  }
+  #navbar-top {
+    position: relative;
+    top: -1px;
+  }
+  #navbar {
+	padding: 0px;
+    position: absolute;
+    border-top: solid 1px rgb(150, 150, 150);
+  }
 }
