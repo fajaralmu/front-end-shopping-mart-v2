@@ -7,14 +7,13 @@ import { connect } from 'react-redux';
 import Filter from './../../../../models/Filter';
 import WebResponse from './../../../../models/WebResponse';
 import DashboardFilter from '../DashboardFilter';
-import CashflowChart from './CashflowChart';
-import SimpleError from '../../../alert/SimpleError';
+import CashflowChart from './CashflowChart'; 
 import Spinner from '../../../loader/Spinner';
 const date = new Date();
 class IState {
     filter: Filter = {
         month: date.getMonth() + 1,
-        year: 2017,//date.getFullYear(),
+        year:  date.getFullYear(),
         monthTo: date.getMonth() + 1,
         yearTo: date.getFullYear()
     };

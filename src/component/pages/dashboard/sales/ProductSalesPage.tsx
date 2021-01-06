@@ -22,7 +22,7 @@ const DEFAULT_LIMIT: number = 50;
 class IState {
     filter: Filter = {
         month: date.getMonth() + 1,
-        year: 2017,//date.getFullYear(),
+        year: date.getFullYear(),
         monthTo: date.getMonth() + 1,
         yearTo: date.getFullYear(),
         page: 0,
@@ -135,8 +135,9 @@ class ProductSalesPage extends BaseComponent {
                         <AnchorButton className="btn btn-secondary btn-sm">Total Product <span className="badge badge-light">{salesData.totalData}</span></AnchorButton>
                         <AnchorButton className="btn btn-dark btn-sm" iconClassName={btnSortIconClass} onClick={this.sort} >Sort</AnchorButton>
                         <form style={{marginTop:'10px'}} className="input-group" onSubmit={this.reload} >
+                            <input placeholder="Product Count" disabled className="form-control"/>
                             <input placeholder="record count" name="limit" onChange={this.updatePeriodFilter} value={this.state.filter.limit} type="number" min={1} max={this.state.salesData?.totalData} className="form-control" />
-                           {showBtnLoadMore? <button type="submit"  className="btn btn-dark btn-sm" ><i className="fas fa-angle-double-right"/> Load more</button>
+                           {showBtnLoadMore? <button type="submit"  className="btn btn-dark btn-sm" ><i className="fas fa-sync-alt"/> Reload</button>
                            :null}
                         </form>
                     </div>
