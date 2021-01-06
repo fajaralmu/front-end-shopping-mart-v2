@@ -59,6 +59,10 @@
 }
 .menu-active {
   color: #343a40;
-  
+  background: #999999;
   /* color: #fff; */
+}
+.menu-active>a>* {
+  color: #343a40;
+  background: #999999;
 }

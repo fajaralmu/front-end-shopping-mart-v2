@@ -6,11 +6,17 @@ import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { performLogout } from './../../redux/actionCreators';
 import { getMenus } from '../../constant/Menus';
-
+class IState {
+    showNavLinks: boolean = false;
+}
 class Header extends BaseComponent {
+    state: IState = new IState();
     constructor(props: any) {
         super(props, false);
     }
+    toggleNavLinks = () => {
+        this.setState({ showNavLinks: !this.state.showNavLinks });
+    } 
     onLogout = (e: any) => {
         const app = this;
         app.showConfirmation("Logout?").then(
@@ -22,27 +28,28 @@ class Header extends BaseComponent {
         )
     }
     render() {
+        const showNavLinks: boolean = this.state.showNavLinks;
         const menus = getMenus();
+        console.debug("showNavLinks: ", showNavLinks);
         return (
-            <div className="bg-dark container-fluid" style={{ padding: 0, margin: 0 }}>
-                <div id="navbar-brand-top" style={{paddingLeft:'0.5rem'}} className="container-fluid"><a style={{fontSize:'15px'}} className="text-white navbar-brand" href="#"><strong>{this.getApplicationProfile().name}</strong></a></div>
-
-                <nav id="navbar" className="navbar navbar-expand-lg navbar-dark bg-dark" style={{ zIndex: 55, position: 'fixed', width: '100%' }}>
+            <div className="bg-dark container-fluid" style={{ position: 'fixed', zIndex: 55, padding: 0, margin: 0 }}>
+                <NavBarTop label={this.getApplicationProfile().name} />
+                <nav id="navbar" className="navbar navbar-expand-lg navbar-dark bg-dark" style={{ width: '100%' }}>
                     {/* <div className="container-fluid"></div> */}
                     <a id="navbar-brand" className="navbar-brand" href="#">{this.getApplicationProfile().name}</a>
-                    <button className="navbar-toggler" type="button" data-toggle="collapse"
+                    <button onClick={this.toggleNavLinks} className="navbar-toggler" type="button" data-toggle="collapse"
                         data-target="#navbarToggler" aria-controls="navbarToggler"
                         aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
-                    <div className="collapse navbar-collapse bg-secondary" id="navbarToggler">
+                    <div className={"collapse navbar-collapse "+(showNavLinks? "bg-dark": "bg-secondary")} id="navbarToggler">
                         <ul id="navbar-top" className="navbar-nav mr-auto mt-2 mt-lg-0">
                             {menus.map(menu => {
                                 if (menu == null || menu.authenticated && this.isLoggedUserNull()) return null;
                                 const isActive = this.props.activeMenuCode == menu.code;
                                 return (
                                     <li key={"header-menu-" + new String(menu.code)} className={"nav-item " + (isActive ? "active nav-active" : "nav-inactive")}>
-                                        <Link onClick={() => this.props.setMenu(menu)} className={isActive?"nav-link bg-secondary":"nav-link bg-secondary"}
+                                        <Link onClick={() => this.props.setMenu(menu)} className={ "nav-link  "  }
                                             to={menu.url}><span>{menu.name}</span>
                                         </Link></li>
                                 )
@@ -60,6 +67,15 @@ class Header extends BaseComponent {
         )
     }
 
+}
+const NavBarTop = (props) => {
+    return (
+        <div id="navbar-brand-top" style={{ paddingLeft: '0.5rem' }} className="container-fluid">
+            <a style={{ fontSize: '15px' }} className="text-white navbar-brand" href="#">
+                <strong>{props.label}</strong>
+            </a>
+        </div>
+    );
 }
 const UserIcon = (props: any) => {
     if (props.authenticated) {

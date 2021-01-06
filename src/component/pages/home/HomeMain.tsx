@@ -8,7 +8,7 @@ import { mapCommonUserStateToProps } from '../../../constant/stores';
 import ApplicationProfile from '../../../models/ApplicationProfile';
 import { baseImageUrl } from '../../../constant/Url';
 
-class HomeMain extends BaseComponent{
+class HomeMain extends BaseComponent {
     constructor(props: any) {
         super(props, false);
     }
@@ -18,11 +18,13 @@ class HomeMain extends BaseComponent{
     }
     render() {
         const applicationProfile: ApplicationProfile = this.getApplicationProfile();
-        const imageUrl:string = baseImageUrl +applicationProfile.backgroundUrl;
+        const imageUrl: string = baseImageUrl + applicationProfile.backgroundUrl;
         return (
-            <div className="jumbotron"
+            <div className="container-fluid">
+                <div className="jumbotron"
                     style={{
-                        backgroundImage: 'url("'+imageUrl+'")',
+                        marginTop: '20px',
+                        backgroundImage: 'url("' + imageUrl + '")',
                         backgroundSize: 'cover'
                     }}
                 >
@@ -32,7 +34,8 @@ class HomeMain extends BaseComponent{
                     <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
                     <a className="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
                 </div>
-           
+            </div>
+
         )
     }
 

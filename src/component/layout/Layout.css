@@ -34,7 +34,8 @@
     display: block;
   }
   #app-content {
-    padding-left: 270px;
+	padding-left: 270px;
+	margin-top: 20px;
   }
   
   #navbar-brand {
@@ -44,10 +45,15 @@
     display: block;
   }
   .nav-inactive {
-    border-top: solid 1px rgb(150, 150, 150);
+    border-top: solid 1px rgb(160, 160, 160);
+  }
+  .nav-item:hover {
+	border-top: solid 1px rgb(130, 130, 130);
+	background-color:rgb(95,105,110);
   }
   .nav-active {
-    border-top: solid 1px rgb(110, 110, 110);
+	border-top: solid 1px rgb(120, 120, 120);
+	background-color: rgb(84,91,98);
   }
   #navbar-top {
     position: relative;
@@ -56,6 +62,9 @@
   #navbar {
 	padding: 0px;
     position: absolute;
-    border-top: solid 1px rgb(150, 150, 150);
+    border-top: solid 1px rgb(160, 160, 160);
+  }
+  #nav-link {
+	  background-color: #6c757d;
   }
 }

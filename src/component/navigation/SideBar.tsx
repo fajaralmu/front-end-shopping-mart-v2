@@ -45,9 +45,9 @@ class SideBar extends BaseComponent {
                     const isActive: boolean = this.isSidebarActive(menu);
                     const menuClassName = isActive ? 'menu-active' : 'regular-menu';
                     return (
-                        <li key={"SIDEBAR_" + menu.code}><Link to={parentMenu.url + "/" + menu.url}>
-                            <span className={menuClassName} style={{ marginRight: '5px' }}><i className={Menu.getIconClassName(menu)}></i></span>
-                            <span className={'menu-label ' + menuClassName} >{menu.name}</span>
+                        <li className={menuClassName} key={"SIDEBAR_" + menu.code}><Link to={parentMenu.url + "/" + menu.url}>
+                            <span style={{ marginRight: '5px' }}><i className={Menu.getIconClassName(menu)}></i></span>
+                            <span className={'menu-label'} >{menu.name}</span>
                         </Link></li>
                     )
                 })
