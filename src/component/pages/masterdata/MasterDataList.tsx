@@ -175,10 +175,11 @@ class MasterDataList extends BaseComponent {
                     </Modal>
                     <NavigationButtons limit={this.state.filter.limit ?? 5} totalData={this.state.recordData.totalData ?? 0}
                         activePage={this.state.filter.page ?? 0} onClick={this.loadEntities} />
-                    <Modal title="Data List">
-                        <Spinner show={this.state.loading}/>
-                        <div style={{ overflow: 'scroll' }}>
-                            <table className="table">
+                    <Modal title="Data List" >
+                        {this.state.loading ?
+                            <Loading loading={this.state.loading} /> : null}
+                        <div className="container-fluid" style={{ overflow: 'scroll' }}>
+                            <table className="table" >
                                 <DataTableHeader orderButtonOnClick={this.orderButtonOnClick} filterOnChange={this.filterOnChange} headerProps={headerProps} />
                                 <tbody>
                                     {
@@ -199,6 +200,7 @@ class MasterDataList extends BaseComponent {
                                         })}
                                 </tbody>
                             </table>
+
                         </div>
                     </Modal>
                 </form>
@@ -206,6 +208,13 @@ class MasterDataList extends BaseComponent {
         )
     }
 
+}
+const Loading = ({loading}) => {
+    return (
+        <div style={{ width: '100%', height: '100%', paddingTop: '2rem', backgroundColor: 'rgb(240,240,240,0.5)', marginLeft: '-1rem', marginTop: '-1rem', position: 'absolute' }}>
+            <Spinner show={loading} />
+        </div>
+    )
 }
 const SubmitResetButton = (props: any) => {
     return (<div className="btn-group">

@@ -23,9 +23,9 @@ export default class Modal extends Component<any, IState> {
                 <AnchorButton style={{marginBottom:'10px'}} onClick={this.showModal} iconClassName="fas fa-angle-down" >Show {title}</AnchorButton>
             )
         }
-        const props = (({ show, footerContent, toggleable, ...props }) => props)(this.props) // remove b and c
+        const props = (({ style, show, footerContent, toggleable, ...props }) => props)(this.props) // remove b and c
         return (
-            <div {...props} className="modal-content " style={{marginBottom:'10px'}}>
+            <div {...props} className="modal-content " style={{...props.style, marginBottom:'10px'}}>
                 <div className="modal-header">
                     <h5 className="modal-title">{title}</h5>
                     {this.props.toggleable?
