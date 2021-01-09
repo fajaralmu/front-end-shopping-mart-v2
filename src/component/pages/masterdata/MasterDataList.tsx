@@ -207,7 +207,6 @@ class MasterDataList extends BaseComponent {
             </div >
         )
     }
-
 }
 const Loading = ({loading}) => {
     return (
