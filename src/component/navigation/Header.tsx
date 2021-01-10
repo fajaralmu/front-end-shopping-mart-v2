@@ -56,11 +56,9 @@ class Header extends BaseComponent {
                         </ul >
                         <form className="form-inline my-2 my-lg-0">
                             <UserIcon setMenuNull={this.props.setMenuNull} authenticated={this.isUserLoggedIn()}
-                                onLogout={this.onLogout} user={this.getLoggedUser()}
-                            />
+                                onLogout={this.onLogout} user={this.getLoggedUser()} />
                         </form >
                     </div >
-
                 </nav >
             </div>
         )
@@ -90,7 +88,7 @@ const UserIcon = (props: any) => {
     }
     return (
 
-        <Link onClick={props.setMenuNull} className="btn btn-sm btn-info my-2 my-sm-0"
+        <Link style={{marginRight:'5px'}} onClick={props.setMenuNull} className="btn btn-sm btn-info my-2 my-sm-0"
             to='/login'> <i className="fas fa-sign-in-alt"></i>&nbsp;Login
         </Link>
     );

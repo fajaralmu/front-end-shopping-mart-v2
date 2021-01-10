@@ -1,7 +1,7 @@
 
 
 import React, { Component, Fragment } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../constant/stores';
 import BaseMainMenus from './../../layout/BaseMainMenus';
@@ -90,19 +90,11 @@ class MasterDataMain extends BaseMainMenus {
                     {properties.map(property => {
 
                         return (
-                            <div className="col-md-3" style={{ marginBottom: '10px' }}>
-                                <Card className="text-white bg-secondary">
-                                    <div className="row">
-                                        <div className="col-md-2"  >
-                                            <h4  ><i className={property.iconClassName} /></h4>
-                                        </div>
-                                        <div className="col-md-10">
-                                            <h4>{property.label}</h4>
-                                            <AnchorWithIcon className="btn btn-light" iconClassName="fas fa-angle-right" to={"/management/" + property.entityName} >View Page</AnchorWithIcon>
-                                        </div>
-                                    </div>
-
-                                </Card>
+                            <div className="col-md-2 text-center" style={{ marginBottom: '10px' }}>
+                                <div  style={{paddingTop:'10px', paddingBottom:'10px'}}  className="text-white bg-warning rounded">
+                                <h2 ><Link to={"/management/" + property.entityName} ><i className={property.iconClassName} /></Link></h2>
+                                </div>
+                                <Link to={"/management/" + property.entityName} >{property.label}</Link>
                             </div>
                         )
                     })}
