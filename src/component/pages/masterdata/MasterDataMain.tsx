@@ -10,9 +10,6 @@ import WebResponse from './../../../models/WebResponse';
 import Menu from './../../../models/Menu';
 import ManagementProperty from '../../../models/ManagementProperty';
 import MasterDataManagement from './MasterDataManagement';
-import Loader from '../../loader/Loader';
-import Card from '../../container/Card';
-import AnchorWithIcon from '../../navigation/AnchorWithIcon';
 
 interface IState {
     code?: string
@@ -69,7 +66,7 @@ class MasterDataMain extends BaseMainMenus {
     }
     componentDidUpdate() {
         this.setSidebarMenus();
-        console.debug("this.getCode(): ", this.getCode());
+        // console.debug("this.getCode(): ", this.getCode());
         if (this.state.code != this.getCode()) {
             this.setState({ code: this.getCode() });
         }

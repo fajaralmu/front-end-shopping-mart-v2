@@ -6,6 +6,7 @@ import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { performLogout } from './../../redux/actionCreators';
 import { getMenus } from '../../constant/Menus';
+import './Header.css';
 class IState {
     showNavLinks: boolean = false;
 }
