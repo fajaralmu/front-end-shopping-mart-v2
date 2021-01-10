@@ -88,10 +88,8 @@ class MasterDataMain extends BaseMainMenus {
 
                         return (
                             <div className="col-md-2 text-center" style={{ marginBottom: '10px' }}>
-                                <div  style={{paddingTop:'10px', paddingBottom:'10px'}}  className="text-white bg-warning rounded">
-                                <h2 ><Link to={"/management/" + property.entityName} ><i className={property.iconClassName} /></Link></h2>
-                                </div>
-                                <Link to={"/management/" + property.entityName} >{property.label}</Link>
+                                <h2 ><Link className="btn btn-warning btn-lg" to={"/management/" + property.entityName} ><i className={property.iconClassName} /></Link></h2>
+                                <p>{property.label}</p>
                             </div>
                         )
                     })}
