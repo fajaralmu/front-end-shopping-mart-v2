@@ -1,13 +1,10 @@
 
 
-import React, { Component, Fragment } from 'react';
+import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import BaseComponent from '../../BaseComponent';
 import { mapCommonUserStateToProps } from '../../../constant/stores';
 import BaseMainMenus from './../../layout/BaseMainMenus';
-import Card from './../../container/Card';
-import AnchorWithIcon from './../../navigation/AnchorWithIcon';
 
 class TransactionMain extends BaseMainMenus {
     constructor(props: any) {

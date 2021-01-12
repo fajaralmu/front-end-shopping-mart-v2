@@ -36,4 +36,14 @@ export default class Product extends BaseEntity{
 		return [Product.getDefaultPicture(product, baseImageUrl)]
 	}
 
+	static countSummary(products:Product[]) : number
+	{
+		let count = 0;
+		for (let i = 0; i < products.length; i++) {
+			const element = products[i];
+			count += element.count??0;
+		}
+		return count;
+	}
+
 }
