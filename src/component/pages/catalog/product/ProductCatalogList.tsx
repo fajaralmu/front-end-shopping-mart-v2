@@ -127,9 +127,7 @@ class ProductCatalogList extends BaseComponent
                                 <span className="text-info"><strong>{beautifyNominal(product.price)}</strong></span>
                                 {props.withStock ? <span style={{ marginLeft: '5px' }} className={(product.count??0)>0?'badge badge-warning text-dark':'badge badge-dark'}>{product.count}</span> : null}
                                 {showCart ?
-                                    <div>
-                                         
-                                        <div className="btn-group">
+                                    <div><div className="btn-group">
                                             <AnchorButton onClick={(e)=>this.addOneToCart(product)} iconClassName="fas fa-plus" className="btn btn-primary btn-sm" />
                                             <AnchorButton className="btn btn-outline-info btn-sm"><strong>{productInCart?.count??0}</strong></AnchorButton>
                                             <AnchorButton onClick={(e)=>this.reduceOneFromCart(product)} iconClassName="fas fa-minus" className="btn btn-primary btn-sm" />
