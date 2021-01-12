@@ -2,6 +2,7 @@ import * as types from './types'
 import * as url from '../constant/Url'
 import { contextPath } from '../constant/Url';
 import Product from './../models/Product';
+import User from './../models/User';
 
 const usedHost = url.contextPath();
 const apiBaseUrl = usedHost + "api/public/"
@@ -268,6 +269,20 @@ export const getLoggedUser = (app) => {
     return request;
 }
  
+export const setLoggedUser = (user:User) => {
+    
+    let request = {
+        type: types.SET_LOGGED_USER,
+        payload: {
+            user:user
+        },
+        meta: { type: types.SET_LOGGED_USER }
+    };
+    return request;
+}
+ 
+
+
   
 export const removeEntity = () => ({
     type: types.REMOVE_SHOP_ENTITY,

@@ -78,9 +78,13 @@ class App extends Component<any, IState> {
   }
 
   endLoading() {
-    this.decrementLoadings();
-    if (this.loadings == 0) {
-      this.setState({ loading: false, loadingPercentage: 0 });
+    try{
+      this.decrementLoadings();
+      if (this.loadings == 0) {
+        this.setState({ loading: false, loadingPercentage: 0 });
+      }
+    } catch(e) {
+      console.error(e);
     }
 
   }

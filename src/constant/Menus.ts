@@ -10,6 +10,7 @@ export const LOGOUT = "logout";
 export const DASHBOARD = "dashboard";
 export const TRANSACTION_SELLING = "selling";
 export const MENU_TRANSACTION = "purchasing";
+export const MENU_SETTING = "settings";
 export const SUPPLIERLIST = "supplierlist";
 export const MENU_MASTER_DATA = "management";
 export const CHATROOM = "chatroom";
@@ -154,5 +155,29 @@ export const menus: Menu[] = [
         active: false,
         authenticated: true,
         showSidebar: true
+    },
+    {
+        code: MENU_SETTING,
+        name: "Setting",
+        url: "/settings",
+        menuClass: "fas fa-cogs",
+        active: false,
+        authenticated: true,
+        showSidebar: true,
+        subMenus: [
+            {
+                code: 'user_profile',
+                name: 'Profile',
+                menuClass: 'fas fa-user-cog',
+                url: 'user-profile',
+            },
+            {
+                code: 'app_profile',
+                name: 'Application Setting',
+                menuClass: 'fas fa-cog',
+                url: 'app-profile',
+            },
+            
+        ]
     },
 ];

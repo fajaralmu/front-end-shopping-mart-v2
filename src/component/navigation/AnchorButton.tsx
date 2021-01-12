@@ -6,6 +6,7 @@ interface IProps {
     style?:any;
     onClick?:any;
     iconClassName?:string;
+    attributes?:any;
 }
 export default class AnchorButton extends Component<IProps, any>
 {
@@ -16,7 +17,7 @@ export default class AnchorButton extends Component<IProps, any>
         if (this.props.show == false) return null;
         const btnClassName = this.props.className??"btn btn-outline-secondary";
         return (
-            <a style={this.props.style} onClick={this.props.onClick} className={btnClassName} >
+            <a style={this.props.style} {...this.props.attributes} onClick={this.props.onClick} className={btnClassName} >
                 {this.props.iconClassName?
                 <span style={this.props.children?{marginRight:'5px'}:{}}><i className={this.props.iconClassName}/></span>
                 :

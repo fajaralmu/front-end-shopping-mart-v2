@@ -5,7 +5,7 @@ export default class User extends BaseEntity{
 	displayName?:string;
 	password?:string;
 	profileImage?:string;
-	authorities?:[];
+	authorities?:any[];
 	requestId?:string;
 	processingDate?:Date;
 

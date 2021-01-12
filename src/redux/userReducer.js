@@ -14,11 +14,7 @@ export const initState = {
 };
 
 export const reducer = (state = initState, action) => {
-    /*
-        ========setting menu========
-    */
-
-
+    
     let result = {};
     switch (action.type) {
         case types.REQUEST_ID:
@@ -78,8 +74,13 @@ export const reducer = (state = initState, action) => {
                 loggedUser: action.payload.data
             };
             return result;
+        case types.SET_LOGGED_USER:
+            result = {
+                ...state,
+                loggedUser: action.payload.user
+            };
+            return result;
         default:
-
             return { ...state };
 
     }

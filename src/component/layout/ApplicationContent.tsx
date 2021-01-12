@@ -24,6 +24,8 @@ import DashboardStatistic from '../pages/dashboard/statistic/DashboardStatistic'
 import ProductSales from './../../models/ProductSales';
 import ProductSalesPage from '../pages/dashboard/sales/ProductSalesPage';
 import ProductSalesDetailPage from '../pages/dashboard/sales/ProductSalesDetailPage';
+import SettingsMain from '../pages/settings/SettingsMain';
+import UserProfile from '../pages/settings/UserProfile';
 
 class ApplicationContent extends BaseComponent {
 
@@ -90,6 +92,16 @@ class ApplicationContent extends BaseComponent {
                         (props: any) =>
                             <TransactionDetail app={this.parentApp} />
                     } />
+                    {/* -------- settings --------- */}
+                    <Route exact path="/settings" render={
+                        (props: any) =>
+                            <SettingsMain app={this.parentApp} />
+                    } />
+                    <Route exact path="/settings/user-profile" render={
+                        (props: any) =>
+                            <UserProfile app={this.parentApp} />
+                    } />
+                    {/* ///////// PUBLIC ///////// */}
                     {/* -------- catalog -------- */}
                     <Route exact path="/catalog" render={
                         (props: any) => { 

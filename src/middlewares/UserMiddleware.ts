@@ -1,5 +1,5 @@
 import * as common from './Common'
-import * as types from '../redux/types' 
+import * as types from '../redux/types'
 const axios = require('axios');
 export const performLoginMiddleware = store => next => action => {
     if (!action.meta || action.meta.type !== types.DO_LOGIN) {
@@ -10,13 +10,13 @@ export const performLoginMiddleware = store => next => action => {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     }).then(response => {
         const responseJson = response.data;
-        let loginKey:string = "";
-        let loginSuccess:boolean = false;
+        let loginKey: string = "";
+        let loginSuccess: boolean = false;
 
         if (responseJson.code != null && responseJson.code == "00") {
             loginKey = response.headers['access-token'];
             console.log("api_token: ", loginKey);
-            loginSuccess = true; 
+            loginSuccess = true;
         }
         let newAction = Object.assign({}, action, {
             payload: {
@@ -44,7 +44,7 @@ export const requestAppIdMiddleware = store => next => action => {
             return;
         }
         common.updateAccessToken(response);
-        console.debug("response header:",response.headers['access-token']);
+        console.debug("response header:", response.headers['access-token']);
         let newAction = Object.assign({}, action, { payload: { loginStatus: data.loggedIn, ...data } });
         delete newAction.meta;
         store.dispatch(newAction);
@@ -105,5 +105,14 @@ export const performLogoutMiddleware = store => next => action => {
             store.dispatch(newAction);
         })
         .catch(console.log).finally(param => app.endLoading());
+
+}
+
+
+export const setLoggedUserMiddleware = store => next => action => {
+    if (!action.meta || action.meta.type !== types.SET_LOGGED_USER) { return next(action); }
+    let newAction = Object.assign({}, action, { payload: action.payload });
+    delete newAction.meta;
+    store.dispatch(newAction);
 
 }

@@ -10,7 +10,6 @@ import { updateCart } from './../../../../redux/actionCreators';
 import { withRouter, Link } from 'react-router-dom'; 
 import AnchorButton from './../../../navigation/AnchorButton'; 
 import BaseComponent from './../../../BaseComponent'; 
-import Carousel from '../../../container/Carousel';
 class IState {
     showCart: boolean = false
 }

@@ -21,6 +21,7 @@ export const configureStore = () => {
             userMiddleware.performLogoutMiddleware, 
             userMiddleware.requestAppIdMiddleware, 
             userMiddleware.getLoggedUserMiddleware, 
+            userMiddleware.setLoggedUserMiddleware,
 
             //transaction   
             getCashflowInfoMiddleware,
