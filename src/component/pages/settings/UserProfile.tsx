@@ -122,25 +122,13 @@ class UserProfile extends BaseComponent {
                         </div>
                         <p></p>
                         <FormGroup label="User Name">
-                            {editFields.username ?
-                                <PropertyInput updateProfileProperty={this.updateProfileProperty} propertyName="username" toggleInput={this.toggleInput} propertyValue={user.username} />
-                                :
-                                <PropertyLabel propertyName="username" toggleInput={this.toggleInput} propertyValue={user.username} />
-                            }
+                            <EditField edit={editFields.username} updateProfileProperty={this.updateProfileProperty} propertyName="username" toggleInput={this.toggleInput} propertyValue={user.username} />
                         </FormGroup>
                         <FormGroup label="Name">
-                            {editFields.displayName ?
-                                <PropertyInput updateProfileProperty={this.updateProfileProperty} propertyName="displayName" toggleInput={this.toggleInput} propertyValue={user.displayName} />
-                                :
-                                <PropertyLabel propertyName="displayName" toggleInput={this.toggleInput} propertyValue={user.displayName} />
-                            }
+                            <EditField edit={editFields.displayName} updateProfileProperty={this.updateProfileProperty} propertyName="displayName" toggleInput={this.toggleInput} propertyValue={user.displayName} />
                         </FormGroup>
                         <FormGroup label="Password">
-                            {editFields.password ?
-                                <PropertyInput updateProfileProperty={this.updateProfileProperty} propertyName="password" toggleInput={this.toggleInput} propertyValue={user.password} />
-                                :
-                                <PropertyLabel propertyName="password" toggleInput={this.toggleInput} propertyValue="^_^" />
-                            }
+                            <EditField edit={editFields.password} updateProfileProperty={this.updateProfileProperty} propertyName="password" toggleInput={this.toggleInput} propertyValue={user.password} />
                         </FormGroup>
                         <FormGroup  >
                             <input type="submit" className="btn btn-primary" value="Save" />
@@ -152,7 +140,14 @@ class UserProfile extends BaseComponent {
     }
 
 }
-
+const EditField = ({ edit, propertyName, toggleInput, propertyValue, updateProfileProperty }) => {
+    return (
+        edit == true ?
+            <PropertyInput updateProfileProperty={updateProfileProperty} propertyName={propertyName} toggleInput={toggleInput} propertyValue={propertyValue} />
+            :
+            <PropertyLabel propertyName={propertyName} toggleInput={toggleInput} propertyValue={propertyValue} />
+    )
+}
 const PropertyInput = ({ propertyName, toggleInput, propertyValue, updateProfileProperty }) => {
 
     return (<div className="row">
