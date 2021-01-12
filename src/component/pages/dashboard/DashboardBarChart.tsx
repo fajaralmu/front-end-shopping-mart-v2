@@ -48,7 +48,7 @@ export default class DashboardBarChart extends Component<IProps, IState>
         this.maxValue = this.maxAmount(this.props.dataSet);
         this.middleYAxisValue = Math.round(this.maxValue * 2 / 3);
         this.bottomYAxisValue = Math.round(this.maxValue * 1 / 3);
-        this.lineWidth = (23) * (this.props.dataSet.length);
+        this.lineWidth = (23) * (this.props.dataSet.length) + 100;
     }
     componentDidUpdate() {
         this.updateSizes();
@@ -77,7 +77,7 @@ export default class DashboardBarChart extends Component<IProps, IState>
         return (
             <div>
                 <div className="border border-secondary" style={{ minHeight: '300px', overflowX: 'scroll' }}>
-                    <svg onMouseOut={this.unHover} className="bg-light border" version="1.1" baseProfile="full" width={this.offsetX * 2 + (23) * (props.dataSet.length)} height={300} xmlns="http://www.w3.org/2000/svg">
+                    <svg onMouseOut={this.unHover} className="bg-light border" version="1.1" baseProfile="full" width={this.offsetX * 2 + (23) * (props.dataSet.length)+ 100} height={300} xmlns="http://www.w3.org/2000/svg">
 
                         {props.dataSet.map((data, i) => {
                             const percentage = (data.getAmount() / this.maxValue) * this.baseHeight;
@@ -95,9 +95,9 @@ export default class DashboardBarChart extends Component<IProps, IState>
                             )
                         })}
                         <rect name="base_axis_x" x={this.offsetX} y={this.baseYIndex} height={2} width={this.lineWidth} />
-                        <rect name="helper_line_top" fill="rgb(100,100,100)" x={this.offsetX} y={this.offsetY} height={1} width={this.lineWidth} />
-                        <rect name="helper_line_middle" fill="rgb(100,100,100)" x={this.offsetX} y={this.offsetY + this.baseHeight * 1 / 3} height={1} width={this.lineWidth} />
-                        <rect name="helper_line_bottom" fill="rgb(100,100,100)" x={this.offsetX} y={this.offsetY + this.baseHeight * 2 / 3} height={1} width={this.lineWidth} />
+                        <rect name="ruler_line_top" fill="rgb(100,100,100)" x={this.offsetX} y={this.offsetY} height={1} width={this.lineWidth} />
+                        <rect name="ruler_line_middle" fill="rgb(100,100,100)" x={this.offsetX} y={this.offsetY + this.baseHeight * 1 / 3} height={1} width={this.lineWidth} />
+                        <rect name="ruler_line_bottom" fill="rgb(100,100,100)" x={this.offsetX} y={this.offsetY + this.baseHeight * 2 / 3} height={1} width={this.lineWidth} />
                         <rect name="base_axis_y" x={this.offsetX} y={this.offsetY} height={this.baseHeight} width={2} />
 
                         <text textAnchor="end" name="top_val" fontSize={10} x={this.offsetX} y={this.offsetY}>{beautifyNominal(this.maxValue)}</text>
