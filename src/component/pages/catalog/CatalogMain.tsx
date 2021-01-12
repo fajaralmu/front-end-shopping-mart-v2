@@ -51,7 +51,7 @@ class CatalogMain extends BaseMainMenus {
                             <h4>Total Product: {this.state.totalProduct}</h4>
                             <div className="btn-group">
                                 <AnchorWithIcon className="btn btn-info" to="/catalog/product">View Catalog</AnchorWithIcon>
-                                <AnchorButton iconClassName="fas fa-sync" onClick={this.loadTotalProduct} />
+                                <AnchorButton iconClassName="fas fa-sync-alt" onClick={this.loadTotalProduct} />
                             </div>
                         </Card>
                     </div>

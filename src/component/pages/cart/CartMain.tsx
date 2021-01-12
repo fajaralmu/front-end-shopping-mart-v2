@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import BaseComponent from './../../BaseComponent';
 import { mapCommonUserStateToProps } from './../../../constant/stores';
 import BaseMainMenus from './../../layout/BaseMainMenus';
+import Product from './../../../models/Product';
 
 class CartMain extends BaseMainMenus
 {
@@ -16,7 +17,10 @@ class CartMain extends BaseMainMenus
         return (
             <div id="CartMain" className="container-fluid">
                 <h2>Shopping Cart</h2>
-                <div className="alert alert-info">Plan your shopping list</div>
+                <div className="alert alert-info">
+                   <p>Plan your shopping list</p>
+                   <p>Current items: <strong>{Product.countSummary(this.props.cart)}</strong></p>
+                    </div>
             </div>
         )
     }
