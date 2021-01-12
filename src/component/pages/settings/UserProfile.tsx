@@ -25,7 +25,7 @@ class IState {
 }
 class UserProfile extends BaseComponent {
 
-    userService:UserService = UserService.getInstance();
+    userService: UserService = UserService.getInstance();
     state: IState = new IState();
     constructor(props: any) {
         super(props, true);
@@ -71,14 +71,14 @@ class UserProfile extends BaseComponent {
         }
         const app = this;
         this.showConfirmation("Save Data?")
-        .then(function(ok){
-            if (ok) {
-                app.doSaveRecord();
-            }
-        })
+            .then(function (ok) {
+                if (ok) {
+                    app.doSaveRecord();
+                }
+            })
     }
     doSaveRecord = () => {
-        const user:User|undefined = this.getUserEditedData();
+        const user: User | undefined = this.getUserEditedData();
         if (!user) return;
         this.commonAjax(
             this.userService.updateProfile,
@@ -87,11 +87,11 @@ class UserProfile extends BaseComponent {
             user
         )
     }
-    getUserEditedData = () : User | undefined=> {
-        const user:User | undefined = this.state.user;
-        const editFields:EditField = this.state.editFields;
+    getUserEditedData = (): User | undefined => {
+        const user: User | undefined = this.state.user;
+        const editFields: EditField = this.state.editFields;
         if (!user) return undefined;
-        const editedUser:User = new User();
+        const editedUser: User = new User();
         if (editFields.displayName) {
             editedUser.displayName = user.displayName;
         }
@@ -103,11 +103,11 @@ class UserProfile extends BaseComponent {
         }
         return editedUser;
     }
-    profileSaved = (response:WebResponse) => {
+    profileSaved = (response: WebResponse) => {
         this.showInfo("Success");
         this.props.setLoggedUser(response.user);
     }
-    
+
     render() {
         const user: User | undefined = this.state.user;
         if (!user) return null;
@@ -142,14 +142,11 @@ class UserProfile extends BaseComponent {
                                 <PropertyLabel propertyName="password" toggleInput={this.toggleInput} propertyValue="^_^" />
                             }
                         </FormGroup>
-                        <FormGroup label="Action">
+                        <FormGroup  >
                             <input type="submit" className="btn btn-primary" value="Save" />
                         </FormGroup>
                     </form>
                 </Card>
-                <div className="alert alert-info">
-                    Welcome, <strong>{this.getLoggedUser()?.displayName}</strong>
-                </div>
             </div>
         )
     }
@@ -158,26 +155,30 @@ class UserProfile extends BaseComponent {
 
 const PropertyInput = ({ propertyName, toggleInput, propertyValue, updateProfileProperty }) => {
 
-    return (<Fragment>
-        <p><input name={propertyName} onChange={updateProfileProperty} value={propertyValue} className="form-control" /></p>
-        <AnchorButton attributes={{
-            'data-name': propertyName,
-            'data-enabled': 'false'
-        }}
-            onClick={toggleInput} className="btn btn-secondary btn-sm">cancel</AnchorButton>
-    </Fragment>)
+    return (<div className="row">
+        <p className="col-md-10"><input name={propertyName} onChange={updateProfileProperty} value={propertyValue} className="form-control" /></p>
+        <div className="col-md-2">
+            <AnchorButton attributes={{
+                'data-name': propertyName,
+                'data-enabled': 'false'
+            }}
+                onClick={toggleInput} className="btn btn-secondary btn-sm">cancel</AnchorButton>
+        </div>
+    </div>)
 }
 
 const PropertyLabel = ({ propertyName, toggleInput, propertyValue }) => {
 
-    return (<Fragment>
-        <p>{propertyValue}</p>
-        <AnchorButton attributes={{
-            'data-name': propertyName,
-            'data-enabled': 'true'
-        }}
-            onClick={toggleInput} className="btn btn-info btn-sm">edit</AnchorButton>
-    </Fragment>)
+    return (<div className="row">
+        <p className="col-md-10">{propertyValue}</p>
+        <div className="col-md-2">
+            <AnchorButton attributes={{
+                'data-name': propertyName,
+                'data-enabled': 'true'
+            }}
+                onClick={toggleInput} className=" btn btn-info btn-sm">edit</AnchorButton>
+        </div>
+    </div>)
 }
 
 const mapDispatchToProps = (dispatch: Function) => ({

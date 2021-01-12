@@ -91,7 +91,10 @@ export default class BaseComponent extends Component<any, any> {
         this.doAjax(method, true, successCallback, errorCallback, ...params);
     }
     getLoggedUser():User|undefined {
-        return this.props.loggedUser;
+        const user:User|undefined = this.props.loggedUser;
+        if (!user) return undefined;
+        user.password = "^_^";
+        return user;
     }
     isLoggedUserNull(): boolean {
         return false == this.props.loginStatus || null == this.props.loggedUser;
