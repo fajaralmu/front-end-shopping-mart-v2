@@ -26,7 +26,6 @@ export const reducer = (state = initState, action) => {
         case types.GET_MESSAGE:
             return { ...state, messages: action.payload.entities };
         case types.UPDATE_CART:
-           
             return { ...state, cart: action.payload.cart };
 
        

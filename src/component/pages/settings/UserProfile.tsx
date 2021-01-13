@@ -12,6 +12,7 @@ import AnchorButton from '../../navigation/AnchorButton';
 import UserService from './../../../services/UserService';
 import WebResponse from './../../../models/WebResponse';
 import { toBase64v2 } from '../../../utils/ComponentUtil';
+import { EditField } from './helper';
 interface EditField { username: boolean, displayName: boolean, password: boolean, profileImage: boolean }
 class IState {
     user?: User = undefined;
@@ -105,14 +106,11 @@ class UserProfile extends BaseComponent {
         const editFields: EditField = this.state.editFields;
         if (!user) return undefined;
         const editedUser: User = new User();
-        if (editFields.displayName) {
-            editedUser.displayName = user.displayName;
-        }
-        if (editFields.password) {
-            editedUser.password = user.password;
-        }
-        if (editFields.username) {
-            editedUser.username = user.username;
+        for (const key in editFields) {
+            const element:boolean = editFields[key];
+            if (element && key != 'profileImage') {
+                editedUser[key] = user[key];
+            }
         }
         if (editFields.profileImage && user.profileImage?.startsWith("data:image")) {
             editedUser.profileImage = user.profileImage;
@@ -172,36 +170,6 @@ const EditImage = ({ edit, toggleInput, updateProperty }) => {
             }} onClick={toggleInput} className=" btn btn-info btn-sm">edit image</AnchorButton>
         </div>
     )
-}
-const EditField = ({ edit, name, toggleInput, value, updateProperty }) => {
-    return (edit == true ?
-        <PropertyInput updateProperty={updateProperty} name={name} toggleInput={toggleInput} value={value} />
-        :
-        <PropertyLabel name={name} toggleInput={toggleInput} value={value} />
-    )
-}
-const PropertyInput = ({ name, toggleInput, value, updateProperty }) => {
-    return (<div className="row">
-        <p className="col-md-10"><input name={name} onChange={updateProperty} value={value} className="form-control" /></p>
-        <div className="col-md-2">
-            <AnchorButton attributes={{
-                'data-name': name, 'data-enabled': 'false'
-            }}
-                onClick={toggleInput} className="btn btn-secondary btn-sm">cancel</AnchorButton>
-        </div>
-    </div>)
-}
-
-const PropertyLabel = ({ name, toggleInput, value }) => {
-
-    return (<div className="row">
-        <p className="col-md-10">{value}</p>
-        <div className="col-md-2">
-            <AnchorButton attributes={{
-                'data-name': name, 'data-enabled': 'true'
-            }} onClick={toggleInput} className=" btn btn-info btn-sm">edit</AnchorButton>
-        </div>
-    </div>)
 }
 
 const mapDispatchToProps = (dispatch: Function) => ({

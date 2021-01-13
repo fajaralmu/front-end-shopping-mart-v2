@@ -3,6 +3,7 @@ import * as url from '../constant/Url'
 import { contextPath } from '../constant/Url';
 import Product from './../models/Product';
 import User from './../models/User';
+import ApplicationProfile from './../models/ApplicationProfile';
 
 const usedHost = url.contextPath();
 const apiBaseUrl = usedHost + "api/public/"
@@ -10,15 +11,15 @@ const apiEntityBaseUrl = usedHost + "api/app/entity/"
 const apiAccount = usedHost + "api/app/account/"
 const apiAdmin = usedHost + "api/app/admin/"
 const apiTransaction = usedHost + "api/app/transaction/";
- 
-export const updateCart = (cart:Product[], ...apps) => {
+
+export const updateCart = (cart: Product[], ...apps) => {
     // console.debug("UPDATE CART: ", cart);
     return { type: types.UPDATE_CART, payload: { cart: cart, apps: apps }, meta: { type: types.UPDATE_CART } };
 }
 
 export const resetProducts = () => {
     return { type: types.RESET_PRODUCTS, payload: {}, meta: { type: types.RESET_PRODUCTS } };
-} 
+}
 
 export const removeManagedEntity = () => {
     return {
@@ -148,7 +149,7 @@ export const getManagementMenus = (app) => {
         }
     };
     return requested;
-} 
+}
 
 export const requestAppId = (app) => {
     app.startLoading();
@@ -186,7 +187,7 @@ export const storeMessageLocally = (messages) => {
         }
     };
 }
- 
+
 export const getProductSalesDetail = (request, app) => {
     app.startLoading(true);
     return {
@@ -236,7 +237,7 @@ export const getCashflowInfo = (month, year, type, app) => {
             app: app, type: types.GET_CASHFLOW_INFO, url: apiTransaction.concat("cashflowinfo")
         }
     };
-} 
+}
 
 export const performLogout = (app) => {
     app.startLoading();
@@ -253,8 +254,10 @@ export const performLogin = (username, password, app) => {
     let loginRequest = {
         type: types.DO_LOGIN,
         payload: {},
-        meta: { type: types.DO_LOGIN, url: contextPath().concat("login?username="+username+"&password="+
-        password+"&transport_type=rest"), app: app }
+        meta: {
+            type: types.DO_LOGIN, url: contextPath().concat("login?username=" + username + "&password=" +
+                password + "&transport_type=rest"), app: app
+        }
     };
     return loginRequest;
 }
@@ -268,26 +271,31 @@ export const getLoggedUser = (app) => {
     };
     return request;
 }
- 
-export const setLoggedUser = (user:User) => {
-    
+
+export const setLoggedUser = (user: User) => {
+
     let request = {
         type: types.SET_LOGGED_USER,
-        payload: {
-            user:user
-        },
+        payload: { user: user },
         meta: { type: types.SET_LOGGED_USER }
     };
     return request;
 }
- 
 
+export const setApplicationProfile = (applicationProfile: ApplicationProfile) => {
 
-  
+    let request = {
+        type: types.SET_APPLICATION_PROFILE,
+        payload: { applicationProfile: applicationProfile },
+        meta: { type: types.SET_APPLICATION_PROFILE }
+    };
+    return request;
+}
+
 export const removeEntity = () => ({
     type: types.REMOVE_SHOP_ENTITY,
     payload: {},
     meta: { type: types.REMOVE_SHOP_ENTITY }
 })
- 
+
 

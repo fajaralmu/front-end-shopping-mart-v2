@@ -26,6 +26,7 @@ import ProductSalesPage from '../pages/dashboard/sales/ProductSalesPage';
 import ProductSalesDetailPage from '../pages/dashboard/sales/ProductSalesDetailPage';
 import SettingsMain from '../pages/settings/SettingsMain';
 import UserProfile from '../pages/settings/UserProfile';
+import EditApplicationProfile from '../pages/settings/EditApplicationProfile';
 
 class ApplicationContent extends BaseComponent {
 
@@ -100,6 +101,10 @@ class ApplicationContent extends BaseComponent {
                     <Route exact path="/settings/user-profile" render={
                         (props: any) =>
                             <UserProfile app={this.parentApp} />
+                    } />
+                    <Route exact path="/settings/app-profile" render={
+                        (props: any) =>
+                            <EditApplicationProfile app={this.parentApp} />
                     } />
                     {/* ///////// PUBLIC ///////// */}
                     {/* -------- catalog -------- */}

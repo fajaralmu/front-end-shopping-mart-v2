@@ -70,14 +70,17 @@ export const reducer = (state = initState, action) => {
             return result;
         case types.GET_LOGGED_USER:
             result = {
-                ...state,
-                loggedUser: action.payload.data
+                ...state, loggedUser: action.payload.data
             };
             return result;
         case types.SET_LOGGED_USER:
             result = {
-                ...state,
-                loggedUser: action.payload.user
+                ...state, loggedUser: action.payload.user
+            };
+            return result;
+        case types.SET_APPLICATION_PROFILE:
+            result = {
+                ...state, applicationProfile: action.payload.applicationProfile
             };
             return result;
         default:

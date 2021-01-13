@@ -105,14 +105,11 @@ export const performLogoutMiddleware = store => next => action => {
             store.dispatch(newAction);
         })
         .catch(console.log).finally(param => app.endLoading());
-
 }
-
 
 export const setLoggedUserMiddleware = store => next => action => {
     if (!action.meta || action.meta.type !== types.SET_LOGGED_USER) { return next(action); }
     let newAction = Object.assign({}, action, { payload: action.payload });
     delete newAction.meta;
     store.dispatch(newAction);
-
 }
