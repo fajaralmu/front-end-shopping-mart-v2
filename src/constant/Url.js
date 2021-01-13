@@ -11,7 +11,7 @@ export const contextPath = function(){
     return contextPath;
 }
  
-export const baseImageUrl = contextPath()+"WebAsset/Shop1/Images/";
-export const baseResUrl = contextPath()+"res/img/";
+export const baseImageUrl = contextPath()+"assets/images/"; 
+// export const baseImageUrl = contextPath()+"WebAsset/Shop1/Images/"; 
 
 export const POST = "post";
