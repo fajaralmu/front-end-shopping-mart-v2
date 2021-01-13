@@ -114,7 +114,7 @@ class UserProfile extends BaseComponent {
         if (editFields.username) {
             editedUser.username = user.username;
         }
-        if (editFields.profileImage) {
+        if (editFields.profileImage && user.profileImage?.startsWith("data:image")) {
             editedUser.profileImage = user.profileImage;
         }
         return editedUser;
@@ -133,8 +133,8 @@ class UserProfile extends BaseComponent {
                 <h2>User Profile</h2>
                 <Card title="Profile Data">
                     <form onSubmit={this.saveRecord}>
-                        <div className="container-fluid text-center">
-                            <img style={{marginBottom:'10px'}} width="100" height="100" className="rounded-circle border border-primary" src={user.profileImage?.startsWith("data")?user.profileImage:baseImageUrl + user.profileImage} />
+                        <div className="container-fluid text-center" style={{marginBottom:'10px'}}>
+                            <img style={{marginBottom:'10px'}} width="100" height="100" className="rounded-circle border border-primary" src={user.profileImage?.startsWith("data:image")?user.profileImage:baseImageUrl + user.profileImage} />
                             <EditImage edit={editFields.profileImage} updateProperty={this.updateProfleImage} toggleInput={this.toggleInput} />
                         </div>
                         <FormGroup label="User Name">
@@ -147,7 +147,7 @@ class UserProfile extends BaseComponent {
                             <EditField edit={editFields.password} updateProperty={this.updateProfileProperty} name="password" toggleInput={this.toggleInput} value={user.password} />
                         </FormGroup>
                         <FormGroup  >
-                            <input type="submit" className="btn btn-primary" value="Save" />
+                           {this.state.fieldChanged()? <input type="submit" className="btn btn-primary" value="Save" />:null}
                         </FormGroup>
                     </form>
                 </Card>
