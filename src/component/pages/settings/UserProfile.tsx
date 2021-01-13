@@ -11,16 +11,18 @@ import { setLoggedUser } from './../../../redux/actionCreators';
 import AnchorButton from '../../navigation/AnchorButton';
 import UserService from './../../../services/UserService';
 import WebResponse from './../../../models/WebResponse';
-interface EditField { username: boolean, displayName: boolean, password: boolean }
+import { toBase64v2 } from '../../../utils/ComponentUtil';
+interface EditField { username: boolean, displayName: boolean, password: boolean, profileImage: boolean }
 class IState {
     user?: User = undefined;
     editFields: EditField = {
         username: false,
         displayName: false,
-        password: false
+        password: false,
+        profileImage: false
     };
     fieldChanged = (): boolean => {
-        return this.editFields.username || this.editFields.displayName || this.editFields.password;
+        return this.editFields.profileImage || this.editFields.username || this.editFields.displayName || this.editFields.password;
     }
 }
 class UserProfile extends BaseComponent {
@@ -43,6 +45,20 @@ class UserProfile extends BaseComponent {
 
         user[target.name] = target.value;
         this.setState({ user: user });
+    }
+    updateProfleImage = (e:ChangeEvent) => {
+        const target: HTMLInputElement | null = e.target as HTMLInputElement;
+        if (null == target) return;
+        const app = this;
+        toBase64v2(target).then(function(imageData) {
+            app.setProfileImage(imageData);
+        }).catch(console.error);
+    }
+    setProfileImage = (imageData:string) => {
+        const user:User|undefined = this.state.user;
+        if (!user) return;
+        user.profileImage = imageData;
+        this.setState({user:user});
     }
     toggleInput = (e: MouseEvent) => {
         const target: HTMLAnchorElement | null = e.target as HTMLAnchorElement;
@@ -72,9 +88,7 @@ class UserProfile extends BaseComponent {
         const app = this;
         this.showConfirmation("Save Data?")
             .then(function (ok) {
-                if (ok) {
-                    app.doSaveRecord();
-                }
+                if (ok) { app.doSaveRecord(); }
             })
     }
     doSaveRecord = () => {
@@ -82,8 +96,7 @@ class UserProfile extends BaseComponent {
         if (!user) return;
         this.commonAjax(
             this.userService.updateProfile,
-            this.profileSaved,
-            this.showCommonErrorAlert,
+            this.profileSaved, this.showCommonErrorAlert,
             user
         )
     }
@@ -100,6 +113,9 @@ class UserProfile extends BaseComponent {
         }
         if (editFields.username) {
             editedUser.username = user.username;
+        }
+        if (editFields.profileImage) {
+            editedUser.profileImage = user.profileImage;
         }
         return editedUser;
     }
@@ -118,17 +134,17 @@ class UserProfile extends BaseComponent {
                 <Card title="Profile Data">
                     <form onSubmit={this.saveRecord}>
                         <div className="container-fluid text-center">
-                            <img width="100" height="100" className="rounded-circle border border-primary" src={baseImageUrl + user.profileImage} />
+                            <img style={{marginBottom:'10px'}} width="100" height="100" className="rounded-circle border border-primary" src={user.profileImage?.startsWith("data")?user.profileImage:baseImageUrl + user.profileImage} />
+                            <EditImage edit={editFields.profileImage} updateProperty={this.updateProfleImage} toggleInput={this.toggleInput} />
                         </div>
-                        <p></p>
                         <FormGroup label="User Name">
-                            <EditField edit={editFields.username} updateProfileProperty={this.updateProfileProperty} propertyName="username" toggleInput={this.toggleInput} propertyValue={user.username} />
+                            <EditField edit={editFields.username} updateProperty={this.updateProfileProperty} name="username" toggleInput={this.toggleInput} value={user.username} />
                         </FormGroup>
                         <FormGroup label="Name">
-                            <EditField edit={editFields.displayName} updateProfileProperty={this.updateProfileProperty} propertyName="displayName" toggleInput={this.toggleInput} propertyValue={user.displayName} />
+                            <EditField edit={editFields.displayName} updateProperty={this.updateProfileProperty} name="displayName" toggleInput={this.toggleInput} value={user.displayName} />
                         </FormGroup>
                         <FormGroup label="Password">
-                            <EditField edit={editFields.password} updateProfileProperty={this.updateProfileProperty} propertyName="password" toggleInput={this.toggleInput} propertyValue={user.password} />
+                            <EditField edit={editFields.password} updateProperty={this.updateProfileProperty} name="password" toggleInput={this.toggleInput} value={user.password} />
                         </FormGroup>
                         <FormGroup  >
                             <input type="submit" className="btn btn-primary" value="Save" />
@@ -140,38 +156,50 @@ class UserProfile extends BaseComponent {
     }
 
 }
-const EditField = ({ edit, propertyName, toggleInput, propertyValue, updateProfileProperty }) => {
-    return (
-        edit == true ?
-            <PropertyInput updateProfileProperty={updateProfileProperty} propertyName={propertyName} toggleInput={toggleInput} propertyValue={propertyValue} />
-            :
-            <PropertyLabel propertyName={propertyName} toggleInput={toggleInput} propertyValue={propertyValue} />
+const EditImage = ({ edit, toggleInput, updateProperty }) => {
+    return (edit == true ? <>
+        <div>
+            <AnchorButton attributes={{
+                'data-name': 'profileImage', 'data-enabled': 'false'
+            }} onClick={toggleInput} className=" btn btn-secondary btn-sm">cancel</AnchorButton>
+        </div>
+        <input onChange={updateProperty} className="form control" accept="image/*" type="file" name="profileImage" />
+    </>
+        :
+        <div>
+            <AnchorButton attributes={{
+                'data-name': 'profileImage', 'data-enabled': 'true'
+            }} onClick={toggleInput} className=" btn btn-info btn-sm">edit image</AnchorButton>
+        </div>
     )
 }
-const PropertyInput = ({ propertyName, toggleInput, propertyValue, updateProfileProperty }) => {
-
+const EditField = ({ edit, name, toggleInput, value, updateProperty }) => {
+    return (edit == true ?
+        <PropertyInput updateProperty={updateProperty} name={name} toggleInput={toggleInput} value={value} />
+        :
+        <PropertyLabel name={name} toggleInput={toggleInput} value={value} />
+    )
+}
+const PropertyInput = ({ name, toggleInput, value, updateProperty }) => {
     return (<div className="row">
-        <p className="col-md-10"><input name={propertyName} onChange={updateProfileProperty} value={propertyValue} className="form-control" /></p>
+        <p className="col-md-10"><input name={name} onChange={updateProperty} value={value} className="form-control" /></p>
         <div className="col-md-2">
             <AnchorButton attributes={{
-                'data-name': propertyName,
-                'data-enabled': 'false'
+                'data-name': name, 'data-enabled': 'false'
             }}
                 onClick={toggleInput} className="btn btn-secondary btn-sm">cancel</AnchorButton>
         </div>
     </div>)
 }
 
-const PropertyLabel = ({ propertyName, toggleInput, propertyValue }) => {
+const PropertyLabel = ({ name, toggleInput, value }) => {
 
     return (<div className="row">
-        <p className="col-md-10">{propertyValue}</p>
+        <p className="col-md-10">{value}</p>
         <div className="col-md-2">
             <AnchorButton attributes={{
-                'data-name': propertyName,
-                'data-enabled': 'true'
-            }}
-                onClick={toggleInput} className=" btn btn-info btn-sm">edit</AnchorButton>
+                'data-name': name, 'data-enabled': 'true'
+            }} onClick={toggleInput} className=" btn btn-info btn-sm">edit</AnchorButton>
         </div>
     </div>)
 }
@@ -179,7 +207,6 @@ const PropertyLabel = ({ propertyName, toggleInput, propertyValue }) => {
 const mapDispatchToProps = (dispatch: Function) => ({
     setLoggedUser: (user: User) => dispatch(setLoggedUser(user)),
 })
-
 
 export default withRouter(connect(
     mapCommonUserStateToProps,
