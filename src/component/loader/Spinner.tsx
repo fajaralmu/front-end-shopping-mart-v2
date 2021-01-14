@@ -8,7 +8,7 @@ export default class Spinner extends Component<any, any>{
 
     render() {
         const innerDivs:JSX.Element[] = new Array<JSX.Element>();
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i <= 11; i++) {
             innerDivs.push(<div></div>);
         }
         return (

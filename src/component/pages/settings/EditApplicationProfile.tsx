@@ -140,10 +140,10 @@ class EditApplicationProfile extends BaseComponent {
         return (
             <div id="ApplicationProfile" className="container-fluid">
                 <h2>Application Profile</h2>
-                <Card title="Profile Data">
+                <Card title="Profile Data"> 
                     <form onSubmit={this.saveRecord}>
                         <div className="container-fluid text-center" style={{ marginBottom: '10px' }}>
-                            <img style={{ marginBottom: '10px' }} width="100" height="100" className="rounded-circle border border-primary" src={bgUrl.startsWith("data:image") ? bgUrl : baseImageUrl + bgUrl} />
+                            <img style={{ marginBottom: '10px' }}  height="100" className="border border-primary" src={bgUrl.startsWith("data:image") ? bgUrl : baseImageUrl + bgUrl} />
                             <EditImage edit={editFields.backgroundUrl} updateProperty={this.updateProfleImage} toggleInput={this.toggleInput} />
                         </div>
                         <FormGroup label="Name">

@@ -80,7 +80,7 @@ const UserIcon = (props: any) => {
         return (
             <Fragment>
                 <Link onClick={props.setMenuNull} style={{ marginRight: "5px" }} className="btn btn-light btn-sm my-2 my-sm-0"
-                    to='/profile'><i className="fas fa-user-circle"></i>&nbsp;{props.user.displayName}
+                    to='/settings/user-profile'><i className="fas fa-user-circle"></i>&nbsp;{props.user.displayName}
                 </Link>
                 <a style={{marginRight:'5px'}} className="btn btn-danger btn-sm  my-2 my-sm-0"
                     onClick={props.onLogout}><i className="fas fa-sign-out-alt"></i>&nbsp;Logout

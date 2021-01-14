@@ -12,6 +12,7 @@ import Loader from './component/loader/Loader';
 import Alert from './component/alert/Alert';
 import MainLayout from './component/layout/MainLayout';
 import WebResponse from './models/WebResponse';
+import Spinner from './component/loader/Spinner';
 
 interface IState {
   loading: boolean;
@@ -141,7 +142,11 @@ class App extends Component<any, IState> {
 
   render() {
     if (!this.props.requestId) {
-      return (<Loader realtime={false} text="Please wait..." type="loading" />)
+      return (
+        <div style={{paddingTop:'10%'}}>
+          <Spinner/>
+        </div>
+      )
     }
     const usedHost = url.contextPath();
     return (
