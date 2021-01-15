@@ -1,27 +1,6 @@
 export const byId = (id) => { return document.getElementById(id) }
 
-
-/**
- * 
- * @param  {...string} ignoredIds 
- */
-export const clearFields = (...ignoredIds) => {
-    let inputs = document.getElementsByTagName("input");
-
-    let withIgnore = ignoredIds != null;
-    loop: for (let i = 0; i < inputs.length; i++) {
-        if (withIgnore){
-            for (let y = 0; y < ignoredIds.length; y++) {
-                if (inputs[i].id == ignoredIds[y]) continue loop;
-            }
-        }
-        
-        if (inputs[i].type == "text") { inputs[i].value = ""; }
-        else if (inputs[i].type == "number") { inputs[i].value = 0; }
-        else { inputs[i].value = null; }
-    }
-}
-
+ 
 export function toBase64(file, referer, callback) {
     const reader = new FileReader();
     reader.readAsDataURL(file.files[0]);
@@ -30,14 +9,14 @@ export function toBase64(file, referer, callback) {
         alert("Error Loading File");
     }
 }
-
-
+ 
 
 export function toBase64v2(fileInput) {
-    return new Promise(function (resolve, reject) {
+    return new Promise<any>(function (resolve, reject) {
         try {
             const reader = new FileReader();
             reader.readAsDataURL(fileInput.files[0]);
+            console.debug("fileInput.files[0]: ", fileInput.files[0]);
             reader.onload = function () { resolve(reader.result); }
             reader.onerror = function (error) {
                 reject(error);
@@ -47,6 +26,30 @@ export function toBase64v2(fileInput) {
         }
     });
 
+}
+
+export const resizeImage = (data:string, percentage:number) => {
+    return new Promise<any>(function(resolve, reject){
+        const img = new Image();
+        img.src = data;
+        img.onload = function () {
+            const width = img.width * percentage;
+            const height = img.height * percentage;
+            // create an off-screen canvas
+            var canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            if (!ctx) return;
+            // set its dimension to target size
+            canvas.width = width;
+            canvas.height = height;
+
+            // draw source image into the off-screen canvas:
+            ctx.drawImage(img, 0, 0, width, height);
+
+            // encode image to data-uri with base64 version of compressed image
+            resolve(canvas.toDataURL());
+        }
+    });
 }
 
 export function toBase64FromFile(file) {
@@ -115,14 +118,14 @@ export const createNavButtons = (totalButton, currentPage) => {
 
 
 export const getDropdownOptionsMonth = () => {
-    let options = [];
+    let options:any[] = [];
     for (let i = 1; i <= 12; i++) {
         options.push({ value: i, text: i });
     }
     return options;
 }
 export const getDropdownOptionsYear = (from, to) => {
-    let options = [];
+    let options:any[] = [];
     for (let i = from; i <= to; i++) {
         options.push({ value: i, text: i });
     }

@@ -10,7 +10,7 @@ import { baseImageUrl } from '../../../constant/Url';
 import { setApplicationProfile } from '../../../redux/actionCreators';
 import AnchorButton from '../../navigation/AnchorButton';
 import WebResponse from '../../../models/WebResponse';
-import { toBase64v2 } from '../../../utils/ComponentUtil';
+import { resizeImage, toBase64v2 } from '../../../utils/ComponentUtil';
 import { EditField } from './helper';
 import MasterDataService from './../../../services/MasterDataService';
 interface EditField { name: boolean, welcomingMessage: boolean, shortDescription: boolean, backgroundUrl: boolean, address: boolean, about: boolean, color: boolean, fontColor: boolean }
@@ -62,7 +62,10 @@ class EditApplicationProfile extends BaseComponent {
         if (null == target) return;
         const app = this;
         toBase64v2(target).then(function (imageData) {
-            app.setProfileImage(imageData);
+            resizeImage(imageData, 0.05)
+                .then(function (resizedData) {
+                    app.setProfileImage(imageData);
+                });
         }).catch(console.error);
     }
     setProfileImage = (imageData: string) => {
@@ -140,10 +143,10 @@ class EditApplicationProfile extends BaseComponent {
         return (
             <div id="ApplicationProfile" className="container-fluid">
                 <h2>Application Profile</h2>
-                <Card title="Profile Data"> 
+                <Card title="Profile Data">
                     <form onSubmit={this.saveRecord}>
                         <div className="container-fluid text-center" style={{ marginBottom: '10px' }}>
-                            <img style={{ marginBottom: '10px' }}  height="100" className="border border-primary" src={bgUrl.startsWith("data:image") ? bgUrl : baseImageUrl + bgUrl} />
+                            <img style={{ marginBottom: '10px' }} height="100" className="border border-primary" src={bgUrl.startsWith("data:image") ? bgUrl : baseImageUrl + bgUrl} />
                             <EditImage edit={editFields.backgroundUrl} updateProperty={this.updateProfleImage} toggleInput={this.toggleInput} />
                         </div>
                         <FormGroup label="Name">
@@ -191,7 +194,7 @@ const EditImage = ({ edit, toggleInput, updateProperty }) => {
         <div>
             <AnchorButton attributes={{
                 'data-name': name, 'data-enabled': 'true'
-            }} onClick={toggleInput} className=" btn btn-info btn-sm">edit image</AnchorButton>
+            }} onClick={toggleInput} className=" btn btn-info btn-sm">edit image (max 10KB)</AnchorButton>
         </div>
     )
 }
