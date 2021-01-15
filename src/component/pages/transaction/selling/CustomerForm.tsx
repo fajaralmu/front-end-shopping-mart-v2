@@ -11,19 +11,23 @@ import MasterDataService from '../../../../services/MasterDataService';
 import WebResponse from '../../../../models/WebResponse';
 import FormGroup from './../../../form/FormGroup';
 import AnchorWithIcon from './../../../navigation/AnchorWithIcon';
+import Spinner from './../../../loader/Spinner';
 interface IState {
     customer?: Customer;
     customerNotFound: boolean;
+    loading:boolean;
 }
 class CustomerForm extends BaseComponent {
     masterDataService = MasterDataService.getInstance();
     state: IState = {
-        customerNotFound: false,
+        customerNotFound: false, loading:false
     }
     constructor(props: any) {
         super(props);
 
     }
+    startLoading = () => this.setState({loading:true});
+    endLoading = () => this.setState({loading:false});
     searchCustomer = (e) => {
         e.preventDefault();
         const formData: FormData = new FormData(e.target);
@@ -61,24 +65,27 @@ class CustomerForm extends BaseComponent {
                             <input placeholder="Customer code" required type="number" className="form-control" name="id" />
                         </FormGroup>
                     </div>
-                    <CustomerDetail customer={this.state.customer} notFound={this.state.customerNotFound} />
+                    <CustomerDetail loading={this.state.loading} customer={this.state.customer} notFound={this.state.customerNotFound} />
                 </Modal>
             </form>
         )
     }
 
 }
-const CustomerDetail = (props: { customer?: Customer, notFound: boolean }) => {
-    const h = '120px';
+const CustomerDetail = (props: { loading:boolean, customer?: Customer, notFound: boolean }) => {
+    const style = { height: '120px' };
+    if (props.loading) {
+        return <div style={style}><Spinner/></div>
+    }
     if (true == props.notFound) {
-        return <div style={{ height: h }}><div className="alert alert-warning">Customer not found</div></div>
+        return <div style={style}><div className="alert alert-warning">Customer not found</div></div>
     }
     if (!props.customer) {
-        return <div style={{ height: h }}><div className="alert alert-secondary">Please select customer</div></div>
+        return <div style={style}><div className="alert alert-secondary">Please select customer</div></div>
     }
     const customer: Customer = props.customer;
     return (
-        <div style={{ height: h }}>
+        <div style={style}>
             <h2>{customer.name}</h2>
             <address>
                 {customer.address}<br />

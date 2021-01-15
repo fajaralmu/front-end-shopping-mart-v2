@@ -13,19 +13,22 @@ import MasterDataService from './../../../../services/MasterDataService';
 import WebResponse from './../../../../models/WebResponse';
 import FormGroup from './../../../form/FormGroup';
 import AnchorWithIcon from './../../../navigation/AnchorWithIcon';
+import Spinner from './../../../loader/Spinner';
 interface IState {
-    supplier?: Supplier; 
+    supplier?: Supplier;
     supplierNotFound: boolean;
+    loading: boolean;    
 }
-class SupplierForm extends BaseComponent { 
+class SupplierForm extends BaseComponent {
     masterDataService = MasterDataService.getInstance();
-    state: IState = { 
-        supplierNotFound: false,
+    state: IState = {
+        supplierNotFound: false, loading: false
     }
     constructor(props: any) {
         super(props);
-
     }
+    startLoading = () => this.setState({loading:true});
+    endLoading = () => this.setState({loading:false});
     searchSupplier = (e) => {
         e.preventDefault();
         const formData: FormData = new FormData(e.target);
@@ -63,24 +66,27 @@ class SupplierForm extends BaseComponent {
                             <input placeholder="Supplier code" required type="number" className="form-control" name="id" />
                         </FormGroup>
                     </div>
-                    <SupplierDetail supplier={this.state.supplier} notFound={this.state.supplierNotFound} />
+                    <SupplierDetail loading={this.state.loading} supplier={this.state.supplier} notFound={this.state.supplierNotFound} />
                 </Modal>
             </form>
         )
     }
 
 }
-const SupplierDetail = (props: { supplier?: Supplier, notFound: boolean }) => {
-    const h = '120px';
+const SupplierDetail = (props: {loading:boolean, supplier?: Supplier, notFound: boolean }) => {
+    const style = { height: '120px' };
+    if (props.loading) {
+        return <div style={style}><Spinner/></div>
+    }
     if (true == props.notFound) {
-        return <div style={{ height: h }}><div className="alert alert-warning">Supplier not found</div></div>
+        return <div style={style}><div className="alert alert-warning">Supplier not found</div></div>
     }
     if (!props.supplier) {
-        return <div style={{ height: h }}><div className="alert alert-secondary">Please select supplier</div></div>
+        return <div style={style}><div className="alert alert-secondary">Please select supplier</div></div>
     }
     const supplier: Supplier = props.supplier;
     return (
-        <div style={{ height: h }}>
+        <div style={style}>
             <h2>{supplier.name}</h2>
             <address>
                 {supplier.address}<br />
