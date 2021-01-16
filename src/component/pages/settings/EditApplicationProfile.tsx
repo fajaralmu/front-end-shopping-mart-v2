@@ -29,8 +29,7 @@ class IState {
     };
     fieldChanged = (): boolean => {
         for (const key in this.editFields) {
-            const element = this.editFields[key];
-            if (element == true) {
+            if (this.editFields[key] == true) {
                 return true;
             }
         }
@@ -65,16 +64,7 @@ class EditApplicationProfile extends BaseComponent {
         const fileName:string|undefined = target.files ? target.files[0].name : undefined;
         if (!fileName) return;
         toBase64v2(target).then(function (imageData) {
-            const fileSize = base64StringFileSize(imageData);
-           
-            let ratio:number = 1.0;
-            if (fileSize > 10000) {
-                ratio = 10000 / fileSize;
-            }
-            resizeImage(imageData, ratio, fileExtension(fileName))
-                .then(function (resizedData) {
-                    app.setProfileImage(resizedData);
-                });
+            app.setProfileImage(imageData);
         }).catch(console.error);
     }
     setProfileImage = (imageData: string) => {
@@ -119,11 +109,19 @@ class EditApplicationProfile extends BaseComponent {
     doSaveRecord = () => {
         const applicationProfile: ApplicationProfile | undefined = this.getApplicationEditedData();
         if (!applicationProfile) return;
-        this.commonAjax(
-            this.masterDataService.updateApplicationProfile,
-            this.profileSaved, this.showCommonErrorAlert,
-            applicationProfile
-        )
+        if (applicationProfile.backgroundUrl) {
+            this.commonAjaxWithProgress(
+                this.masterDataService.updateApplicationProfile,
+                this.profileSaved, this.showCommonErrorAlert,
+                applicationProfile
+            )
+        } else {
+            this.commonAjax(
+                this.masterDataService.updateApplicationProfile,
+                this.profileSaved, this.showCommonErrorAlert,
+                applicationProfile
+            )
+        }
     }
     getApplicationEditedData = (): ApplicationProfile | undefined => {
         const applicationProfile: ApplicationProfile | undefined = this.state.applicationProfile;
@@ -144,6 +142,11 @@ class EditApplicationProfile extends BaseComponent {
     profileSaved = (response: WebResponse) => {
         this.showInfo("Success");
         this.props.setApplicationProfile(response.applicationProfile);
+        const editFields = this.state.editFields;
+        for (const key in editFields) {
+            editFields[key] = false;
+        }
+        this.setState({editFields:editFields});
     }
 
     render() {
@@ -205,7 +208,7 @@ const EditImage = ({ edit, toggleInput, updateProperty }) => {
         <div>
             <AnchorButton attributes={{
                 'data-name': name, 'data-enabled': 'true'
-            }} onClick={toggleInput} className=" btn btn-info btn-sm">edit image (max 10KB)</AnchorButton>
+            }} onClick={toggleInput} className=" btn btn-info btn-sm">edit image</AnchorButton>
         </div>
     )
 }

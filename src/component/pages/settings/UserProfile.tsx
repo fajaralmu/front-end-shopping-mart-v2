@@ -24,7 +24,12 @@ class IState {
         profileImage: false
     };
     fieldChanged = (): boolean => {
-        return this.editFields.profileImage || this.editFields.username || this.editFields.displayName || this.editFields.password;
+        for (const key in this.editFields) {
+            if (this.editFields[key] == true) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 class UserProfile extends BaseComponent {
@@ -55,15 +60,7 @@ class UserProfile extends BaseComponent {
         const fileName:string|undefined = target.files ? target.files[0].name : undefined;
         if (!fileName) return;
         toBase64v2(target).then(function(imageData) {
-            const fileSize = base64StringFileSize(imageData);
-            let ratio:number = 1.0;
-            if (fileSize > 10000) {
-                ratio = 10000 / fileSize;
-            }
-            resizeImage(imageData, ratio, fileExtension(fileName))
-                .then(function (resizedData) {
-                    app.setProfileImage(resizedData);
-                });
+           app.setProfileImage(imageData);
         }).catch(console.error);
     }
     setProfileImage = (imageData:string) => {
@@ -106,11 +103,19 @@ class UserProfile extends BaseComponent {
     doSaveRecord = () => {
         const user: User | undefined = this.getUserEditedData();
         if (!user) return;
-        this.commonAjax(
-            this.userService.updateProfile,
-            this.profileSaved, this.showCommonErrorAlert,
-            user
-        )
+        if (user.profileImage) {
+            this.commonAjaxWithProgress(
+                this.userService.updateProfile,
+                this.profileSaved, this.showCommonErrorAlert,
+                user
+            )
+        } else {
+            this.commonAjax(
+                this.userService.updateProfile,
+                this.profileSaved, this.showCommonErrorAlert,
+                user
+            )
+        }
     }
     getUserEditedData = (): User | undefined => {
         const user: User | undefined = this.state.user;
@@ -131,6 +136,11 @@ class UserProfile extends BaseComponent {
     profileSaved = (response: WebResponse) => {
         this.showInfo("Success");
         this.props.setLoggedUser(response.user);
+        const editFields = this.state.editFields;
+        for (const key in editFields) {
+            editFields[key] = false;
+        }
+        this.setState({editFields:editFields});
     }
 
     render() {
