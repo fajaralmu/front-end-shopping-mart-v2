@@ -11,8 +11,9 @@ import { setLoggedUser } from './../../../redux/actionCreators';
 import AnchorButton from '../../navigation/AnchorButton';
 import UserService from './../../../services/UserService';
 import WebResponse from './../../../models/WebResponse';
-import { toBase64v2 } from '../../../utils/ComponentUtil';
+import { resizeImage, toBase64v2 } from '../../../utils/ComponentUtil';
 import { EditField } from './helper';
+import { base64StringFileSize, fileExtension } from './../../../utils/StringUtil';
 interface EditField { username: boolean, displayName: boolean, password: boolean, profileImage: boolean }
 class IState {
     user?: User = undefined;
@@ -51,8 +52,18 @@ class UserProfile extends BaseComponent {
         const target: HTMLInputElement | null = e.target as HTMLInputElement;
         if (null == target) return;
         const app = this;
+        const fileName:string|undefined = target.files ? target.files[0].name : undefined;
+        if (!fileName) return;
         toBase64v2(target).then(function(imageData) {
-            app.setProfileImage(imageData);
+            const fileSize = base64StringFileSize(imageData);
+            let ratio:number = 1.0;
+            if (fileSize > 10000) {
+                ratio = 10000 / fileSize;
+            }
+            resizeImage(imageData, ratio, fileExtension(fileName))
+                .then(function (resizedData) {
+                    app.setProfileImage(resizedData);
+                });
         }).catch(console.error);
     }
     setProfileImage = (imageData:string) => {

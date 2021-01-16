@@ -9,7 +9,7 @@ export default class Spinner extends Component<any, any>{
     render() {
         const innerDivs:JSX.Element[] = new Array<JSX.Element>();
         for (let i = 0; i <= 11; i++) {
-            innerDivs.push(<div></div>);
+            innerDivs.push(<div key={"spinner-item-"+i}></div>);
         }
         return (
             <div style={{width:'85px', height:'85px', display:'block'}} className="container-fluid text-center" >

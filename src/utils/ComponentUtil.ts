@@ -1,5 +1,5 @@
+import { base64StringFileSize } from './StringUtil';
 export const byId = (id) => { return document.getElementById(id) }
-
  
 export function toBase64(file, referer, callback) {
     const reader = new FileReader();
@@ -28,26 +28,30 @@ export function toBase64v2(fileInput) {
 
 }
 
-export const resizeImage = (data:string, percentage:number) => {
-    return new Promise<any>(function(resolve, reject){
+export const resizeImage = (data:string, ratio:number, extension:string) => {
+    const actualFilesize = base64StringFileSize(data);
+    console.debug("Actual filesize: ", actualFilesize);
+    return new Promise<string>(function(resolve, reject){
         const img = new Image();
         img.src = data;
         img.onload = function () {
-            const width = img.width * percentage;
-            const height = img.height * percentage;
+            const width = img.width   * ratio;
+            const height = img.height   * ratio;
             // create an off-screen canvas
-            var canvas = document.createElement('canvas');
+            var canvas:HTMLCanvasElement = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
             if (!ctx) return;
             // set its dimension to target size
             canvas.width = width;
             canvas.height = height;
-
+            var mime_type = "image/"+extension;
             // draw source image into the off-screen canvas:
             ctx.drawImage(img, 0, 0, width, height);
-
+            console.debug("Resize ratio: ", ratio, "mime_type: ",mime_type);
             // encode image to data-uri with base64 version of compressed image
-            resolve(canvas.toDataURL());
+            const dataURL = (canvas.toDataURL());
+            console.debug("Resized filesize: ", base64StringFileSize(dataURL));
+            resolve(dataURL);
         }
     });
 }

@@ -13,6 +13,7 @@ import WebResponse from '../../../models/WebResponse';
 import { resizeImage, toBase64v2 } from '../../../utils/ComponentUtil';
 import { EditField } from './helper';
 import MasterDataService from './../../../services/MasterDataService';
+import { base64StringFileSize, fileExtension } from './../../../utils/StringUtil';
 interface EditField { name: boolean, welcomingMessage: boolean, shortDescription: boolean, backgroundUrl: boolean, address: boolean, about: boolean, color: boolean, fontColor: boolean }
 class IState {
     applicationProfile?: ApplicationProfile = undefined;
@@ -61,14 +62,24 @@ class EditApplicationProfile extends BaseComponent {
         const target: HTMLInputElement | null = e.target as HTMLInputElement;
         if (null == target) return;
         const app = this;
+        const fileName:string|undefined = target.files ? target.files[0].name : undefined;
+        if (!fileName) return;
         toBase64v2(target).then(function (imageData) {
-            resizeImage(imageData, 0.05)
+            const fileSize = base64StringFileSize(imageData);
+           
+            let ratio:number = 1.0;
+            if (fileSize > 10000) {
+                ratio = 10000 / fileSize;
+            }
+            resizeImage(imageData, ratio, fileExtension(fileName))
                 .then(function (resizedData) {
-                    app.setProfileImage(imageData);
+                    app.setProfileImage(resizedData);
                 });
         }).catch(console.error);
     }
     setProfileImage = (imageData: string) => {
+        const fileSize = base64StringFileSize(imageData);
+        
         const applicationProfile: ApplicationProfile | undefined = this.state.applicationProfile;
         if (!applicationProfile) return;
         applicationProfile.backgroundUrl = imageData;

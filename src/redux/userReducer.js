@@ -22,9 +22,6 @@ export const reducer = (state = initState, action) => {
                 ...state, requestId: action.payload.requestId,
                 applicationProfile: action.payload.applicationProfile == null ? {} : action.payload.applicationProfile
             };
-
-            setCookie("requestId", result.requestId);
-            console.debug("action.payload.loginStatus: ", action.payload.loginStatus);
             if (action.payload.loginStatus == true) {
                 result.loggedUser = action.payload.user;
                 result.loginStatus = true;
@@ -32,7 +29,9 @@ export const reducer = (state = initState, action) => {
                 result.loginStatus = false;
                 result.loggedUser = null;
             }
-
+            setCookie("requestId", result.requestId);
+            localStorage.setItem("assetsPath", result.applicationProfile.assetsPath);
+            console.debug("action.payload.loginStatus: ", action.payload.loginStatus);
             console.debug("REQUEST_ID result.loginStatus:", result.loginStatus)
             //  action.payload.referer.refresh();
 
