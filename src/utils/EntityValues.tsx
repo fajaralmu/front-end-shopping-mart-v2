@@ -3,6 +3,7 @@ import EntityProperty from '../models/EntityProperty';
 import EntityElement from '../models/EntityElement';
 import { baseImageUrl } from '../constant/Url';
 import { FieldType } from '../models/FieldType';
+import { beautifyNominal } from './StringUtil';
 export default class EntityValues {
 	static parseValues(object:any, prop:EntityProperty) : Array<any> {
 		const result = new Array();
@@ -30,6 +31,9 @@ export default class EntityValues {
 					break;
 				case FieldType.FIELD_TYPE_COLOR:
 					value = <strong style={{color:value}} >{value}</strong>
+					break;
+				case FieldType.FIELD_TYPE_NUMBER:
+					value = beautifyNominal(value);
 					break;
 				default:
 					value = object[elementid];
