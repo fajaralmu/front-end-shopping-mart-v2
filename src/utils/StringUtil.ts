@@ -5,10 +5,13 @@ export const uniqueId = function () {
 	return index + "-" + string;
 }
 
-export function beautifyNominal(val) {
+export function beautifyNominal(val:any) {
 	if (val == "" || val == null) return "0";
 	const isDecimal:boolean = new String(val).includes(".");
-	
+	const isNegative:boolean = new String(val).startsWith("-");
+	if (isNegative) {
+		val = new String(val).replace("-","");
+	}
 	const rawVal = isDecimal? parseInt( new String(val).split(".")[0]) : parseInt(val);
 	let nominal = Math.abs(rawVal).toString();
 	let result = "";
@@ -32,6 +35,9 @@ export function beautifyNominal(val) {
 	}
 	if (isDecimal) {
 		result+= ","+ new String(val).split(".")[1];
+	}
+	if (isNegative) {
+		result = "-"+result;
 	}
 	return result;
 }

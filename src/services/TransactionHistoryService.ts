@@ -45,8 +45,8 @@ export default class TransactionHistoryService {
 
     }
 
-    getBalanceInfo = (request:any) => {
-        const endpoint = url.contextPath().concat("api/app/admin/balance")
+    getBalanceInfo = (request:WebRequest) => {
+        const endpoint = url.contextPath().concat("api/app/transaction/balance")
         return commonAjaxPostCalls(endpoint, request);
     }
 }
