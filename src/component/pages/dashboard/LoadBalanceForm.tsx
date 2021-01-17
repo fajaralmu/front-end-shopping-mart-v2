@@ -5,7 +5,7 @@ import TransactionHistoryService from './../../../services/TransactionHistorySer
 import WebResponse from './../../../models/WebResponse';
 import WebRequest from './../../../models/WebRequest';
 import FormGroup from './../../form/FormGroup';
-import { MONTHS } from './../../../utils/DateUtil';
+import { getMonthDays, MONTHS } from './../../../utils/DateUtil';
 import CashBalance from './../../../models/CashBalance';
 import Spinner from './../../loader/Spinner';
 import SimpleError from './../../alert/SimpleError';
@@ -32,7 +32,8 @@ export default class LoadBalanceForm extends BaseComponent {
         return {
             filter: {
                 month: this.state.month,
-                year: this.state.year
+                year: this.state.year,
+                day: getMonthDays( this.state.month-1)
             }
         };
     }

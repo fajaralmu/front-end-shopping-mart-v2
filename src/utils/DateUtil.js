@@ -17,7 +17,7 @@ const kabisatMonths = [ 31, (  29  ), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
 const regularMonths = [ 31, (  28  ), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
 /**
  * 
- * @param {Number} month 
+ * @param {Number} month starts at 0
  */
 export const getMonthDays = (month) => {
     if(new Date().getFullYear() % 4 == 0){
