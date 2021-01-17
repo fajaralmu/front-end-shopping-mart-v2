@@ -21,7 +21,7 @@ export default class Product extends BaseEntity{
 		if (product.imageUrl && product.imageUrl?.length >0) {
 			return (baseImageUrl?baseImageUrl:"") + product.imageUrl.split("~")[0];
 		}
-		return (baseImageUrl?baseImageUrl:"") + "default.bmp";
+		return (baseImageUrl?baseImageUrl:"") + "Default.bmp";
 	}
 	static getPictureNames(product:Product, baseImageUrl?:string): string[] {
 		if (product.imageUrl && product.imageUrl?.length >0) {
