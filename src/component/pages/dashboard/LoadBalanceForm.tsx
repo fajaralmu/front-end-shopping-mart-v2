@@ -41,7 +41,7 @@ export default class LoadBalanceForm extends BaseComponent {
         const value = e.target.value;
         this.setState({ [name]: value });
     }
-    loadBalance = (e: any): void => {
+    loadData = (e: any): void => {
         e.preventDefault();
         this.commonAjax(
             this.transactionHistoryService.getBalanceInfo,
@@ -54,7 +54,7 @@ export default class LoadBalanceForm extends BaseComponent {
 
         return <Card title="Balance">
             <div className="row">
-                <form className="col-md-6" onSubmit={this.loadBalance}>
+                <form className="col-md-6" onSubmit={this.loadData}>
                     <FormGroup label="Month">
                         <select name="month" onChange={this.updateFilterProp} className="form-control" value={this.state.month}>
                             {MONTHS.map((name, i) => {
