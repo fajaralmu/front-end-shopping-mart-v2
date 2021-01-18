@@ -144,7 +144,7 @@ class MasterDataList extends BaseComponent {
     }
     render() {
         if (undefined == this.state.recordData) {
-            return <h2>Please Wait..</h2>
+            return <Spinner/>
         }
         const headerProps: HeaderProps[] = EntityProperty.getHeaderLabels(this.props.entityProperty);
         const resultList: any[] = this.state.recordData.entities ? this.state.recordData.entities : [];

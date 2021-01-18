@@ -10,23 +10,21 @@ import { baseImageUrl } from '../../../constant/Url';
 import { setApplicationProfile } from '../../../redux/actionCreators';
 import AnchorButton from '../../navigation/AnchorButton';
 import WebResponse from '../../../models/WebResponse';
-import { resizeImage, toBase64v2 } from '../../../utils/ComponentUtil';
+import { toBase64v2 } from '../../../utils/ComponentUtil';
 import { EditField } from './helper';
 import MasterDataService from './../../../services/MasterDataService';
-import { base64StringFileSize, fileExtension } from './../../../utils/StringUtil';
-interface EditField { name: boolean, welcomingMessage: boolean, shortDescription: boolean, backgroundUrl: boolean, address: boolean, about: boolean, color: boolean, fontColor: boolean }
+class EditFields {
+    name: boolean = false; pageIcon: boolean = false;
+    welcomingMessage: boolean = false;
+    contact: boolean = false;
+    shortDescription: boolean = false;
+    backgroundUrl: boolean = false;
+    address: boolean = false;
+    about: boolean = false; color: boolean = false; fontColor: boolean = false
+}
 class IState {
     applicationProfile?: ApplicationProfile = undefined;
-    editFields: EditField = {
-        name: false,
-        welcomingMessage: false,
-        shortDescription: false,
-        backgroundUrl: false,
-        address: false,
-        about: false,
-        color: false,
-        fontColor: false
-    };
+    editFields: EditFields = new EditFields()
     fieldChanged = (): boolean => {
         for (const key in this.editFields) {
             if (this.editFields[key] == true) {
@@ -57,19 +55,33 @@ class EditApplicationProfile extends BaseComponent {
         applicationProfile[target.name] = target.value;
         this.setState({ applicationProfile: applicationProfile });
     }
+    updateIconImage = (e: ChangeEvent) => {
+        const target: HTMLInputElement | null = e.target as HTMLInputElement;
+        if (null == target) return;
+        const app = this;
+        const fileName: string | undefined = target.files ? target.files[0].name : undefined;
+        if (!fileName) return;
+        toBase64v2(target).then(function (imageData) {
+            app.setIconImage(imageData);
+        }).catch(console.error);
+    }
     updateProfleImage = (e: ChangeEvent) => {
         const target: HTMLInputElement | null = e.target as HTMLInputElement;
         if (null == target) return;
         const app = this;
-        const fileName:string|undefined = target.files ? target.files[0].name : undefined;
+        const fileName: string | undefined = target.files ? target.files[0].name : undefined;
         if (!fileName) return;
         toBase64v2(target).then(function (imageData) {
             app.setProfileImage(imageData);
         }).catch(console.error);
     }
+    setIconImage = (imageData: string) => {
+        const applicationProfile: ApplicationProfile | undefined = this.state.applicationProfile;
+        if (!applicationProfile) return;
+        applicationProfile.pageIcon = imageData;
+        this.setState({ applicationProfile: applicationProfile });
+    }
     setProfileImage = (imageData: string) => {
-        const fileSize = base64StringFileSize(imageData);
-        
         const applicationProfile: ApplicationProfile | undefined = this.state.applicationProfile;
         if (!applicationProfile) return;
         applicationProfile.backgroundUrl = imageData;
@@ -109,7 +121,7 @@ class EditApplicationProfile extends BaseComponent {
     doSaveRecord = () => {
         const applicationProfile: ApplicationProfile | undefined = this.getApplicationEditedData();
         if (!applicationProfile) return;
-        if (applicationProfile.backgroundUrl) {
+        if (applicationProfile.backgroundUrl || applicationProfile.pageIcon) {
             this.commonAjaxWithProgress(
                 this.masterDataService.updateApplicationProfile,
                 this.profileSaved, this.showCommonErrorAlert,
@@ -125,17 +137,20 @@ class EditApplicationProfile extends BaseComponent {
     }
     getApplicationEditedData = (): ApplicationProfile | undefined => {
         const applicationProfile: ApplicationProfile | undefined = this.state.applicationProfile;
-        const editFields: EditField = this.state.editFields;
+        const editFields: EditFields = this.state.editFields;
         if (!applicationProfile) return undefined;
         const editedApplication: ApplicationProfile = new ApplicationProfile();
         for (const key in editFields) {
             const element: boolean = editFields[key];
-            if (element && key != 'backgroundUrl') {
+            if (element && key != 'backgroundUrl' && key != 'pageIcon') {
                 editedApplication[key] = applicationProfile[key];
             }
         }
         if (editFields.backgroundUrl && applicationProfile.backgroundUrl?.startsWith("data:image")) {
             editedApplication.backgroundUrl = applicationProfile.backgroundUrl;
+        }
+        if (editFields.pageIcon && applicationProfile.pageIcon?.startsWith("data:image")) {
+            editedApplication.pageIcon = applicationProfile.pageIcon;
         }
         return editedApplication;
     }
@@ -146,14 +161,15 @@ class EditApplicationProfile extends BaseComponent {
         for (const key in editFields) {
             editFields[key] = false;
         }
-        this.setState({editFields:editFields});
+        this.setState({ editFields: editFields });
     }
 
     render() {
         const applicationProfile: ApplicationProfile | undefined = this.state.applicationProfile;
         if (!applicationProfile) return null;
-        const editFields: EditField = this.state.editFields;
+        const editFields: EditFields = this.state.editFields;
         const bgUrl: string = applicationProfile.backgroundUrl ?? "";
+        const pageIcon: string = applicationProfile.pageIcon ?? "";
         return (
             <div id="ApplicationProfile" className="container-fluid">
                 <h2>Application Profile</h2>
@@ -161,7 +177,7 @@ class EditApplicationProfile extends BaseComponent {
                     <form onSubmit={this.saveRecord}>
                         <div className="container-fluid text-center" style={{ marginBottom: '10px' }}>
                             <img style={{ marginBottom: '10px' }} height="100" className="border border-primary" src={bgUrl.startsWith("data:image") ? bgUrl : baseImageUrl + bgUrl} />
-                            <EditImage edit={editFields.backgroundUrl} updateProperty={this.updateProfleImage} toggleInput={this.toggleInput} />
+                            <EditImage name="backgroundUrl" edit={editFields.backgroundUrl} updateProperty={this.updateProfleImage} toggleInput={this.toggleInput} />
                         </div>
                         <FormGroup label="Name">
                             <EditField edit={editFields.name} updateProperty={this.updateProfileProperty} name="name" toggleInput={this.toggleInput} value={applicationProfile.name} />
@@ -178,11 +194,18 @@ class EditApplicationProfile extends BaseComponent {
                         <FormGroup label="About">
                             <EditField edit={editFields.about} updateProperty={this.updateProfileProperty} name="about" toggleInput={this.toggleInput} value={applicationProfile.about} />
                         </FormGroup>
+                        <FormGroup label="Contact">
+                            <EditField edit={editFields.contact} updateProperty={this.updateProfileProperty} name="contact" toggleInput={this.toggleInput} value={applicationProfile.contact} />
+                        </FormGroup>
                         <FormGroup label="Background Color">
                             <EditField type="color" edit={editFields.color} updateProperty={this.updateProfileProperty} name="color" toggleInput={this.toggleInput} value={applicationProfile.color} />
                         </FormGroup>
                         <FormGroup label="Font Color">
                             <EditField type="color" edit={editFields.fontColor} updateProperty={this.updateProfileProperty} name="fontColor" toggleInput={this.toggleInput} value={applicationProfile.fontColor} />
+                        </FormGroup>
+                        <FormGroup label="Icon">
+                            <img style={{ marginBottom: '10px' }} height="100" className="border border-primary" src={pageIcon.startsWith("data:image") ? pageIcon : baseImageUrl + pageIcon} />
+                            <EditImage name="pageIcon" edit={editFields.pageIcon} updateProperty={this.updateIconImage} toggleInput={this.toggleInput} />
                         </FormGroup>
                         <FormGroup  >
                             {this.state.fieldChanged() ? <input type="submit" className="btn btn-primary" value="Save" /> : null}
@@ -194,8 +217,7 @@ class EditApplicationProfile extends BaseComponent {
     }
 
 }
-const EditImage = ({ edit, toggleInput, updateProperty }) => {
-    const name: string = "backgroundUrl";
+const EditImage = ({ name, edit, toggleInput, updateProperty }) => {
     return (edit == true ? <>
         <div>
             <AnchorButton attributes={{

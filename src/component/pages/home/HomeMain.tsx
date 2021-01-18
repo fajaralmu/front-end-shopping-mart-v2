@@ -34,19 +34,15 @@ class HomeMain extends BaseComponent {
                     <p className="lead">{applicationProfile.shortDescription}</p>
                     <hr className="my-4" />
                     <p>{applicationProfile.welcomingMessage}</p>
-                    <a className="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+                    <Link className="btn btn-primary btn-lg" to="/about" role="button">About Us</Link>
                 </div>
             </div>
 
         )
     }
 
-}
-const mapDispatchToProps = (dispatch: Function) => ({
-})
-
+} 
 
 export default withRouter(connect(
-    mapCommonUserStateToProps,
-    mapDispatchToProps
+    mapCommonUserStateToProps, 
 )(HomeMain))

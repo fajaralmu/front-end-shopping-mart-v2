@@ -26,7 +26,7 @@ export default class BaseComponent extends Component<any, any> {
 
     getApplicationProfile():ApplicationProfile
     {
-        return this.props.applicationProfile == null ? {} : this.props.applicationProfile;
+        return this.props.applicationProfile == null ? new ApplicationProfile() : this.props.applicationProfile;
     }
 
     handleInputChange(event: any) {
