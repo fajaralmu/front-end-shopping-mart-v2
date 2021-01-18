@@ -56,6 +56,9 @@ class CustomerForm extends BaseComponent {
         this.commonAjax(this.masterDataService.getById,
             this.customerLoaded, this.customerNotFound, 'customer', id);
     }
+    reset = (e:any) => {
+        this.setState({code:""})
+    }
     render() {
         return (
 
@@ -64,7 +67,7 @@ class CustomerForm extends BaseComponent {
                     <Fragment>
                         <AnchorWithIcon iconClassName="fas fa-list" attributes={{ target: '_blank' }} to="/management/customer" className="btn btn-outline-secondary" />
                         <input type="submit" className="btn btn-secondary" value="Search" />
-                        <input type="reset" className="btn btn-outline-secondary" />
+                        <input type="reset" onClick={this.reset} className="btn btn-outline-secondary" />
                     </Fragment>
                 } >
                     <div className="form-group">

@@ -40,7 +40,7 @@ export default class ProductForm extends BaseComponent {
     }
     startLoading = () => this.setState({loading:true});
     endLoading = () => this.setState({loading:false});
-    reset = (e) => {
+    reset = (e:any) => {
         this.setState({productCode:""})
     }
     searchProduct = (e) => {
