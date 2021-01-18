@@ -65,6 +65,7 @@ class MasterDataMain extends BaseMainMenus {
         this.loadManagamenetPages();
     }
     componentDidUpdate() {
+        this.validateLoginStatus();
         this.setSidebarMenus();
         // console.debug("this.getCode(): ", this.getCode());
         if (this.state.code != this.getCode()) {

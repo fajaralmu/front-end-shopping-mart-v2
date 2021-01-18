@@ -1,6 +1,6 @@
 
 
-import React, { Fragment } from 'react';
+import React, { ChangeEvent, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../../constant/stores';
@@ -16,24 +16,31 @@ interface IState {
     customer?: Customer;
     customerNotFound: boolean;
     loading:boolean;
+    code:string
 }
 class CustomerForm extends BaseComponent {
     masterDataService = MasterDataService.getInstance();
     state: IState = {
-        customerNotFound: false, loading:false
+        customerNotFound: false, loading:false, code: ""
     }
     constructor(props: any) {
         super(props);
 
     }
+    updateField = (e:ChangeEvent) => {
+        const target = e.target as HTMLInputElement;
+        const name:string|null = target.getAttribute("name");
+        if (null == name) return;
+        this.setState({[name]: target.value});
+    }
     startLoading = () => this.setState({loading:true});
     endLoading = () => this.setState({loading:false});
     searchCustomer = (e) => {
         e.preventDefault();
-        const formData: FormData = new FormData(e.target);
-        const id = formData.get('id');
-        if (!id) return;
-        this.loadCustomer(parseInt(id.toString()));
+        e.preventDefault();
+        const code:string = this.state.code;
+        if (code.trim() == "") return;
+        this.loadCustomer(parseInt(code));
     }
     customerLoaded = (response: WebResponse) => {
         if (!response.entities || !response.entities[0]) {
@@ -62,7 +69,7 @@ class CustomerForm extends BaseComponent {
                 } >
                     <div className="form-group">
                         <FormGroup label="Code">
-                            <input placeholder="Customer code" required type="number" className="form-control" name="id" />
+                            <input placeholder="Customer code" value={this.state.code} onChange={this.updateField} required type="number" className="form-control" name="code" />
                         </FormGroup>
                     </div>
                     <CustomerDetail loading={this.state.loading} customer={this.state.customer} notFound={this.state.customerNotFound} />

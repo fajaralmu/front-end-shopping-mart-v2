@@ -1,6 +1,6 @@
 
 
-import React, { Fragment } from 'react';
+import React, { ChangeEvent, Fragment } from 'react';
 import BaseComponent from '../../BaseComponent';
 import TransactionPurchasingService from '../../../services/TransactionPurchasingService';
 import Product from '../../../models/Product';
@@ -12,34 +12,42 @@ import FormGroup from './../../form/FormGroup';
 import AnchorWithIcon from './../../navigation/AnchorWithIcon';
 import Spinner from '../../loader/Spinner';
 interface IState {
-    product?: Product;
-    productFlows: ProductFlow[];
+    product?: Product; 
     selectedProductFlow?: ProductFlow;
     productNotFound: boolean;
     loading:boolean;
+    productCode:string;
 }
 export default class ProductForm extends BaseComponent {
 
     transactionService = TransactionPurchasingService.getInstance();
     masterDataService = MasterDataService.getInstance();
     state: IState = {
-        productFlows: [],
         productNotFound: false,
-        loading:false
+        loading:false,
+        productCode:""
     }
     constructor(props: any) {
         super(props);
         this.state = { ...this.state };
 
     }
+    updateField = (e:ChangeEvent) => {
+        const target = e.target as HTMLInputElement;
+        const name:string|null = target.getAttribute("name");
+        if (null == name) return;
+        this.setState({[name]: target.value});
+    }
     startLoading = () => this.setState({loading:true});
     endLoading = () => this.setState({loading:false});
+    reset = (e) => {
+        this.setState({productCode:""})
+    }
     searchProduct = (e) => {
         e.preventDefault();
-        const formData: FormData = new FormData(e.target);
-        const id = formData.get('code');
-        if (!id) return;
-        this.loadProduct((id.toString()));
+        const id:string = this.state.productCode;
+        if (id.trim() == "") return;
+        this.loadProduct(id);
     }
     productLoaded = (response: WebResponse) => {
         if (!response.entities || !response.entities[0]) {
@@ -70,12 +78,12 @@ export default class ProductForm extends BaseComponent {
                     <Fragment>
                         <AnchorWithIcon iconClassName="fas fa-list" attributes={{ target: '_blank' }} to="/management/product" className="btn btn-outline-secondary" />
                         <input type="submit" className="btn btn-secondary" value="Search" />
-                        <input type="reset" className="btn btn-outline-secondary" />
+                        <input type="reset" onClick={this.reset} className="btn btn-outline-secondary" />
                     </Fragment>
                 } >
                     <div className="form-group">
                         <FormGroup label="Code">
-                            <input placeholder="Product code" required type="text" className="form-control" name="code" />
+                            <input onChange={this.updateField} value={this.state.productCode} placeholder="Product code" required type="text" className="form-control" name="productCode" />
                         </FormGroup>
                     </div> 
                     
@@ -106,7 +114,7 @@ const ProductDetail = (props: { loading:boolean, product?: Product, notFound: bo
                     <th>Unit</th>
                     <th>Category</th>
                     <th>Price@Unit</th>
-                    <th>Current Amount</th>
+                    <th>Qty</th>
                 </tr>
                 </thead>
                 <tbody>
