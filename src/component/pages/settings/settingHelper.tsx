@@ -1,5 +1,5 @@
-import React from 'react'
-import AnchorButton from './../../navigation/AnchorButton';
+import React, { Fragment } from 'react'
+import AnchorButton from '../../navigation/AnchorButton';
 export const EditField = ({ edit, name, toggleInput, value, updateProperty, ...props }) => {
     return (edit == true ?
         <PropertyInput updateProperty={updateProperty} name={name} toggleInput={toggleInput} value={value} type={props.type} />
@@ -32,4 +32,26 @@ const PropertyLabel = ({ name, toggleInput, value, type }) => {
             }} onClick={toggleInput} className=" btn btn-info btn-sm">edit</AnchorButton>
         </div>
     </div>)
+}
+
+
+export const EditImage = ({ name, edit, toggleInput, updateProperty }) => {
+    if (edit) {
+        return (
+            <Fragment>
+                <div>
+                    <AnchorButton attributes={{
+                        'data-name': name, 'data-enabled': 'false'
+                    }} onClick={toggleInput} className=" btn btn-secondary btn-sm">cancel</AnchorButton>
+                </div>
+                <input onChange={updateProperty} className="form control" accept="image/*" type="file" name={name} />
+            </Fragment>);
+    }
+    return (
+        <div>
+            <AnchorButton attributes={{
+                'data-name': name, 'data-enabled': 'true'
+            }} onClick={toggleInput} className=" btn btn-info btn-sm">edit image</AnchorButton>
+        </div>
+    )
 }

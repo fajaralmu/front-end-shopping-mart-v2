@@ -11,9 +11,8 @@ import { setLoggedUser } from './../../../redux/actionCreators';
 import AnchorButton from '../../navigation/AnchorButton';
 import UserService from './../../../services/UserService';
 import WebResponse from './../../../models/WebResponse';
-import { resizeImage, toBase64v2 } from '../../../utils/ComponentUtil';
-import { EditField } from './helper';
-import { base64StringFileSize, fileExtension } from './../../../utils/StringUtil';
+import { toBase64v2 } from '../../../utils/ComponentUtil';
+import { EditField, EditImage } from './settingHelper'; 
 interface EditField { username: boolean, displayName: boolean, password: boolean, profileImage: boolean }
 class IState {
     user?: User = undefined;
@@ -154,7 +153,7 @@ class UserProfile extends BaseComponent {
                     <form onSubmit={this.saveRecord}>
                         <div className="container-fluid text-center" style={{marginBottom:'10px'}}>
                             <img style={{marginBottom:'10px'}} width="100" height="100" className="rounded-circle border border-primary" src={user.profileImage?.startsWith("data:image")?user.profileImage:baseImageUrl + user.profileImage} />
-                            <EditImage edit={editFields.profileImage} updateProperty={this.updateProfleImage} toggleInput={this.toggleInput} />
+                            <EditImage name="profileImage" edit={editFields.profileImage} updateProperty={this.updateProfleImage} toggleInput={this.toggleInput} />
                         </div>
                         <FormGroup label="User Name">
                             <EditField edit={editFields.username} updateProperty={this.updateProfileProperty} name="username" toggleInput={this.toggleInput} value={user.username} />
@@ -174,24 +173,7 @@ class UserProfile extends BaseComponent {
         )
     }
 
-}
-const EditImage = ({ edit, toggleInput, updateProperty }) => {
-    return (edit == true ? <>
-        <div>
-            <AnchorButton attributes={{
-                'data-name': 'profileImage', 'data-enabled': 'false'
-            }} onClick={toggleInput} className=" btn btn-secondary btn-sm">cancel</AnchorButton>
-        </div>
-        <input onChange={updateProperty} className="form control" accept="image/*" type="file" name="profileImage" />
-    </>
-        :
-        <div>
-            <AnchorButton attributes={{
-                'data-name': 'profileImage', 'data-enabled': 'true'
-            }} onClick={toggleInput} className=" btn btn-info btn-sm">edit image</AnchorButton>
-        </div>
-    )
-}
+} 
 
 const mapDispatchToProps = (dispatch: Function) => ({
     setLoggedUser: (user: User) => dispatch(setLoggedUser(user)),
