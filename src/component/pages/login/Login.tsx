@@ -1,26 +1,26 @@
 
 
-import React, { RefObject, Component, FormEvent, Fragment } from 'react';
+import React, { RefObject, Component, FormEvent, Fragment, ChangeEvent } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import BaseComponent from './../../BaseComponent';
 import { mapCommonUserStateToProps } from './../../../constant/stores';
 import './Login.css';
 import { performLogin } from '../../../redux/actionCreators';
+import Spinner from './../../loader/Spinner';
+class IState {
+    loading:boolean = false; username:string = ""; password: string = "";
+}
 class Login extends BaseComponent{
-    formRef: RefObject<HTMLFormElement> = React.createRef();
+    state:IState = new IState();
     constructor(props: any) {
         super(props, false);
     }
+    startLoading = () => this.setState({ loading: true });
+    endLoading = () => this.setState({ loading: false });
     login(e: FormEvent) {
         e.preventDefault();
-        const form: EventTarget = e.target;
-        if (null == this.formRef.current) {
-            return;
-        }
-        const formData: FormData = new FormData(this.formRef.current);
-        console.debug("formData: ", formData);
-        this.props.performLogin(formData.get('username'), formData.get('password'), this.parentApp);
+        this.props.performLogin(this.state.username,this.state.password, this);
     }
     componentDidMount(){
         document.title = "Login";
@@ -37,18 +37,24 @@ class Login extends BaseComponent{
             this.props.history.push("/dashboard");
         }
     }
+    updateCredentialProperty = (e:ChangeEvent) => {
+        const target = e.target as HTMLInputElement;
+        const name:string|null = target.getAttribute("name");
+        if (null == name) return;
+        this.setState({[name]: target.value});
+    }
     render() {
         return (
             <div id="Login">
-                <form ref={this.formRef} name='login' onSubmit={(e) => { this.login(e) }}
+                <form name='login' onSubmit={(e) => { this.login(e) }}
                     method='POST' className="form-signin">
                     <div className="text-center">
                         <h2><i className="fas fa-user-circle"></i></h2>
                         <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1>
                     </div>
-                    <UsernameField />
-                    <PasswordField />
-                    <button className="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                    <UsernameField value={this.state.username} onChange={this.updateCredentialProperty}/>
+                    <PasswordField value={this.state.password} onChange={this.updateCredentialProperty}/>
+                    {this.state.loading ? <Spinner/>:<button className="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>}
                     <input name="transport_type" type="hidden" value="rest" />
                 </form>
             </div>
@@ -56,17 +62,17 @@ class Login extends BaseComponent{
     }
 
 }
-const PasswordField = (props) => {
+const PasswordField = ({value, onChange}) => {
     return <Fragment>
         <label className="sr-only">Password</label>
-        <input name="password" type="password" id="inputPassword" className="form-control"
+        <input name="password" value={value} onChange={onChange} type="password" id="inputPassword" className="form-control"
             placeholder="Password" required />
     </Fragment>
 }
-const UsernameField = (props) => {
+const UsernameField = ({value, onChange}) => {
     return (<Fragment>
         <label className="sr-only">Username</label>
-        <input name="username" type="text" id="username" className="form-control"
+        <input name="username" value={value} onChange={onChange} type="text" id="username" className="form-control"
             placeholder="Username" required autoFocus />
     </Fragment>)
 }
