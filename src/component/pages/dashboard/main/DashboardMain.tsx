@@ -3,8 +3,8 @@
 import React,  { ChangeEvent  } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { mapCommonUserStateToProps } from '../../../constant/stores';
-import BaseMainMenus from './../../layout/BaseMainMenus'; 
+import { mapCommonUserStateToProps } from '../../../../constant/stores';
+import BaseMainMenus from '../../../layout/BaseMainMenus'; 
 import LoadBalanceForm from './LoadBalanceForm';
 import LoadInventoryForm from './LoadInventoryForm';
 

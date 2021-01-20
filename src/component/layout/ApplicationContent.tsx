@@ -6,7 +6,7 @@ import { mapCommonUserStateToProps } from './../../constant/stores';
 import { withRouter, Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Login from '../pages/login/Login';
-import DashboardMain from '../pages/dashboard/DashboardMain';
+import DashboardMain from '../pages/dashboard/main/DashboardMain';
 import MasterDataMain from '../pages/masterdata/MasterDataMain';
 import TransactionMain from '../pages/transaction/TransactionMain';
 import CatalogMain from '../pages/catalog/CatalogMain';
