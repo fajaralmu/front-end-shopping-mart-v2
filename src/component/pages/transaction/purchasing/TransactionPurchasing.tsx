@@ -20,9 +20,10 @@ import Transaction from './../../../../models/Transaction';
 import BaseTransactionComponent, { totalUnitAndPrice } from './../BaseTransactionComponent';
  
 class TransactionPurchasing extends BaseTransactionComponent {
-    transactionPurchasingService = TransactionPurchasingService.getInstance();
+    transactionPurchasingService:TransactionPurchasingService;
     constructor(props: any) {
-        super(props); 
+        super(props);
+        this.transactionPurchasingService = this.getServices().transactionPurchasingService;
     }
     setSupplier = (supplier: Supplier) => {
         this.setState({ supplier: supplier });

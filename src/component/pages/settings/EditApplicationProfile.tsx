@@ -34,10 +34,11 @@ class IState {
 }
 class EditApplicationProfile extends BaseComponent {
 
-    masterDataService: MasterDataService = MasterDataService.getInstance();
+    masterDataService: MasterDataService;
     state: IState = new IState();
     constructor(props: any) {
         super(props, true);
+        this.masterDataService = this.getServices().masterDataService;
         this.state.applicationProfile = Object.assign(new ApplicationProfile(), this.getApplicationProfile());
     }
     componentDidMount() {

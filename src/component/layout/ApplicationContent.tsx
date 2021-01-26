@@ -43,102 +43,102 @@ class ApplicationContent extends BaseComponent {
                 <Switch>
                     <Route exact path="/login" render={
                         (props: any) =>
-                            <Login app={this.parentApp} />
+                            <Login  />
                     } />
                     {/* -------- home -------- */}
                     <Route exact path="/home" render={
                         (props: any) =>
-                            <HomeMain app={this.parentApp} />
+                            <HomeMain  />
                     } />
                     <Route exact path="/" render={
                         (props: any) =>
-                            <HomeMain app={this.parentApp} />
+                            <HomeMain  />
                     } />
                    <Route exact path="/about" render={
                         (props: any) =>
-                            <AboutUs app={this.parentApp} />
+                            <AboutUs  />
                     } />
                     {/* -------- dashboard -------- */}
                     <Route exact path="/dashboard" render={
                         (props: any) =>
-                            <DashboardMain  app={this.parentApp} />
+                            <DashboardMain   />
                     } />
                     <Route exact path="/dashboard/statistic" render={
                         (props: any) =>
-                            <DashboardStatistic  app={this.parentApp} />
+                            <DashboardStatistic   />
                     } />
                     <Route exact path="/dashboard/productsales" render={
                         (props: any) =>
-                            <ProductSalesPage  app={this.parentApp} />
+                            <ProductSalesPage   />
                     } />
                      <Route exact path="/dashboard/productsales/:id" render={
                         (props: any) =>
-                            <ProductSalesDetailPage  app={this.parentApp} />
+                            <ProductSalesDetailPage   />
                     } />
                     {/* -------- masterdata -------- */}
                     <Route exact path="/management" render={
                         (props: any) =>
-                            <MasterDataMain setSidebarMenus={this.setSidebarMenus} app={this.parentApp} />
+                            <MasterDataMain setSidebarMenus={this.setSidebarMenus}  />
                     } />
                     <Route exact path="/management/:code" render={
                         (props: any) =>
-                            <MasterDataMain setSidebarMenus={this.setSidebarMenus} app={this.parentApp} />
+                            <MasterDataMain setSidebarMenus={this.setSidebarMenus}  />
                     } />
                     {/* -------- transaction -------- */}
                     <Route exact path="/transaction" render={
                         (props: any) =>
-                            <TransactionMain  app={this.parentApp} />
+                            <TransactionMain   />
                     } />
                     <Route exact path="/transaction/purchasing" render={
                         (props: any) =>
-                            <TransactionPurchasing app={this.parentApp} />
+                            <TransactionPurchasing  />
                     } />
                     <Route exact path="/transaction/selling" render={
                         (props: any) =>
-                            <TransactionSelling app={this.parentApp} />
+                            <TransactionSelling  />
                     } />
                     <Route exact path="/transaction/detail" render={
                         (props: any) =>
-                            <TransactionDetail app={this.parentApp} />
+                            <TransactionDetail  />
                     } />
                     {/* -------- settings --------- */}
                     <Route exact path="/settings" render={
                         (props: any) =>
-                            <SettingsMain app={this.parentApp} />
+                            <SettingsMain  />
                     } />
                     <Route exact path="/settings/user-profile" render={
                         (props: any) =>
-                            <UserProfile app={this.parentApp} />
+                            <UserProfile  />
                     } />
                     <Route exact path="/settings/app-profile" render={
                         (props: any) =>
-                            <EditApplicationProfile app={this.parentApp} />
+                            <EditApplicationProfile  />
                     } />
                     {/* ///////// PUBLIC ///////// */}
                     {/* -------- catalog -------- */}
                     <Route exact path="/catalog" render={
                         (props: any) => { 
-                            return <CatalogMain  app={this.parentApp} />
+                            return <CatalogMain   />
                         }
                     } />
                     <Route exact path="/catalog/product" render={
                         (props: any) => { 
-                            return <ProductCatalog  app={this.parentApp} />
+                            return <ProductCatalog   />
                         }
                     } />
                     <Route exact path="/catalog/product/:code" render={
                         (props: any) => { 
-                            return <ProductCatalogDetail  app={this.parentApp} />
+                            return <ProductCatalogDetail   />
                         }
                     } />
                     {/* -------- home -------- */}
                     <Route exact path="/cart" render={
                         (props: any) =>
-                            <CartMain  app={this.parentApp} />
+                            <CartMain   />
                     } />
                     <Route exact path="/cart/cartlist" render={
                         (props: any) =>
-                            <CartList  app={this.parentApp} />
+                            <CartList   />
                     } />
                 </Switch>
 

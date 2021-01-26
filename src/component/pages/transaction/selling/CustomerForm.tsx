@@ -19,12 +19,13 @@ interface IState {
     code:string
 }
 class CustomerForm extends BaseComponent {
-    masterDataService = MasterDataService.getInstance();
+    masterDataService:MasterDataService;
     state: IState = {
         customerNotFound: false, loading:false, code: ""
     }
     constructor(props: any) {
         super(props);
+        this.masterDataService = this.getServices().masterDataService;
 
     }
     updateField = (e:ChangeEvent) => {

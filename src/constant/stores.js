@@ -5,6 +5,8 @@ export const mapCommonUserStateToProps = (state) => {
         loggedUser: state.userState.loggedUser,
         loginStatus: state.userState.loginStatus,
         requestId: state.userState.requestId,
-        cart: state.shopState.cart
+        cart: state.shopState.cart,
+        services: state.shopState.services,
+        mainApp: state.shopState.mainApp
     }
 }

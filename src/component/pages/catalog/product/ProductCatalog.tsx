@@ -34,10 +34,11 @@ class IState {
     dataNotFound: boolean = false;
 }
 class ProductCatalog extends BaseComponent {
-    catalogService: CatalogService = CatalogService.getInstance();
+    catalogService: CatalogService ;
     state: IState = new IState();
     constructor(props: any) {
         super(props, false);
+        this.catalogService = this.getServices().catalogService;
     }
     productNotLoaded = (e: any) => {
         this.setState({ totalData: 0, products: [], dataNotFound: true });

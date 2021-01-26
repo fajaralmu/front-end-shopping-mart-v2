@@ -180,19 +180,19 @@ class MasterDataList extends BaseComponent {
                             <Loading loading={this.state.loading} /> : null}
                         <div className="container-fluid" style={{ overflow: 'scroll' }}>
                             <table className="table" >
-                                <DataTableHeader orderButtonOnClick={this.orderButtonOnClick} filterOnChange={this.filterOnChange} headerProps={headerProps} />
+                                <DataTableHeader fieldsFilter={this.state.filter.fieldsFilter} orderButtonOnClick={this.orderButtonOnClick} filterOnChange={this.filterOnChange} headerProps={headerProps} />
                                 <tbody>
                                     {
                                         resultList.map((result, i) => {
                                             const number = this.getRecordNumber(i);
                                             const values: Array<any> = EntityValues.parseValues(result, this.props.entityProperty);
-                                            return (<tr>
+                                            return (<tr key={"rtr-"+i}>
                                                 <td>{number}</td>
-                                                {values.map(value => {
+                                                {values.map((value, vi) => {
                                                     try {
-                                                        return (<td>{value}</td>)
+                                                        return (<td key={"rv-"+i+"-"+vi}>{value}</td>)
                                                     } catch (error) {
-                                                        return (<td>-</td>)
+                                                        return (<td key={"rv-"+i+"-"+vi}>-</td>)
                                                     }
                                                 })}
                                                 <td><EditDeleteAction show={this.entityProperty.editable == true} showEditForm={this.showEditForm} record={result} entityProperty={this.entityProperty} reload={() => this.loadEntities(undefined)} app={this.parentApp} /></td>

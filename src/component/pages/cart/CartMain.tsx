@@ -2,8 +2,7 @@
 
 import  React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import BaseComponent from './../../BaseComponent';
+import { connect } from 'react-redux'; 
 import { mapCommonUserStateToProps } from './../../../constant/stores';
 import BaseMainMenus from './../../layout/BaseMainMenus';
 import Product from './../../../models/Product';

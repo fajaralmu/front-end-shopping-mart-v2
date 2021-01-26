@@ -34,10 +34,11 @@ class IState {
     salesData?: WebResponse = undefined
 }
 class ProductSalesPage extends BaseComponent {
-    transactionHistoryService: TransactionHistoryService = TransactionHistoryService.getInstance();
+    transactionHistoryService: TransactionHistoryService;
     state = new IState();
     constructor(props) {
         super(props, true);
+        this.transactionHistoryService = this.getServices().transactionHistoryService;
     }
     updatePeriodFilter = (e) => {
         const name = e.target.name;

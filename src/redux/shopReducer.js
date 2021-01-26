@@ -1,4 +1,5 @@
 import * as types from './types'
+import Services from './../services/Services';
 
 export const initState = { 
     entities: [],
@@ -7,13 +8,16 @@ export const initState = {
     messages: null,
     userAlias: "anonymous_" + new Date().getTime(),
     cart: [], 
+    services: new Services(),
+    mainApp: undefined
 
 };
 
 export const reducer = (state = initState, action) => {
     switch (action.type) {
          
-      
+        case types.SET_MAIN_APP:
+            return {...state, mainApp: action.payload};
         case types.REMOVE_SHOP_ENTITY:
             return { ...state, entity: action.payload  /*null*/ }; 
         // case types.REQUEST_ID:

@@ -26,3 +26,4 @@ export const REFRESH_LOGIN = "refresh_login";
 export const GET_LOGGED_USER = "get_logged_user";
 export const SET_LOGGED_USER = "set_logged_user";
 export const SET_APPLICATION_PROFILE = "SET_APPLICATION_PROFILE";
+export const SET_MAIN_APP = "SET_MAIN_APP";

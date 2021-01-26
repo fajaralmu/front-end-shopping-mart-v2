@@ -20,8 +20,8 @@ interface IState {
 }
 export default class ProductForm extends BaseComponent {
 
-    transactionService = TransactionPurchasingService.getInstance();
-    masterDataService = MasterDataService.getInstance();
+    transactionPurchasingService : TransactionPurchasingService;
+    masterDataService : MasterDataService;
     state: IState = {
         productNotFound: false,
         loading:false,
@@ -30,6 +30,8 @@ export default class ProductForm extends BaseComponent {
     constructor(props: any) {
         super(props);
         this.state = { ...this.state };
+        this.transactionPurchasingService = this.getServices().transactionPurchasingService;
+        this.masterDataService = this.getServices().masterDataService;
 
     }
     updateField = (e:ChangeEvent) => {
@@ -66,7 +68,7 @@ export default class ProductForm extends BaseComponent {
         // this.commonAjax(this.masterDataService.getBy,
         //     this.productLoaded, this.productNotFound, 'product', { code: code });
 
-        this.commonAjaxWithProgress(this.transactionService.getStockInfo,
+        this.commonAjaxWithProgress(this.transactionPurchasingService.getStockInfo,
             this.productLoaded, this.productNotFound, code);
     }
     render() {

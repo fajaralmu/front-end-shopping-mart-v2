@@ -16,11 +16,12 @@ import { toBase64FromFile } from '../../../../utils/ComponentUtil';
 import FormInputField from './FormInputField';
 
 class MasterDataForm extends BaseComponent {
-    masterDataService: MasterDataService = MasterDataService.getInstance();
+    masterDataService: MasterDataService;
     editMode:boolean = false;
     recordToEdit?:{} = undefined;
     constructor(props: any) {
         super(props, true);
+        this.masterDataService = this.getServices().masterDataService;
         if (props.recordToEdit) {
             this.editMode = true;
             this.recordToEdit = props.recordToEdit;
@@ -48,9 +49,11 @@ class MasterDataForm extends BaseComponent {
     }
     submit = (form: HTMLFormElement) => {
         const formData: FormData = new FormData(form);
-        const object: {} = {}, app = this;
+        const object: {} = {};
         const promises: Promise<any>[] = new Array();
         const nulledFields:any[] = [];
+        let hasImageField:boolean = false;
+
         formData.forEach((value, key) => {
             console.debug("Form data ", key);
             if (!object[key]) {
@@ -69,16 +72,21 @@ class MasterDataForm extends BaseComponent {
                 case FieldType.FIELD_TYPE_IMAGE:
                     console.debug(key, " is image");
                     if (value == "NULLED") {
-                        console.debug("NULLED VALUE ADD: ", key);
+                        console.debug("NULLED VALUE ADDED: ", key);
                         nulledFields.push(key);
                    
-                    } else if(value.constructor.name == "File") {
-                        let promise = toBase64FromFile(value).then(data => {
-                            object[key].push(data);
-                        }).catch(console.error)
-                            .finally(function () { console.debug("finish") });
-                        promises.push(promise);
+                    // } else if(value.constructor.name == "File") {
+                        
+                    //     let promise = toBase64FromFile(value).then(data => {
+                    //         hasImageField = true;
+                    //         object[key].push(data);
+                    //     }).catch(console.error)
+                    //         .finally(function () { console.debug("finish") });
+                    //     promises.push(promise);
                     } else {
+                        if (new String(value).startsWith("data:image")) {
+                            hasImageField = true;
+                        }
                         object[key].push(value);
                     }
                     break;
@@ -87,12 +95,14 @@ class MasterDataForm extends BaseComponent {
                     break;
             }
             return true;
-        }); 
-        Promise.all(promises).then(function (val) {
-            const objectPayload = app.generateRequestPayload(object, nulledFields);
-            console.debug("Record object to save: ", objectPayload);
-            app.ajaxSubmit(objectPayload);
+            
+        });  
+        Promise.all(promises).then( (val) => {
+            const objectPayload = this.generateRequestPayload(object, nulledFields);
+            console.debug("Record object to save: ", objectPayload, "realtimeProgress: ", hasImageField);
+            this.ajaxSubmit(objectPayload, hasImageField);
         });
+        
     }
 
     generateRequestPayload = (rawObject: {}, nulledFields:any[]): {} => { 
@@ -112,11 +122,18 @@ class MasterDataForm extends BaseComponent {
         return result;
     }
 
-    ajaxSubmit = (object: any) => {
-        this.commonAjax(
-            this.masterDataService.save, this.recordSaved, this.showCommonErrorAlert,
-            this.getEntityProperty().entityName, object, this.editMode
-        )
+    ajaxSubmit = (object: any, realtimeProgress: boolean) => {
+        if (realtimeProgress){
+            this.commonAjaxWithProgress(
+                this.masterDataService.save, this.recordSaved, this.showCommonErrorAlert,
+                this.getEntityProperty().entityName, object, this.editMode
+            )
+        } else{
+            this.commonAjax(
+                this.masterDataService.save, this.recordSaved, this.showCommonErrorAlert,
+                this.getEntityProperty().entityName, object, this.editMode
+            )
+        }
     }
     recordSaved = (response: WebResponse) => {
         this.showInfo("Record saved");
@@ -130,7 +147,7 @@ class MasterDataForm extends BaseComponent {
                 <AnchorButton style={{ marginBottom: '5px' }} onClick={this.props.onClose} iconClassName="fas fa-angle-left">Back</AnchorButton>
                 <form onSubmit={this.onSubmit} id="record-form">
                 <Modal title={<span>{entityProperty.alias} Record Form {editModeStr}</span>} footerContent={<SubmitReset />}>
-                        <InputFields recordToEdit={this.recordToEdit} app={this.parentApp} entityProperty={entityProperty} />
+                        <InputFields app={this.parentApp} recordToEdit={this.recordToEdit}  entityProperty={entityProperty} />
                     </Modal>
                 </form>
             </div>
@@ -147,14 +164,16 @@ const SubmitReset = (props) => {
     )
 }
 
+
 const InputFields = (props: { app: any, entityProperty: EntityProperty, recordToEdit:{}|undefined }) => {
     const elements: EntityElement[] = props.entityProperty.elements;
     const groupedElements: Array<Array<EntityElement>> = new Array();
     let counter: number = 0;
+    const hasTextEditor = EntityProperty.hasTextEditorField(elements);
     groupedElements.push(new Array());
     for (let i = 0; i < elements.length; i++) {
         const element = elements[i];
-        if (i > 0 && i % 5 == 0) {
+        if (!hasTextEditor && i > 0 && i % 5 == 0) {
             counter++;
             groupedElements.push(new Array());
         }
@@ -164,9 +183,9 @@ const InputFields = (props: { app: any, entityProperty: EntityProperty, recordTo
         <div className="row">
             {groupedElements.map(elements => {
                 return (
-                    <div className="col-lg-6">
+                    <div className={hasTextEditor?"col-lg-12":"col-lg-6"}>
                         {elements.map(element => {
-                            return <FormInputField recordToEdit={props.recordToEdit} app={props.app} entityElement={element} />
+                            return <FormInputField recordToEdit={props.recordToEdit} entityElement={element} />
                         })}
                     </div>
                 )

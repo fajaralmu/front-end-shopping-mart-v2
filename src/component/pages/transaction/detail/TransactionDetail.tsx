@@ -22,11 +22,11 @@ interface IState {
     dataNotFound: boolean
 }
 class TransactionDetail extends BaseComponent {
-    transactionHistoryService: TransactionHistoryService = TransactionHistoryService.getInstance();
+    transactionHistoryService: TransactionHistoryService;
     state: IState = { dataNotFound: false };
     constructor(props: any) {
         super(props, true);
-
+        this.transactionHistoryService = this.getServices().transactionHistoryService;
     }
 
     componentDidMount() {

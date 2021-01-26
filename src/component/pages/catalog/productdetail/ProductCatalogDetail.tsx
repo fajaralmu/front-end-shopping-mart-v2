@@ -12,10 +12,11 @@ import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
 import Carousel from './../../../container/Carousel';
 interface IState { product?:Product, notFound:boolean }
 class ProductCatalogDetail extends BaseComponent {
-    catalogService:CatalogService = CatalogService.getInstance();
+    catalogService:CatalogService;
     state:IState = {notFound:false}
     constructor(props: any) {
         super(props, false);
+        this.catalogService = this.getServices().catalogService;
     }
     getCode():string {
         return this.props.match.params.code;

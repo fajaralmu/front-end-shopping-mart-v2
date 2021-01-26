@@ -10,16 +10,19 @@ import CashBalance from '../../../../models/CashBalance';
 import Spinner from '../../../loader/Spinner';
 import SimpleError from '../../../alert/SimpleError';
 import { beautifyNominal } from '../../../../utils/StringUtil';
+import { connect } from 'react-redux';
+import { mapCommonUserStateToProps } from '../../../../constant/stores';
 class IState {
     quantity?:number;
     loading: boolean = false; 
 }
-export default class LoadInventoryForm extends BaseComponent {
-    transactionHistoryService: TransactionHistoryService = TransactionHistoryService.getInstance();
+ class LoadInventoryForm extends BaseComponent {
+    transactionHistoryService: TransactionHistoryService ;
 
     state: IState = new IState();
     constructor(props) {
         super(props, true);
+        this.transactionHistoryService = this.getServices().transactionHistoryService;
     }
     startLoading = () => this.setState({ loading: true });
     endLoading = () => this.setState({ loading: false });
@@ -57,3 +60,7 @@ const Detail = (props: { quantity?:number, loading: boolean }) => {
          <h3>{beautifyNominal(props.quantity)}</h3>
     </div>
 }
+
+export default connect(
+    mapCommonUserStateToProps, 
+)(LoadInventoryForm)

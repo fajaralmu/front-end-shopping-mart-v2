@@ -20,10 +20,11 @@ class IState {
     cashflowData?: WebResponse = undefined
 }
 class DashboardStatistic extends BaseComponent {
-    transactionHistoryService: TransactionHistoryService = TransactionHistoryService.getInstance();
+    transactionHistoryService: TransactionHistoryService;
     state: IState = new IState();
     constructor(props) {
         super(props, true);
+        this.transactionHistoryService = this.getServices().transactionHistoryService;
     }
 
     filter = (e) => {

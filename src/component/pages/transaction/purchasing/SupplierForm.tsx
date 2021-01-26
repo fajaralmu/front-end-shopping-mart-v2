@@ -21,12 +21,13 @@ interface IState {
     code:string    
 }
 class SupplierForm extends BaseComponent {
-    masterDataService = MasterDataService.getInstance();
+    masterDataService:MasterDataService;
     state: IState = {
         supplierNotFound: false, loading: false,code: ''
     }
     constructor(props: any) {
         super(props);
+        this.masterDataService = this.getServices().masterDataService;
     }
     updateField = (e:ChangeEvent) => {
         const target = e.target as HTMLInputElement;

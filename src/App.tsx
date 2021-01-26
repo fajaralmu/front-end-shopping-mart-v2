@@ -53,6 +53,8 @@ class App extends Component<any, IState> {
       realtime: false,
     };
 
+    this.props.setMainApp(this);
+
   }
   refresh() {
     this.setState({ mainAppUpdated: new Date() });
@@ -194,6 +196,7 @@ function updateFavicon(profile: any) {
 
 const mapDispatchToProps = (dispatch: Function) => ({
   requestAppId: (app: App) => dispatch(actions.requestAppId(app)),
+  setMainApp: (app:App) => dispatch(actions.setMainApp(app))
 })
 
 export default withRouter(connect(

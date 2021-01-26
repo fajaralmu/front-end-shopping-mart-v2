@@ -17,9 +17,10 @@ import BaseTransactionComponent, { totalUnitAndPrice } from '../BaseTransactionC
 import CustomerForm from './CustomerForm';
 
 class TransactionSelling extends BaseTransactionComponent {
-    transactionSellingService = TransactionSellingService.getInstance();
+    transactionSellingService:TransactionSellingService;
     constructor(props: any) {
         super(props);
+        this.transactionSellingService = this.getServices().transactionSellingService;
     }
     setCustomer = (customer: Customer) => {
         this.setState({ customer: customer });

@@ -10,18 +10,21 @@ import CashBalance from '../../../../models/CashBalance';
 import Spinner from '../../../loader/Spinner';
 import SimpleError from '../../../alert/SimpleError';
 import { beautifyNominal } from '../../../../utils/StringUtil';
+import { connect } from 'react-redux';
+import { mapCommonUserStateToProps } from './../../../../constant/stores';
 class IState {
     month: number = new Date().getMonth() + 1;
     year: number = new Date().getFullYear();
     loading: boolean = false;
     balanceInfo?: CashBalance;
 }
-export default class LoadBalanceForm extends BaseComponent {
-    transactionHistoryService: TransactionHistoryService = TransactionHistoryService.getInstance();
+class LoadBalanceForm extends BaseComponent {
+    transactionHistoryService: TransactionHistoryService;
 
     state: IState = new IState();
     constructor(props) {
         super(props, true);
+        this.transactionHistoryService = this.getServices().transactionHistoryService;
     }
     startLoading = () => this.setState({ loading: true });
     endLoading = () => this.setState({ loading: false });
@@ -85,3 +88,7 @@ const BalanceInfo = (props: { balanceInfo?: CashBalance, loading: boolean }) => 
         <FormGroup label="Balance">{beautifyNominal(props.balanceInfo.actualBalance)}</FormGroup>
     </div>
 }
+
+export default connect(
+    mapCommonUserStateToProps, 
+)(LoadBalanceForm)

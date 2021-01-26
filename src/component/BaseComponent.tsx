@@ -3,6 +3,7 @@ import { byId } from '../utils/ComponentUtil';
 import WebResponse from './../models/WebResponse';
 import ApplicationProfile from './../models/ApplicationProfile';
 import User from './../models/User';
+import Services from './../services/Services';
 
 export default class BaseComponent extends Component<any, any> {
     parentApp: any;
@@ -10,12 +11,15 @@ export default class BaseComponent extends Component<any, any> {
     state: any = { updated: new Date() };
     constructor(props: any, authenticated = false) {
         super(props);
-        this.parentApp = props.app;
+        this.parentApp = this.props.mainApp;
         this.authenticated = authenticated
         this.state = {
             ...this.state
         }
 
+    }
+    getServices():Services {
+        return this.props.services as Services;
     }
     validateLoginStatus = () => {
         if (this.authenticated == false) return;

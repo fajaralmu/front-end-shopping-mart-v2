@@ -33,10 +33,11 @@ class IState {
 }
 class UserProfile extends BaseComponent {
 
-    userService: UserService = UserService.getInstance();
+    userService: UserService;
     state: IState = new IState();
     constructor(props: any) {
         super(props, true);
+        this.userService = this.getServices().userService;
         this.state.user = Object.assign(new User(), this.getLoggedUser());
     }
     componentDidMount() {

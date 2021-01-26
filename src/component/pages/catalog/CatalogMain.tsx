@@ -14,10 +14,11 @@ import WebResponse from './../../../models/WebResponse';
 import AnchorButton from '../../navigation/AnchorButton';
 interface IState { totalProduct: number }
 class CatalogMain extends BaseMainMenus {
-    catalogService: CatalogService = CatalogService.getInstance();
+    catalogService: CatalogService;
     state: IState = { totalProduct: 0 }
     constructor(props: any) {
         super(props, "Catalog");
+        this.catalogService = this.getServices().catalogService;
     }
     totalProductLoaded = (response: WebResponse) => {
         this.catalogService.setTotalProduct(response.totalData ?? 0);
