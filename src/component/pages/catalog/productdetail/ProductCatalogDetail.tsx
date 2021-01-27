@@ -10,6 +10,8 @@ import Modal from './../../../container/Modal';
 import { baseImageUrl } from '../../../../constant/Url';
 import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
 import Carousel from './../../../container/Carousel';
+import { mapCommonUserStateToProps } from './../../../../constant/stores';
+import { connect } from 'react-redux';
 interface IState { product?:Product, notFound:boolean }
 class ProductCatalogDetail extends BaseComponent {
     catalogService:CatalogService;
@@ -80,5 +82,6 @@ class ProductCatalogDetail extends BaseComponent {
         </div>)
     }
 }
-
-export default withRouter(ProductCatalogDetail);
+export default withRouter(connect(
+    mapCommonUserStateToProps, 
+)(ProductCatalogDetail))

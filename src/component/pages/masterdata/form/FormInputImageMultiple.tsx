@@ -7,15 +7,13 @@ import { baseImageUrl } from '../../../../constant/Url';
 import BaseComponent from './../../../BaseComponent';
 import { mapCommonUserStateToProps } from './../../../../constant/stores';
 import { connect } from 'react-redux';
-interface IState {
-    previewData: Map<number, string>,
-    inputElements: number[]
+class IState {
+    previewData: Map<number, string> = new Map();
+    inputElements: number[] = [1];
+   
 }
 class FormInputImageMultiple extends BaseComponent {
-    state: IState = {
-        previewData: new Map(),
-        inputElements: [1]
-    }
+    state: IState = new IState();
     ref: React.RefObject<any> = React.createRef();
     constructor(props: any) {
         super(props, false);

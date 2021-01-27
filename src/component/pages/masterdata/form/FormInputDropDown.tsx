@@ -9,20 +9,24 @@ import MasterDataService from '../../../../services/MasterDataService';
 import WebResponse from '../../../../models/WebResponse';
 import BaseComponent from '../../../BaseComponent'; 
 import { uniqueId } from './../../../../utils/StringUtil';
-interface IState {
-    inputList: any[],
-    singlePreviewData?: string, 
+class IState {
+    inputList: any[] = [];
+    singlePreviewData?: string = undefined;
+    loading: boolean = false;
 }
 class FormInputDropDown extends BaseComponent {
     masterDataService: MasterDataService;
-    state: IState = {
-        inputList: [],
-        singlePreviewData: undefined, 
-    }
+    state: IState = new IState();
     ref: React.RefObject<any> = React.createRef();
     constructor(props: any) {
         super(props, false);
         this.masterDataService = this.getServices().masterDataService;
+    }
+    startLoading = () => {
+
+    }
+    endLoading = () =>  {
+
     }
     getEntityElement = (): EntityElement => {
         return this.props.entityElement;
@@ -96,7 +100,10 @@ class FormInputDropDown extends BaseComponent {
         
         const element = this.getEntityElement();
         if (this.isNotReady()) {
-            return <div className="form-group">Loading...</div>
+            return <div className="form-group  ">
+                 <span  className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+               
+            </div>
         }
 
         const options = this.state.inputList;
