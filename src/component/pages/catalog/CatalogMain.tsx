@@ -12,14 +12,17 @@ import AnchorWithIcon from '../../navigation/AnchorWithIcon';
 import CatalogService from './../../../services/CatalogService';
 import WebResponse from './../../../models/WebResponse';
 import AnchorButton from '../../navigation/AnchorButton';
-interface IState { totalProduct: number }
+import Spinner from './../../loader/Spinner';
+class IState { totalProduct: number = 0; loading: boolean = false; }
 class CatalogMain extends BaseMainMenus {
     catalogService: CatalogService;
-    state: IState = { totalProduct: 0 }
+    state: IState = new IState();
     constructor(props: any) {
         super(props, "Catalog");
         this.catalogService = this.getServices().catalogService;
     }
+    startLoading = () => this.setState({ loading: true });
+    endLoading = () => this.setState({ loading: false });
     totalProductLoaded = (response: WebResponse) => {
         this.catalogService.setTotalProduct(response.totalData ?? 0);
         this.setState({ totalProduct: response.totalData });
@@ -49,11 +52,14 @@ class CatalogMain extends BaseMainMenus {
                 <div className="row">
                     <div className="col-md-4">
                         <Card title="Product Catalog" className="bg-light">
-                            <h4>Total Product: {this.state.totalProduct}</h4>
-                            <div className="btn-group">
-                                <AnchorWithIcon className="btn btn-info" to="/catalog/product">View Catalog</AnchorWithIcon>
-                                <AnchorButton iconClassName="fas fa-sync-alt" onClick={this.loadTotalProduct} />
-                            </div>
+                            {this.state.loading ? <Spinner /> :
+                                <Fragment>
+                                    <h4>Total Product: {this.state.totalProduct}</h4>
+                                    <div className="btn-group">
+                                        <AnchorWithIcon className="btn btn-info" to="/catalog/product">View Catalog</AnchorWithIcon>
+                                        <AnchorButton iconClassName="fas fa-sync-alt" onClick={this.loadTotalProduct} />
+                                    </div>
+                                </Fragment>}
                         </Card>
                     </div>
                     <div className="col-md-4">

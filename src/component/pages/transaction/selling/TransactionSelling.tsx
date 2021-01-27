@@ -166,9 +166,6 @@ class TransactionSelling extends BaseTransactionComponent {
         )
     }
 }
-
-
-
 export default withRouter(connect(
     mapCommonUserStateToProps,
 )(TransactionSelling))

@@ -9,7 +9,7 @@ export default class Product extends BaseEntity{
 	description?:string;
 	price?:number;
 	type?:string;
-	imageUrl?:string;
+	imageNames?:string;
 	unit?:Unit;
 	category?:Category;
 	newProduct?:boolean;
@@ -18,14 +18,14 @@ export default class Product extends BaseEntity{
 
 	static getDefaultPicture(product:Product, baseImageUrl?:string) :string{
 
-		if (product.imageUrl && product.imageUrl?.length >0) {
-			return (baseImageUrl?baseImageUrl:"") + product.imageUrl.split("~")[0];
+		if (product.imageNames && product.imageNames?.length >0) {
+			return (baseImageUrl?baseImageUrl:"") + product.imageNames.split("~")[0];
 		}
 		return (baseImageUrl?baseImageUrl:"") + "Default.bmp";
 	}
 	static getPictureNames(product:Product, baseImageUrl?:string): string[] {
-		if (product.imageUrl && product.imageUrl?.length >0) {
-			let names:string[] = product.imageUrl.split("~");
+		if (product.imageNames && product.imageNames?.length >0) {
+			let names:string[] = product.imageNames.split("~");
 			if (baseImageUrl) {
 				return names.map(name=>{
 					return baseImageUrl+name;

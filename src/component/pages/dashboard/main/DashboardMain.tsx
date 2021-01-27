@@ -28,12 +28,8 @@ class DashboardMain extends BaseMainMenus {
         )
     }
 
-}
-const mapDispatchToProps = (dispatch: Function) => ({
-})
-
+} 
 
 export default withRouter(connect(
-    mapCommonUserStateToProps,
-    mapDispatchToProps
+    mapCommonUserStateToProps, 
 )(DashboardMain))

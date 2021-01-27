@@ -11,6 +11,9 @@ import WebResponse from '../../../models/WebResponse';
 import FormGroup from './../../form/FormGroup';
 import AnchorWithIcon from './../../navigation/AnchorWithIcon';
 import Spinner from '../../loader/Spinner';
+import { mapCommonUserStateToProps } from './../../../constant/stores';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 interface IState {
     product?: Product; 
     selectedProductFlow?: ProductFlow;
@@ -18,7 +21,7 @@ interface IState {
     loading:boolean;
     productCode:string;
 }
-export default class ProductForm extends BaseComponent {
+ class ProductForm extends BaseComponent {
 
     transactionPurchasingService : TransactionPurchasingService;
     masterDataService : MasterDataService;
@@ -131,5 +134,6 @@ const ProductDetail = (props: { loading:boolean, product?: Product, notFound: bo
         </div>
     )
 }
-const mapDispatchToProps = (dispatch: Function) => ({
-})
+export default withRouter(connect(
+    mapCommonUserStateToProps,
+)(ProductForm))

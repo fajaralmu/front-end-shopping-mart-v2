@@ -16,19 +16,22 @@ import Product from '../../../../models/Product';
 import { totalUnitAndPrice } from '../BaseTransactionComponent';
 import SimpleError from './../../../alert/SimpleError';
 import { beautifyNominal } from '../../../../utils/StringUtil';
-interface IState {
+import Spinner from '../../../loader/Spinner';
+class IState {
     transactionData?: Transaction;
     transactionCode?: string;
-    dataNotFound: boolean
+    dataNotFound: boolean = false;
+    loading: boolean = false;
 }
 class TransactionDetail extends BaseComponent {
     transactionHistoryService: TransactionHistoryService;
-    state: IState = { dataNotFound: false };
+    state: IState = new IState();
     constructor(props: any) {
         super(props, true);
         this.transactionHistoryService = this.getServices().transactionHistoryService;
     }
-
+    startLoading = () => this.setState({ loading: true });
+    endLoading = () => this.setState({ loading: false });
     componentDidMount() {
         this.validateLoginStatus();
         document.title = "Transaction Detail";
@@ -84,8 +87,13 @@ class TransactionDetail extends BaseComponent {
                     </form>
                     <div className="col-md-6"></div>
                     <div className="col-md-12">
-                        <SimpleError show={this.state.dataNotFound == true} >Data not found</SimpleError>
-                        <TransactionData show={this.state.transactionData != undefined} transaction={this.state.transactionData} />
+                        {this.state.loading ?
+                            <Spinner /> :
+                            <Fragment>
+                                <SimpleError show={this.state.dataNotFound == true} >Data not found</SimpleError>
+                                <TransactionData show={this.state.transactionData != undefined} transaction={this.state.transactionData} />
+                            </Fragment>
+                        }
                     </div>
                 </div>
             </div>
@@ -96,9 +104,9 @@ class TransactionDetail extends BaseComponent {
 const TransactionData = (props) => {
     if (props.show == false) return null;
     const transaction: Transaction = props.transaction;
-    const productFlows: ProductFlow[] = transaction.productFlows ? transaction.productFlows: [];
+    const productFlows: ProductFlow[] = transaction.productFlows ? transaction.productFlows : [];
     const isSelling = transaction.type == 'SELLING';
-    
+
     return (
         <Modal title="Transaction Data">
             <div className="row">
@@ -141,17 +149,17 @@ const TransactionData = (props) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {productFlows.map((productFlow, i)=>{
-                                const product:Product = productFlow.product?? new Product();
+                            {productFlows.map((productFlow, i) => {
+                                const product: Product = productFlow.product ?? new Product();
                                 const price = productFlow.price;
                                 return (
-                                    <tr key={"pf-tr-"+i}>
-                                        <td>{i+1}</td>
+                                    <tr key={"pf-tr-" + i}>
+                                        <td>{i + 1}</td>
                                         <td>{product.name}</td>
                                         <td>{beautifyNominal(productFlow.count)}</td>
                                         <td>{product.unit?.name}</td>
                                         <td>{beautifyNominal(price)}</td>
-                                        <td>{beautifyNominal((price??0) * (productFlow.count??0))}</td>
+                                        <td>{beautifyNominal((price ?? 0) * (productFlow.count ?? 0))}</td>
                                     </tr>
                                 )
                             })}
@@ -159,17 +167,17 @@ const TransactionData = (props) => {
                     </table>
                     <div className="alert alert-info text-left">
                         <FormGroup label="Total unit">
-                        <p>{beautifyNominal(totalUnitAndPrice(productFlows).unit)}</p>
+                            <p>{beautifyNominal(totalUnitAndPrice(productFlows).unit)}</p>
                         </FormGroup>
                         <FormGroup label="Total price">
-                        <p>{beautifyNominal(totalUnitAndPrice(productFlows).productFlowPrice)}</p>
+                            <p>{beautifyNominal(totalUnitAndPrice(productFlows).productFlowPrice)}</p>
                         </FormGroup>
                     </div>
                 </div>
             </div>
         </Modal>
     )
-} 
+}
 const mapDispatchToProps = (dispatch: Function) => ({
 })
 

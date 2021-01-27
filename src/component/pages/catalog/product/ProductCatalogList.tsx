@@ -115,7 +115,7 @@ class ProductCatalogList extends BaseComponent
                 </div>
                 <div className="row">
                     {props.products.map((product:Product) => {
-                        const imgName = product.imageUrl ? product.imageUrl.split("~")[0] ?? 'Default.bmp' : 'Default.bmp';
+                        const imgName = product.imageNames ? product.imageNames.split("~")[0] ?? 'Default.bmp' : 'Default.bmp';
                         const productInCart = this.getProductInCart(product.id);
                         return (
                             <div key={"product_catalog_"+product.id} className="col-md-2 catalog-item rounded border">

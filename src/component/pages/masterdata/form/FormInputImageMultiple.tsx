@@ -5,11 +5,13 @@ import AnchorButton from '../../../navigation/AnchorButton';
 import EntityElement from '../../../../models/EntityElement';
 import { baseImageUrl } from '../../../../constant/Url';
 import BaseComponent from './../../../BaseComponent';
+import { mapCommonUserStateToProps } from './../../../../constant/stores';
+import { connect } from 'react-redux';
 interface IState {
     previewData: Map<number, string>,
     inputElements: number[]
 }
-export default class FormInputImageMultiple extends BaseComponent {
+class FormInputImageMultiple extends BaseComponent {
     state: IState = {
         previewData: new Map(),
         inputElements: [1]
@@ -130,3 +132,7 @@ const ImagePreview = (props) => {
     if (props.show == false || !props.imageData) return null;
     return <img className="image" style={{ margin: '3px' }} src={props.imageData} width="50" height="50" />
 }
+
+export default connect(
+    mapCommonUserStateToProps,
+)(FormInputImageMultiple) 
